@@ -6,7 +6,7 @@ yum -y -e0 install httpd git
 
 # Creates the git repo directory
 git_dir='/var/www/git'
-mkdir "$git_dir"
+mkdir -p "$git_dir"
 
 # Sets the git config that will hook into git-http-backend
 cat > /etc/httpd/conf.d/git.conf <<- GitConf
@@ -17,6 +17,13 @@ cat > /etc/httpd/conf.d/git.conf <<- GitConf
   ScriptAlias /git/ /usr/libexec/git-core/git-http-backend/
 
   <Location /git/>
+    Order Deny,Allow
+    Deny from env=AUTHREQUIRED
+
+    AuthType Basic
+    AuthName "Git Access"
+    Require group committers
+    Satisfy Any
   </Location>
 </VirtualHost>
 GitConf
