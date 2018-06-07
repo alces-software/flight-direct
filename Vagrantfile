@@ -7,10 +7,12 @@
 # you're doing.
 Vagrant.configure(2) do |config|
   config.vm.box = 'centos/7'
+  config.vm.synced_folder ".", "/vagrant", disabled: true
 
   config.vm.define 'master', primary: true do |master|
     master.vm.hostname = 'master'
     master.vm.network "private_network", type: "dhcp"
+    master.vm.synced_folder '.', '/tmp/direct'
   end
 
   config.vm.define 'slave' do |slave|
