@@ -31,8 +31,8 @@ module FlightDirect
       c.sub_command_group = true
     end
 
-    command :'server start' do |c|
-      c.syntax = 'flight server start [options]'
+    command :'server create' do |c|
+      c.syntax = 'flight server create [options]'
       c.description = 'Starts the flight direct download server'
       c.hidden = true
       action(c, FlightDirect::Commands::Server::Start)

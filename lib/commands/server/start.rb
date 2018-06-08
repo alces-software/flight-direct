@@ -2,7 +2,7 @@
 module FlightDirect
   module Commands
     module Server
-      class Start < Command
+      class Create < Command
         def run
         end
       end
