@@ -35,12 +35,13 @@ else
 fi
 
 # Downloads ruby
+ruby_tarball="$ruby_version.tar.gz"
 mkdir -p "$build_path/ruby"
 cd "$build_path/ruby"
-curl -o "ruby.tar.gz" "$ruby_url"
+curl -o "$ruby_tarball" "$ruby_url"
 
 # Extracts ruby
-tar -xvf "ruby.tar.gz"
+tar -xvf "$ruby_tarball"
 
 # Installs ruby
 cd "$ruby_version"
