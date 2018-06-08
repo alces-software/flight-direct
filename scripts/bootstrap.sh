@@ -12,7 +12,7 @@ ruby_version='ruby-2.5.1'
 bundler_version='bundler-1.11.2'
 
 # Install required yum packages
-yum -y -e0 install git zlib zlib-devel
+yum -y -e0 install git zlib zlib-devel openssl-devel
 
 # Sets the git_url from the server address
 project_path='alces-software/flight-direct.git'
