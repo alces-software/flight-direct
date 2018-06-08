@@ -7,7 +7,7 @@ fi
 
 # Sets the install path variables
 install_path='/opt/flight-direct'
-tmp_path="$install_path/build"
+build_path="$install_path/build"
 ruby_version='ruby-2.5.1'
 bundler_version='bundler-1.11.2'
 
@@ -35,8 +35,8 @@ else
 fi
 
 # Downloads ruby
-mkdir -p "$tmp_path/ruby"
-cd "$tmp_path/ruby"
+mkdir -p "$build_path/ruby"
+cd "$build_path/ruby"
 curl -o "ruby.tar.gz" "$ruby_url"
 
 # Extracts ruby
@@ -49,8 +49,8 @@ make
 make install
 
 # Downloads Bundler
-mkdir -p "$tmp_path/bundler"
-cd "$tmp_path/bundler"
+mkdir -p "$build_path/bundler"
+cd "$build_path/bundler"
 curl -o 'bundler.gem' $bundler_url
 
 # Installs bundler
