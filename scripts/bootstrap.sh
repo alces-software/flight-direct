@@ -27,7 +27,7 @@ git clone "$git_address" "$install_path"
 
 # Sets the ruby binary path
 if [ -z "$FLIGHT_DIRECT_SERVER" ]; then
-  ruby_url="https://cache.ruby-lang.org/pub/ruby/2.5/$ruby_version.tar.gz"
+  ruby_url="https://cache.ruby-lang.org/pub/ruby/$ruby_version.tar.gz"
   bundler_url="https://rubygems.org/downloads/$bundler_version.gem"
 else
   echo "NotImplementedError"
