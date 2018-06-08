@@ -57,3 +57,7 @@ curl -o 'bundler.gem' $bundler_url
 # Installs bundler
 $install_path/opt/ruby/bin/gem install --local 'bundler.gem'
 
+# Installs the gems
+cd "$install_path"
+$install_path/opt/ruby/bin/bundle install --local
+
