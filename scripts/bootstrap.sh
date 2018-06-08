@@ -7,8 +7,12 @@ fi
 
 # Sets the install path variables
 install_path='/opt/flight-direct'
-ruby_dir="$install_path/vendor/ruby"
+tmp_path="$install_path/build"
 ruby_version='ruby-2.5.1'
+bundler_version='bundler-1.11.2'
+
+# Install required yum packages
+yum -y -e0 install git zlib zlib-devel
 
 # Sets the git_url from the server address
 project_path='alces-software/flight-direct.git'
@@ -19,20 +23,20 @@ else
 fi
 
 # Installs the git repo
-yum -y -e0 install git
 git clone "$git_address" "$install_path"
 
 # Sets the ruby binary path
 if [ -z "$FLIGHT_DIRECT_SERVER" ]; then
   ruby_url="https://cache.ruby-lang.org/pub/ruby/2.5/$ruby_version.tar.gz"
+  bundler_url="https://rubygems.org/downloads/$bundler_version.gem"
 else
   echo "NotImplementedError"
   exit 1
 fi
 
 # Downloads ruby
-mkdir -p "$ruby_dir"
-cd "$ruby_dir"
+mkdir -p "$tmp_path/ruby"
+cd "$tmp_path/ruby"
 curl -o "ruby.tar.gz" "$ruby_url"
 
 # Extracts ruby
@@ -40,11 +44,15 @@ tar -xvf "ruby.tar.gz"
 
 # Installs ruby
 cd "$ruby_version"
-./configure --prefix="$ruby_dir" --enable-load-relative
+./configure --prefix="$install_path/opt/ruby" --enable-load-relative
 make
 make install
 
-# Remove the extracted ruby files
-cd ..
-rm -rf "$ruby_version"
+# Downloads Bundler
+mkdir -p "$tmp_path/bundler"
+cd "$tmp_path/bundler"
+curl -o 'bundler.gem' $bundler_url
+
+# Installs bundler
+$install_path/opt/ruby/bin/gem install --local 'bundler.gem'
 
