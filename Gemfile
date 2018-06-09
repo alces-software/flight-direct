@@ -17,12 +17,12 @@ gem 'omnibus', '~> 5.6'
 # the Test Kitchen-based build lab. You can skip these unnecessary dependencies
 # by running `bundle install --without omnibus_development` to speed up build times.
 
-# group :omnibus_development do
-#   # Use Berkshelf for resolving cookbook dependencies
-#   gem 'berkshelf', '~> 3.3'
+group :omnibus_development do
+  # Use Berkshelf for resolving cookbook dependencies
+  gem 'berkshelf', '~> 3.3'
 
-#   # Use Test Kitchen with Vagrant for converging the build environment
-#   gem 'test-kitchen',    '~> 1.4'
-#   gem 'kitchen-vagrant', '~> 0.18'
-# end
+  # Use Test Kitchen with Vagrant for converging the build environment
+  gem 'test-kitchen',    '~> 1.4'
+  gem 'kitchen-vagrant', '~> 0.18'
+end
 
