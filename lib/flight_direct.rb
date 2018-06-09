@@ -15,7 +15,7 @@ ENV['BUNDLE_GEMFILE'] ||= File.join(FlightDirect.root_dir, 'Gemfile')
 Bundler.setup(:default)
 
 # Requires the common gems used throughout the project
-require 'active_support/core_ext/string/inflections'
+require 'active_support/core_ext/string'
 require 'require_all'
 require 'commands'
 
