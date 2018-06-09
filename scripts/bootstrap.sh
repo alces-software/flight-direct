@@ -7,9 +7,12 @@ fi
 
 # Sets the install path variables
 install_path='/opt/flight-direct'
-build_path="$install_path/build"
 ruby_version='ruby-2.5.1'
 bundler_version='bundler-1.11.2'
+
+# The build files used to install FlightDirect are cached so other
+# machines can piggy-back off this installation
+build_path="/var/lib/flight-direct/build"
 
 # Install required yum packages
 yum -y -e0 install git zlib zlib-devel openssl-devel
