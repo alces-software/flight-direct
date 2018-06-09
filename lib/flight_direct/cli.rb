@@ -65,6 +65,7 @@ module FlightDirect
     ARGV.push '--help' if ARGV.empty?
 
     command :server do |c|
+      c.default_syntax
       c.description = 'Manage the download server'
       c.sub_command_group = true
     end
