@@ -1,10 +1,5 @@
 
-require 'active_support/core_ext/string/inflections'
-
-require 'require_all'
-
 require 'commander'
-require 'commands'
 
 ##
 # Under development, there are some common features of Commander::Command which
