@@ -24,6 +24,7 @@
 #==============================================================================
 root_dir = File.expand_path(File.join(__FILE__, '../..'))
 $LOAD_PATH << File.join(root_dir, 'lib')
+$LOAD_PATH << File.join(root_dir, 'lib/flight_direct')
 
 require 'bundler'
 require 'rubygems'
