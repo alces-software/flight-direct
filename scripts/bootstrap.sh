@@ -5,20 +5,21 @@ if (( UID != 0 )); then
   exit 1
 fi
 
-# Sets the install path variables
-install_path='/opt/flight-direct'
+# Sets the Version and path variables
+name='flight-direct'
 ruby_version='ruby-2.5.1'
 bundler_version='bundler-1.11.2'
+install_path="/opt/$name"
 
 # The build files used to install FlightDirect are cached so other
 # machines can piggy-back off this installation
-build_path="/var/lib/flight-direct/build"
+build_path="/var/lib/$name/build"
 
 # Install required yum packages
 yum -y -e0 install git zlib zlib-devel openssl-devel
 
 # Sets the git_url from the server address
-project_path='alces-software/flight-direct.git'
+project_path="alces-software/$name.git"
 if [ -z "$FLIGHT_DIRECT_SERVER" ]; then
   git_address="https://github.com/$project_path"
 else
