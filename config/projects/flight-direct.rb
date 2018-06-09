@@ -19,7 +19,7 @@ build_iteration 1
 # dependency "preparation"
 
 # flight-direct dependencies/components
-# dependency "somedep"
+dependency "ruby"
 
 # Version manifest file
 # dependency "version-manifest"

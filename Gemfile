@@ -4,6 +4,9 @@ gem 'activesupport'
 gem 'commander', git: 'https://github.com/alces-software/commander'
 gem 'require_all'
 
+gem 'pry'
+gem 'pry-byebug'
+
 # Testing out omnibus as an install mechanism, the test-kitchen stuff has been
 # commented out as it is more advanced features
 gem 'omnibus', '~> 5.6.8'

@@ -24,6 +24,7 @@ GEM
     aws-sdk-resources (2.11.65)
       aws-sdk-core (= 2.11.65)
     aws-sigv4 (1.0.2)
+    byebug (10.0.2)
     chef-config (13.9.4)
       addressable
       fuzzyurl
@@ -33,6 +34,7 @@ GEM
     chef-sugar (3.6.0)
     citrus (3.0.2)
     cleanroom (1.0.0)
+    coderay (1.1.2)
     concurrent-ruby (1.0.5)
     ffi (1.9.25)
     ffi-yajl (2.3.1)
@@ -49,6 +51,7 @@ GEM
       ffi-yajl (~> 2.2)
       mixlib-shellout (~> 2.2)
       toml-rb (~> 1.0)
+    method_source (0.9.0)
     minitest (5.11.3)
     mixlib-cli (1.7.0)
     mixlib-config (2.2.6)
@@ -89,6 +92,12 @@ GEM
       zhexdump (>= 0.0.2)
     plist (3.4.0)
     progressbar (1.9.0)
+    pry (0.11.3)
+      coderay (~> 1.1.0)
+      method_source (~> 0.9.0)
+    pry-byebug (3.6.0)
+      byebug (~> 10.0)
+      pry (~> 0.10)
     public_suffix (3.0.2)
     require_all (2.0.0)
     ruby-progressbar (1.9.0)
@@ -110,6 +119,8 @@ DEPENDENCIES
   activesupport
   commander!
   omnibus (~> 5.6.8)
+  pry
+  pry-byebug
   require_all
 
 BUNDLED WITH
