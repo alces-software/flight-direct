@@ -42,8 +42,7 @@ build do
   # consult the Omnibus gem documentation.
   #
   # "install_dir" is exposed and refers to the top-level projects +install_dir+
-  command "./configure" \
-          " --prefix=#{install_dir}/embedded", env: env
+  command "./configure --prefix=#{install_dir}/zlib", env: env
 
   # You can have multiple steps - they are executed in the order in which they
   # are read.
