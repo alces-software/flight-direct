@@ -6,7 +6,7 @@ gem 'require_all'
 
 # Testing out omnibus as an install mechanism, the test-kitchen stuff has been
 # commented out as it is more advanced features
-gem 'omnibus'
+gem 'omnibus', '~> 5.6.8'
 
 # Use Chef's software definitions. It is recommended that you write your own
 # software definitions, but you can clone/fork Chef's to get you started.
@@ -19,10 +19,10 @@ gem 'omnibus'
 
 group :omnibus_development do
   # Use Berkshelf for resolving cookbook dependencies
-  gem 'berkshelf', '~> 3.3'
+  # gem 'berkshelf', '~> 3.3'
 
   # Use Test Kitchen with Vagrant for converging the build environment
-  gem 'test-kitchen',    '~> 1.4'
-  gem 'kitchen-vagrant', '~> 0.18'
+  # gem 'test-kitchen',    '~> 1.4'
+  # gem 'kitchen-vagrant', '~> 0.18'
 end
 

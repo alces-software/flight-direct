@@ -16,13 +16,13 @@ build_version Omnibus::BuildVersion.semver
 build_iteration 1
 
 # Creates required build directories
-dependency "preparation"
+# dependency "preparation"
 
 # flight-direct dependencies/components
 # dependency "somedep"
 
 # Version manifest file
-dependency "version-manifest"
+# dependency "version-manifest"
 
 exclude "**/.git"
 exclude "**/bundler/git"
