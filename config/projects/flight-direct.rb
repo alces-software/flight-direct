@@ -6,7 +6,7 @@
 
 name "flight-direct"
 maintainer "alces-software"
-homepage "https://CHANGE-ME.com"
+homepage "https://github.com/alces-software/flight-direct"
 
 # Defaults to C:/flight-direct on Windows
 # and /opt/flight-direct on all other platforms
@@ -16,10 +16,10 @@ build_version Omnibus::BuildVersion.semver
 build_iteration 1
 
 # Creates required build directories
-# dependency "preparation"
+dependency "preparation"
 
 # flight-direct dependencies/components
-dependency "somedep"
+# dependency "somedep"
 
 # Version manifest file
 dependency "version-manifest"
