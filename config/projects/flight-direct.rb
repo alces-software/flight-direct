@@ -21,9 +21,10 @@ dependency "preparation"
 # flight-direct dependencies/components
 dependency "ruby"
 dependency "git"
+dependency 'bundler'
 
 # Version manifest file
-# dependency "version-manifest"
+dependency "version-manifest"
 
 exclude "**/.git"
 exclude "**/bundler/git"
