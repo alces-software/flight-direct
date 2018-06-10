@@ -19,14 +19,16 @@ build_iteration 1
 dependency "preparation"
 
 # flight-direct dependencies/components
-dependency "ruby"
-dependency "git"
-dependency 'bundler'
-
 dependency('flight_direct')
 
 # Version manifest file
 dependency "version-manifest"
+
+# Set the version numbering
+# Setting versions is discussed in:
+# http://nvwls.github.io/2016/11/05/building-an-omnibus-ruby.html
+#
+override 'ruby', version: '2.5.1'
 
 exclude "**/.git"
 exclude "**/bundler/git"
