@@ -8,7 +8,7 @@
 
 $master_script = <<-MASTER_SCRIPT
   sudo su -
-  echo "PATH=$PATH:/opt/flight-direct/opt/ruby/bin" >> /root/bashrc
+  echo "export PATH=/opt/flight-direct/embedded/bin:$PATH" >> /root/.bashrc
 MASTER_SCRIPT
 
 Vagrant.configure(2) do |config|
