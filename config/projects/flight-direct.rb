@@ -23,6 +23,8 @@ dependency "ruby"
 dependency "git"
 dependency 'bundler'
 
+dependency('flight_direct')
+
 # Version manifest file
 dependency "version-manifest"
 
