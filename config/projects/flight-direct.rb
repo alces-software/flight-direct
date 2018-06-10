@@ -16,10 +16,11 @@ build_version Omnibus::BuildVersion.semver
 build_iteration 1
 
 # Creates required build directories
-# dependency "preparation"
+dependency "preparation"
 
 # flight-direct dependencies/components
 dependency "ruby"
+dependency "git"
 
 # Version manifest file
 # dependency "version-manifest"
