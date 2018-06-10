@@ -9,7 +9,8 @@ gem 'pry-byebug'
 
 # Testing out omnibus as an install mechanism, the test-kitchen stuff has been
 # commented out as it is more advanced features
-gem 'omnibus', '~> 5.6.8'
+gem 'omnibus', '~> 5.6'
+gem 'omnibus-software', :git => 'git://github.com/opscode/omnibus-software.git', :branch => 'master'
 
 # Use Chef's software definitions. It is recommended that you write your own
 # software definitions, but you can clone/fork Chef's to get you started.
