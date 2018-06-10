@@ -24,7 +24,7 @@ build do
   ['Gemfile', 'Gemfile.lock'].each do |file|
     copy "#{project_dir}/#{file}", "#{install_dir}/#{file}"
   end
-  ['bin', 'lib', 'scripts'].each do |sub_dir|
+  ['bin', 'etc', 'lib', 'scripts'].each do |sub_dir|
     sync "#{project_dir}/#{sub_dir}/", "#{install_dir}/#{sub_dir}/"
   end
   command "cd #{install_dir} && embedded/bin/bundle package --all"
