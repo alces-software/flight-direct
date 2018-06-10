@@ -23,8 +23,8 @@ module FlightDirect
         end
 
         def install_yum_packages
-          puts 'Installing git and apache'
-          `yum -y -e0 install httpd git`
+          puts 'Installing apache'
+          `yum -y -e0 install httpd`
         end
 
         # TODO: Once 'git_dir' is an ENV variable, break this out into a separate file
