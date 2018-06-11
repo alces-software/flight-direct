@@ -28,7 +28,7 @@ dependency "zlib"
 dependency "openssl"
 dependency "libffi"
 dependency "libyaml"
-dependency 'readline'
+dependency 'readline' if overrides[:readline]
 
 version("2.5.1")      { source sha256: "dac81822325b79c3ba9532b048c2123357d3310b2b40024202f360251d9829b1" }
 version("2.5.0")      { source sha256: "46e6f3630f1888eb653b15fa811d77b5b1df6fd7a3af436b343cfe4f4503f2ab" }
@@ -196,9 +196,7 @@ build do
     patch source: "prelude_25_el6_no_pragma.patch", plevel: 0, env: patch_env
   end
 
-  configure_command = ["--with-readline-dir=#{install_dir}/embedded",
-                       "--with-out-ext=dbm",
-                       "--enable-shared",
+  configure_command = ["--enable-shared",
                        "--disable-install-doc",
                        "--without-gmp",
                        "--without-gdbm",
@@ -206,6 +204,12 @@ build do
                        "--disable-dtrace"]
   configure_command << "--with-ext=psych" if version.satisfies?("< 2.3")
   configure_command << "--with-bundled-md5" if fips_mode?
+  if overrides[:readline]
+    configure_command << "--with-readline-dir=#{install_dir}/embedded"
+    configure_command << "--with-out-ext=dbm"
+  else
+    configure_command << "--with-out-ext=dbm,readline"
+  end
 
   if aix?
     # need to patch ruby's configure file so it knows how to find shared libraries
