@@ -27,6 +27,7 @@ build do
   ['bin', 'etc', 'lib', 'scripts'].each do |sub_dir|
     sync "#{project_dir}/#{sub_dir}/", "#{install_dir}/#{sub_dir}/"
   end
-  command "cd #{install_dir} && embedded/bin/bundle package"
+  install_flags = (overrides[:development] ? '' : '--deployment --without="development"')
+  command "cd #{install_dir} && embedded/bin/bundle install #{install_flags}"
 end
 
