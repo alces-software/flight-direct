@@ -27,6 +27,6 @@ build do
   ['bin', 'etc', 'lib', 'scripts'].each do |sub_dir|
     sync "#{project_dir}/#{sub_dir}/", "#{install_dir}/#{sub_dir}/"
   end
-  command "cd #{install_dir} && embedded/bin/bundle package && embedded/bin/bundle install --without 'development --local --binstubs'"
+  command "cd #{install_dir} && embedded/bin/bundle package"
 end
 
