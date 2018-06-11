@@ -8,8 +8,8 @@
 flight() {
   local target
   target="$(cd "$(dirname "${BASH_SOURCE[0]}")"/../.. && pwd)"
-  ( cd $target && \
-    PATH="$target/embedded/bin/:$PATH" && \
+  ( cd "$target" && \
+    PATH="$target/bin:$target/embedded/bin/:$PATH" && \
     bin/flight "$@"
   )
 }

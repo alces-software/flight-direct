@@ -28,6 +28,7 @@ dependency "zlib"
 dependency "openssl"
 dependency "libffi"
 dependency "libyaml"
+dependency 'readline'
 
 version("2.5.1")      { source sha256: "dac81822325b79c3ba9532b048c2123357d3310b2b40024202f360251d9829b1" }
 version("2.5.0")      { source sha256: "46e6f3630f1888eb653b15fa811d77b5b1df6fd7a3af436b343cfe4f4503f2ab" }
@@ -195,7 +196,8 @@ build do
     patch source: "prelude_25_el6_no_pragma.patch", plevel: 0, env: patch_env
   end
 
-  configure_command = ["--with-out-ext=dbm",
+  configure_command = ["--with-readline-dir=#{install_dir}/embedded",
+                       "--with-out-ext=dbm",
                        "--enable-shared",
                        "--disable-install-doc",
                        "--without-gmp",
