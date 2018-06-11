@@ -29,5 +29,11 @@ build do
   end
   install_flags = (overrides[:development] ? '' : '--deployment --without="development"')
   command "cd #{install_dir} && embedded/bin/bundle install #{install_flags}"
+
+  # Set the development environment variable. This is used to bundle the ruby gems into the
+  # project
+  if overrides[:development]
+    copy "#{project_dir}/development-mode.sh", "#{install_dir}/etc/profile.d"
+  end
 end
 
