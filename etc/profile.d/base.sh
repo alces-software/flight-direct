@@ -10,7 +10,7 @@ flight() {
   target="$(cd "$(dirname "${BASH_SOURCE[0]}")"/../.. && pwd)"
   ( cd "$target" && \
     PATH="$target/bin:$target/embedded/bin/:$PATH" && \
-    unset GEM_PATH && unset GEM_HOME && \
+    unset GEM_PATH && unset GEM_HOME && unset BUNDLE_PATH && \
     bin/flight "$@"
   )
 }
