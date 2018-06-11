@@ -19,7 +19,8 @@ build_iteration 1
 dependency "preparation"
 
 # flight-direct dependencies/components
-dependency('flight_direct')
+# dependency('flight_direct')
+dependency 'readline'
 
 # Version manifest file
 dependency "version-manifest"
