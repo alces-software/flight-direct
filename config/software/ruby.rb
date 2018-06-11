@@ -195,7 +195,7 @@ build do
     patch source: "prelude_25_el6_no_pragma.patch", plevel: 0, env: patch_env
   end
 
-  configure_command = ["--with-out-ext=dbm,readline",
+  configure_command = ["--with-out-ext=dbm",
                        "--enable-shared",
                        "--disable-install-doc",
                        "--without-gmp",
