@@ -11,7 +11,7 @@
 # NOTE: Ignore the `chef-cookbook` stuff for now, that is an extension off `omnibus`
 #
 
-name "flight_direct"
+name "flight-direct"
 # version "5.6.9"
 
 source path: Omnibus::Config.project_root
