@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# When "flight-direct" is installed (e.g. `rpm -i`), it will run this script.
+# When "flight-direct" is installed (e.g. `yum install`), it will run this script.
 # This script has been adapted from clusterware:
 # https://raw.githubusercontent.com/alces-software/clusterware/064d7a6e7a2f8d2a3f1874415c0bd8ee429099f7/dist/profile/alces-clusterware.csh
 #
@@ -8,35 +8,6 @@
 # https://github.com/scoutapp/omnibus-scout
 #
 
-name='flight-direct'
-cmd_name='flight'
-install_dir="/opt/$name"
-profile_path="/etc/profile.d/alces-$name.sh"
-
-cat > "$profile_path" <<-PROFILE
-if [ -d $install_dir/etc/profile.d ]; then
-    for i in $install_dir/etc/profile.d/*.sh ; do
-        if [ -r "\$i" ]; then
-            if [ "\${-#*i}" != "\$-" ]; then
-                . "\$i"
-            else
-                . "\$i" >/dev/null 2>&1
-            fi
-        fi
-    done
-  unset i
-fi
-PROFILE
-
-cat <<-MSG
-
-Thank you for installing alces: $name!
-
-Please login again, or manually run the following:
-source $profile_path
-
-Afterwards, execute '$cmd_name' for further information.
-
-MSG
+echo "source /opt/flight-direct/etc/profile.sh" > /etc/profile.d/alces-flight-direct.sh
 
 exit 0
