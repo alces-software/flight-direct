@@ -1,17 +1,18 @@
 
-# Sets up the load paths
-module FlightDirect
-  def self.root_dir
-    File.expand_path(File.join(File.dirname(__FILE__), '..'))
-  end
-end
+# Only allow moving the source location in development mode
+ENV["FLIGHT_DIRECT_RUBY_SOURCE"] = nil unless ENV["FLIGHT_DIRECT_DEVELOPMENT_MODE"] == 'true'
 
-$LOAD_PATH << File.join(FlightDirect.root_dir, 'lib/flight_direct')
+# The `RUBY_SOURCE` is the location the ruby code should be loaded from. This allows it
+# to be moved during development
+ENV["FLIGHT_DIRECT_RUBY_SOURCE"] ||= ENV['FLIGHT_DIRECT_ROOT']
+
+# Sets up the load paths
+$LOAD_PATH << File.join(ENV["FLIGHT_DIRECT_RUBY_SOURCE"], 'lib/flight_direct')
 
 # Sets up bundler
 require 'bundler'
 require 'rubygems'
-ENV['BUNDLE_GEMFILE'] ||= File.join(FlightDirect.root_dir, 'Gemfile')
+ENV['BUNDLE_GEMFILE'] ||= File.join(ENV["FLIGHT_DIRECT_RUBY_SOURCE"], 'Gemfile')
 
 if ENV['FLIGHT_DIRECT_DEVELOPMENT_MODE'] == 'true'
   Bundler.setup(:default, :development)

@@ -51,7 +51,6 @@ end
 module FlightDirect
   class CLI
     extend Commander::Delegates
-
     program :name, 'flight'
     program :version, '0.0.0'
     program :description, 'Cluster Management Tool'
