@@ -7,7 +7,7 @@
 
 flight() {
   local target
-  target="$(cd "$(dirname "${BASH_SOURCE[0]}")"/../.. && pwd)"
+  target=$FLIGHT_DIRECT_ROOT
   ( cd "$target" && \
     PATH="$target/bin:$target/embedded/bin/:$PATH" && \
     unset GEM_PATH && unset GEM_HOME && unset BUNDLE_PATH && \
