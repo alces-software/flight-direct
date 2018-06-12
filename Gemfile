@@ -4,14 +4,6 @@ gem 'activesupport'
 gem 'commander', git: 'https://github.com/alces-software/commander'
 gem 'require_all'
 
-gem 'pry'
-gem 'pry-byebug'
-
-# Testing out omnibus as an install mechanism, the test-kitchen stuff has been
-# commented out as it is more advanced features
-gem 'omnibus', '~> 5.6'
-gem 'omnibus-software', :git => 'git://github.com/opscode/omnibus-software.git', :branch => 'master'
-
 # Use Chef's software definitions. It is recommended that you write your own
 # software definitions, but you can clone/fork Chef's to get you started.
 # gem 'omnibus-software', github: 'opscode/omnibus-software'
@@ -21,7 +13,16 @@ gem 'omnibus-software', :git => 'git://github.com/opscode/omnibus-software.git',
 # the Test Kitchen-based build lab. You can skip these unnecessary dependencies
 # by running `bundle install --without omnibus_development` to speed up build times.
 
-group :omnibus_development do
+group :development do
+  # Testing out omnibus as an install mechanism, the test-kitchen stuff has been
+  # commented out as it is more advanced features
+  gem 'omnibus', '~> 5.6'
+  gem 'omnibus-software', :git => 'git://github.com/opscode/omnibus-software.git', :branch => 'master'
+
+  gem 'byebug'
+  gem 'pry'
+  gem 'pry-byebug'
+
   # Use Berkshelf for resolving cookbook dependencies
   # gem 'berkshelf', '~> 3.3'
 

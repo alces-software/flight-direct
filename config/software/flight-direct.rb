@@ -11,7 +11,7 @@
 # NOTE: Ignore the `chef-cookbook` stuff for now, that is an extension off `omnibus`
 #
 
-name "flight_direct"
+name "flight-direct"
 # version "5.6.9"
 
 source path: Omnibus::Config.project_root
@@ -27,6 +27,13 @@ build do
   ['bin', 'etc', 'lib', 'scripts'].each do |sub_dir|
     sync "#{project_dir}/#{sub_dir}/", "#{install_dir}/#{sub_dir}/"
   end
-  command "cd #{install_dir} && embedded/bin/bundle package --all"
+  install_flags = (overrides[:development] ? '' : '--deployment --without="development"')
+  command "cd #{install_dir} && embedded/bin/bundle install #{install_flags}"
+
+  # Set the development environment variable. This is used to bundle the ruby gems into the
+  # project
+  if overrides[:development]
+    copy "#{project_dir}/development-mode.sh", "#{install_dir}/etc/profile.d"
+  end
 end
 

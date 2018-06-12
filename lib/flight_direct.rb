@@ -12,7 +12,13 @@ $LOAD_PATH << File.join(FlightDirect.root_dir, 'lib/flight_direct')
 require 'bundler'
 require 'rubygems'
 ENV['BUNDLE_GEMFILE'] ||= File.join(FlightDirect.root_dir, 'Gemfile')
-Bundler.setup(:default)
+
+if ENV['FLIGHT_DIRECT_DEVELOPMENT_MODE'] == 'true'
+  Bundler.setup(:default, :development)
+  require 'pry'
+else
+  Bundler.setup(:default)
+end
 
 # Requires the common gems used throughout the project
 require 'active_support/core_ext/string'

@@ -126,6 +126,7 @@ PLATFORMS
 
 DEPENDENCIES
   activesupport
+  byebug
   commander!
   omnibus (~> 5.6)
   omnibus-software!
