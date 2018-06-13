@@ -28,8 +28,8 @@ build do
   ['bin', 'etc', 'lib', 'scripts'].each do |sub_dir|
     sync "#{project_dir}/#{sub_dir}/", "#{install_dir}/#{sub_dir}/"
   end
-  install_flags = (overrides[:development] ? '' : '--deployment --without="development"')
-  command "cd #{install_dir} && embedded/bin/bundle install #{install_flags}"
+  dev_flag = "--with#{overrides[:development] ? '' : 'out'} development"
+  command "cd #{install_dir} && embedded/bin/bundle install #{dev_flag} --deployment"
 
   # Set the development environment variable. This is used to bundle the ruby gems into the
   # project
