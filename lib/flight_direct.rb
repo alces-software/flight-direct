@@ -1,20 +1,21 @@
 
-# Only allow moving the source location in development mode
-ENV["FLIGHT_DIRECT_RUBY_SOURCE"] = nil unless ENV["FLIGHT_DIRECT_DEVELOPMENT_MODE"] == 'true'
-
-# The `RUBY_SOURCE` is the location the ruby code should be loaded from. This allows it
-# to be moved during development
-ENV["FLIGHT_DIRECT_RUBY_SOURCE"] ||= ENV['FLIGHT_DIRECT_ROOT']
+# Allow the ruby load root to be changed during development mode.
+development_mode = (ENV['FLIGHT_DIRECT_DEVELOPMENT_MODE'] == 'true')
+load_root = if development_mode && ENV['FLIGHT_DIRECT_RUBY_SOURCE']
+              ENV['FLIGHT_DIRECT_RUBY_SOURCE']
+            else
+              ENV['FLIGHT_DIRECT_ROOT']
+            end
 
 # Sets up the load paths
-$LOAD_PATH << File.join(ENV["FLIGHT_DIRECT_RUBY_SOURCE"], 'lib/flight_direct')
+$LOAD_PATH << File.join(load_root, 'lib/flight_direct')
+ENV['BUNDLE_GEMFILE'] = File.join(load_root, 'Gemfile')
 
 # Sets up bundler
 require 'bundler'
 require 'rubygems'
-ENV['BUNDLE_GEMFILE'] ||= File.join(ENV["FLIGHT_DIRECT_RUBY_SOURCE"], 'Gemfile')
 
-if ENV['FLIGHT_DIRECT_DEVELOPMENT_MODE'] == 'true'
+if development_mode
   Bundler.setup(:default, :development)
   require 'pry'
 else
