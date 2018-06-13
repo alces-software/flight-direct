@@ -312,15 +312,5 @@ build do
     # Mark it as writable so that we can install other version of rake without
     # running into permission errors.
     command "attrib -r #{install_dir}/embedded/bin/rake.bat"
-
   end
-
-  # The compiled version of ruby hard-codes the path to itself in:
-  # embedded/bin/{gem, irb, ....}. This ensures those files always run with the version of
-  # ruby they where installed with. However it means the files are no longer portable.
-  # The fix is to `sed` the shebang to use what ever is on the path
-  shebang = "#!#{embedded_bin('ruby')}"
-  grep_cmd = "grep -rl '#{shebang}' #{install_dir}/*"
-  sed_cmd = "sed -i 's:#{shebang}:#!/usr/bin/env ruby:g'"
-  command "#{grep_cmd} | xargs -e #{sed_cmd}"
 end
