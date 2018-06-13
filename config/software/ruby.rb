@@ -315,4 +315,12 @@ build do
 
   end
 
+  # The compiled version of ruby hard-codes the path to itself in:
+  # embedded/bin/{gem, irb, ....}. This ensures those files always run with the version of
+  # ruby they where installed with. However it means the files are no longer portable.
+  # The fix is to `sed` the shebang to use what ever is on the path
+  shebang = "#!#{embedded_bin('ruby')}"
+  grep_cmd = "grep -rl '#{shebang}' #{install_dir}/*"
+  sed_cmd = "sed -i 's:#{shebang}:#!/usr/bin/env ruby:g'"
+  command "#{grep_cmd} | xargs -e #{sed_cmd}"
 end
