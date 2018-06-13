@@ -19,6 +19,7 @@ source path: Omnibus::Config.project_root
 dependency "ruby"
 dependency "git"
 dependency 'bundler'
+dependency 'jq'
 
 build do
   ['Gemfile', 'Gemfile.lock'].each do |file|
