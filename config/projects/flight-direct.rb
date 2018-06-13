@@ -10,7 +10,7 @@ homepage "https://github.com/alces-software/flight-direct"
 
 # Defaults to C:/flight-direct on Windows
 # and /opt/flight-direct on all other platforms
-install_dir "#{default_root}/#{name}"
+install_dir (ENV["FLIGHT_DIRECT_ROOT"] || "#{default_root}/#{name}")
 
 build_version Omnibus::BuildVersion.semver
 
