@@ -34,8 +34,9 @@ build do
 
   # Installs the gems to the shared `vendor/cache`
   dev_flag = "--with#{overrides[:development] ? '' : 'out'} development"
-  path_flag = "--path #{install_dir}/vendor/cache"
-  command "cd #{install_dir} && embedded/bin/bundle install #{path_flag} #{dev_flag}"
+  path_flag = "--path #{install_dir}/vendor/gems"
+  flags = "--no-cache #{path_flag} #{dev_flag}"
+  command "cd #{install_dir} && embedded/bin/bundle install #{flags}"
 
   # Removes `.bundle` directory. The `BUNDLE_PATH` will be set latter by `flight`
   delete("#{install_dir}/.bundle")
