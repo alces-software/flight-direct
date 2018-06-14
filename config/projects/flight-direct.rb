@@ -20,7 +20,8 @@ build_version Omnibus::BuildVersion.semver
 dependency "preparation"
 
 # flight-direct dependencies/components
-dependency 'flight-direct'
+# dependency 'flight-direct'
+dependency 'forge'
 
 # Version manifest file
 dependency "version-manifest"
