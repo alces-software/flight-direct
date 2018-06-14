@@ -14,14 +14,16 @@ gem 'require_all'
 # by running `bundle install --without omnibus_development` to speed up build times.
 
 group :development do
+  gem 'byebug'
+  gem 'pry'
+  gem 'pry-byebug'
+end
+
+group :omnibus do
   # Testing out omnibus as an install mechanism, the test-kitchen stuff has been
   # commented out as it is more advanced features
   gem 'omnibus', '~> 5.6'
   gem 'omnibus-software', :git => 'git://github.com/opscode/omnibus-software.git', :branch => 'master'
-
-  gem 'byebug'
-  gem 'pry'
-  gem 'pry-byebug'
 
   # Use Berkshelf for resolving cookbook dependencies
   # gem 'berkshelf', '~> 3.3'
@@ -30,4 +32,3 @@ group :development do
   # gem 'test-kitchen',    '~> 1.4'
   # gem 'kitchen-vagrant', '~> 0.18'
 end
-
