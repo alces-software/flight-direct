@@ -6,11 +6,8 @@
 ################################################################################
 
 flight() {
-  local target
-  target=$FLIGHT_DIRECT_ROOT
-  ( cd "$target" && \
-    PATH="$target/bin:$target/embedded/bin/:$PATH" && \
-    unset GEM_PATH && unset GEM_HOME && unset BUNDLE_PATH && \
+  ( source "$FLIGHT_DIRECT_ROOT"/etc/runtime.sh && \
+    cd "$FLIGHT_DIRECT_ROOT" && \
     bin/flight "$@"
   )
 }
