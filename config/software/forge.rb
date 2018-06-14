@@ -32,7 +32,10 @@ build do
   end
 
   # Installs the gems to the shared `vendor/cache`
-  flags = "--no-cache --path #{install_dir}/vendor/gems"
+  flags = [
+    '--no-cache',
+    "--path #{install_dir}/vendor/gems"
+  ].join(' ')
   command "cd #{forge_dir} && #{embedded_bin('bundle')} install #{flags}"
 
   # Removes the `.bundle` file. The BUNDLE_PATH will be set as an environment variable
