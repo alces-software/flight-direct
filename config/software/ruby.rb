@@ -196,7 +196,7 @@ build do
     patch source: "prelude_25_el6_no_pragma.patch", plevel: 0, env: patch_env
   end
 
-  configure_command = ["--enable-shared",
+  configure_command = ["--enable-load-relative",
                        "--disable-install-doc",
                        "--without-gmp",
                        "--without-gdbm",
