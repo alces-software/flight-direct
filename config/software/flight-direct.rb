@@ -21,6 +21,7 @@ dependency "git"
 dependency 'bundler'
 dependency 'jq'
 dependency 'jo'
+dependency 'unzip'
 
 build do
   ['Gemfile', 'Gemfile.lock'].each do |file|

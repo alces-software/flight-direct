@@ -4,6 +4,8 @@
 # All Rights Reserved.
 #
 
+require 'pry'
+
 name "flight-direct"
 maintainer "alces-software"
 homepage "https://github.com/alces-software/flight-direct"
