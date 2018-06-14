@@ -17,9 +17,7 @@ group :development do
   gem 'byebug'
   gem 'pry'
   gem 'pry-byebug'
-end
 
-group :omnibus do
   # Testing out omnibus as an install mechanism, the test-kitchen stuff has been
   # commented out as it is more advanced features
   gem 'omnibus', '~> 5.6'
