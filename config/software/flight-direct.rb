@@ -32,10 +32,12 @@ build do
     sync "#{project_dir}/#{sub_dir}/", "#{install_dir}/#{sub_dir}/"
   end
 
-  # Installs the gems to the shared `vendor/cache`
-  dev_flag = "--with#{overrides[:development] ? '' : 'out'} development"
-  path_flag = "--path #{install_dir}/vendor/gems"
-  flags = "--no-cache #{path_flag} #{dev_flag}"
+  # Installs the gems to the shared `vendor/gems/--some-where-?--`
+  flags = [
+    '--no-cache',
+    "--path #{install_dir}/vendor/gems",
+    "--with#{overrides[:development] ? '' : 'out'} development"
+  ].join(' ')
   command "cd #{install_dir} && embedded/bin/bundle install #{flags}"
 
   # Removes `.bundle` directory. The `BUNDLE_PATH` will be set latter by `flight`
