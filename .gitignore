@@ -1,5 +1,4 @@
 .vagrant/
-.local/
 .bundle/
 build/
 pkg/
