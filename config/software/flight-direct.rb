@@ -21,17 +21,24 @@ dependency "git"
 dependency 'bundler'
 dependency 'jq'
 dependency 'jo'
-dependency 'unzip'
 
 build do
+  # Moves the project into place
   ['Gemfile', 'Gemfile.lock'].each do |file|
     copy "#{project_dir}/#{file}", "#{install_dir}/#{file}"
   end
   ['bin', 'etc', 'lib', 'scripts'].each do |sub_dir|
     sync "#{project_dir}/#{sub_dir}/", "#{install_dir}/#{sub_dir}/"
   end
+
+  # Installs the gems to the shared `vendor/cache`
   dev_flag = "--with#{overrides[:development] ? '' : 'out'} development"
-  command "cd #{install_dir} && embedded/bin/bundle install #{dev_flag} --deployment"
+  path_flag = "--path #{install_dir}/vendor/cache"
+  flags = "--deployment #{path_flag} #{dev_flag}"
+  command "cd #{install_dir} && embedded/bin/bundle install #{flags}"
+
+  # Removes `.bundle` directory. The `BUNDLE_PATH` will be set latter by `flight`
+  delete("#{install_dir}/.bundle")
 
   # Set the development environment variable. This is used to bundle the ruby gems into the
   # project
