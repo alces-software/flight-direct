@@ -19,21 +19,23 @@
 # limitations under the License.
 #
 
-name "jq"
-default_version "1.5"
+name "jo"
+default_version "1.0"
 
-source url: "https://github.com/stedolan/jq/releases/download/jq-#{version}/jq-linux64"
+source url: "https://github.com/jpmens/jo/releases/download/v#{version}/jo-#{version}.tar.gz"
 
-version('1.5') { source sha256: "c6b3a7d7d3e7b70c6f51b706a3b90bd01833846c54d32ca32f0027f00226ff6d" }
+version('1.0') { source sha256: "d66ec97258d1afad15643fb2d5b5e807153a732ba45c2417adc66669acbde52e" }
 
 # license "Zlib"
 # license_file "README"
 # skip_transitive_dependency_licensing true
 
-relative_path "jq-#{version}"
+relative_path "jo-#{version}"
 
 build do
-  bin_path = embedded_bin('jq')
-  copy "#{project_dir}/jq-linux64", bin_path
-  command "chmod 755 #{bin_path}"
+  env = with_standard_compiler_flags
+  configure env: env
+
+  make "-j #{workers}", env: env
+  make "-j #{workers} install", env: env
 end
