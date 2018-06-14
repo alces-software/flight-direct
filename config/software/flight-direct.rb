@@ -20,6 +20,7 @@ dependency "ruby"
 dependency "git"
 dependency 'bundler'
 dependency 'jq'
+dependency 'jo'
 
 build do
   ['Gemfile', 'Gemfile.lock'].each do |file|
