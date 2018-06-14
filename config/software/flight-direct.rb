@@ -21,6 +21,7 @@ dependency "git"
 dependency 'bundler'
 dependency 'jq'
 dependency 'jo'
+dependency 'forge'
 
 build do
   # Moves the project into place
@@ -34,8 +35,7 @@ build do
   # Installs the gems to the shared `vendor/cache`
   dev_flag = "--with#{overrides[:development] ? '' : 'out'} development"
   path_flag = "--path #{install_dir}/vendor/cache"
-  flags = "--deployment #{path_flag} #{dev_flag}"
-  command "cd #{install_dir} && embedded/bin/bundle install #{flags}"
+  command "cd #{install_dir} && embedded/bin/bundle install #{path_flag} #{dev_flag}"
 
   # Removes `.bundle` directory. The `BUNDLE_PATH` will be set latter by `flight`
   delete("#{install_dir}/.bundle")
