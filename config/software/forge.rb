@@ -33,7 +33,7 @@ build do
 
   # Installs the gems to the shared `vendor/cache`
   path_flag = "--path #{install_dir}/vendor/cache"
-  command "cd #{forge_dir} && #{embedded_bin('bundle')} install --deployment #{path_flag}"
+  command "cd #{forge_dir} && #{embedded_bin('bundle')} install #{path_flag}"
 
   # Removes the `.bundle` file. The BUNDLE_PATH will be set as an environment variable
   delete "#{forge_dir}/.bundle"
