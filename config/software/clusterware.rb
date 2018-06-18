@@ -19,6 +19,8 @@ source git: 'https://github.com/alces-software/clusterware'
 build do
   clusterware_dir = "#{install_dir}/opt/clusterware"
   mkdir clusterware_dir
-  sync "#{project_dir}/lib", clusterware_dir
+  copy "#{project_dir}/lib/clusterware.kernel.sh",
+       "#{clusterware_dir}/clusterware.kernel.sh"
+  sync "#{project_dir}/lib/functions", "#{clusterware_dir}/functions"
 end
 
