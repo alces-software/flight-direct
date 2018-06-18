@@ -1,11 +1,7 @@
 
-# Allow the ruby load root to be changed during development mode.
+# Sets the load path and development mode from the environment
 development_mode = (ENV['FLIGHT_DIRECT_DEVELOPMENT_MODE'] == 'true')
-load_root = if development_mode && ENV['FLIGHT_DIRECT_RUBY_SOURCE']
-              ENV['FLIGHT_DIRECT_RUBY_SOURCE']
-            else
-              ENV['FLIGHT_DIRECT_ROOT']
-            end
+load_root = ENV['FLIGHT_DIRECT_ROOT']
 
 # Sets up the load paths
 $LOAD_PATH << File.join(load_root, 'lib/flight_direct')
