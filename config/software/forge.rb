@@ -31,6 +31,9 @@ build do
     sync "#{project_dir}/#{sub_dir}/", "#{forge_dir}/#{sub_dir}/"
   end
 
+  # Move the `forge` action into the `FlightDirect` cli
+  sync "#{project_dir}/libexec", "#{install_dir}/libexec"
+
   # Installs the gems to the shared `vendor/cache`
   flags = [
     '--no-cache',
