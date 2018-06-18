@@ -22,6 +22,7 @@ dependency 'bundler'
 dependency 'jq'
 dependency 'jo'
 dependency 'forge'
+dependency 'clusterware'
 
 build do
   # Moves the project into place

@@ -12,7 +12,7 @@
 #
 
 name "forge"
-version 'master'
+default_version 'master'
 
 source git: 'https://github.com/alces-software/forge-cli'
 
