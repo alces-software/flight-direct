@@ -45,6 +45,7 @@ build do
   # project
   if overrides[:development]
     copy "#{project_dir}/development-mode.sh", "#{install_dir}/etc/profile.d"
+  end
 
   # The compiled version of ruby hard-codes the path to itself in:
   # embedded/bin/{gem, irb, ....}. This ensures those files always run with the version of
@@ -54,6 +55,5 @@ build do
   grep_cmd = "grep -rl '#{shebang}' #{install_dir}/*"
   sed_cmd = "sed -i 's:#{shebang}:#!/usr/bin/env ruby:g'"
   command "#{grep_cmd} | xargs -e #{sed_cmd}"
-  end
 end
 
