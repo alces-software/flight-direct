@@ -3,6 +3,10 @@ require 'thor'
 
 module FlightDirect
   class CLI < Thor
+    class << self
+      alias_method :run!, :start
+    end
+
     desc 'new', 'hello world'
     def new(*args)
       puts args
@@ -11,5 +15,3 @@ module FlightDirect
     private
   end
 end
-
-FlightDirect::CLI.start(ARGV)
