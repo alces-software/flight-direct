@@ -9,7 +9,7 @@ module FlightDirect
 
     desc 'new', 'hello world'
     def new(*args)
-      puts args
+      puts FlightDirect.root_dir
     end
 
     private

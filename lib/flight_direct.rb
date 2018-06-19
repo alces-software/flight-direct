@@ -21,6 +21,20 @@ else
   Bundler.setup(:default)
 end
 
+# NOTE: The `FlightDirect.root_dir` is always set to the `default_root`.
+# FlightDirect is modular by nature and needs to know its install path. As
+# such only the `FlightDirect` ruby code can be redirected, not the install
+# itself.
+module FlightDirect
+  class << self
+    def root_dir=(root)
+      @root_dir ||= root.dup.freeze
+    end
+    attr_reader :root_dir
+  end
+end
+FlightDirect.root_dir = default_root
+
 # Requires the common gems used throughout the project
 require 'active_support/core_ext/string'
 require 'require_all'
