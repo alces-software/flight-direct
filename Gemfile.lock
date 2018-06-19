@@ -7,13 +7,6 @@ GIT
       chef-sugar (>= 3.4.0)
       omnibus (>= 5.6.1)
 
-GIT
-  remote: https://github.com/alces-software/commander
-  revision: 4090e181cf280f228543e35ad21af219a6d2f626
-  specs:
-    commander (4.4.4.pre.alces2)
-      highline (~> 1.7.2)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -49,7 +42,6 @@ GEM
     ffi-yajl (2.3.1)
       libyajl2 (~> 1.2)
     fuzzyurl (0.9.0)
-    highline (1.7.10)
     i18n (1.0.1)
       concurrent-ruby (~> 1.0)
     iostruct (0.0.4)
@@ -127,12 +119,12 @@ PLATFORMS
 DEPENDENCIES
   activesupport
   byebug
-  commander!
   omnibus (~> 5.6)
   omnibus-software!
   pry
   pry-byebug
   require_all
+  thor
 
 BUNDLED WITH
    1.16.2

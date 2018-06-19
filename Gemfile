@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'activesupport'
-gem 'commander', git: 'https://github.com/alces-software/commander'
+gem 'thor'
 gem 'require_all'
 
 # Use Chef's software definitions. It is recommended that you write your own
