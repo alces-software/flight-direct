@@ -28,7 +28,15 @@ module FlightDirect
     private
 
     def exec_action(path, *args)
-      exec("bash #{path}")
+      exec("bash #{path} " + stringify_args(args))
+    end
+
+    # The argument array needs to be converted back to a space separated
+    # list. However any strings containing a \n, need to be encapsulated
+    # in quotes. This should hopefully keep them together
+    def stringify_args(args)
+      args.map { |s| s.include?("\n") ? "'#{s}'" : s }
+          .join("\n")
     end
   end
 end
