@@ -5,13 +5,24 @@ module FlightDirect
   class CLI < Thor
     class << self
       alias_method :run!, :start
+
+      def actions_hash
+        action_paths.map do |path|
+          [File.basename(path, '.*'), path]
+        end.to_h
+      end
+
+      private
+
+      def action_paths
+        Dir.glob(File.join(FlightDirect.root_dir, 'libexec/actions/**/*'))
+      end
     end
 
-    desc 'new', 'hello world'
-    def new(*args)
-      puts FlightDirect.root_dir
+    # Defines the contents of `libexec/actions` as commands
+    actions_hash.each do |action, path|
+      desc action, "Run: #{action}"
+      define_method(action) { puts path }
     end
-
-    private
   end
 end
