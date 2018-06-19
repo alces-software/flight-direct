@@ -6,20 +6,17 @@ default_root = ENV["#{fd}_ROOT"]
 dev_root = ENV["#{fd}_RUBY_LOAD_ROOT"]
 load_root = (dev_mode && dev_root) ? dev_root : default_root
 
+# Adds the gems to the load path. `flight` uses a standalone installation
+# which removes the run time dependency on Bundler. This prevents it
+# changing the Bundler environment variables. This script takes the place
+# of the `bundler` require
+require "#{load_root}/bundle/bundler/setup"
+
 # Sets up the load paths
 $LOAD_PATH << File.join(load_root, 'lib', 'flight_direct')
-ENV['BUNDLE_GEMFILE'] = File.join(load_root, 'Gemfile')
 
-# Sets up bundler
-require 'bundler'
-require 'rubygems'
-
-if dev_mode
-  Bundler.setup(:default, :development)
-  require 'pry'
-else
-  Bundler.setup(:default)
-end
+# Adds additional debugging tools
+require 'pry' if dev_mode
 
 # NOTE: The `FlightDirect.root_dir` is always set to the `default_root`.
 # FlightDirect is modular by nature and needs to know its install path. As

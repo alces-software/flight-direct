@@ -23,6 +23,7 @@ dependency 'jq'
 dependency 'jo'
 dependency 'forge'
 dependency 'clusterware'
+dependency 'pry' if overrides[:development]
 
 build do
   # Moves the project into place
@@ -35,14 +36,10 @@ build do
 
   # Installs the gems to the shared `vendor/gems/--some-where-?--`
   flags = [
-    '--no-cache',
-    "--path #{install_dir}/vendor/gems",
+    '--standalone',
     "--with#{overrides[:development] ? '' : 'out'} development"
   ].join(' ')
   command "cd #{install_dir} && embedded/bin/bundle install #{flags}"
-
-  # Removes `.bundle` directory. The `BUNDLE_PATH` will be set latter by `flight`
-  delete("#{install_dir}/.bundle")
 
   # Set the development environment variable. This is used to bundle the ruby gems into the
   # project
