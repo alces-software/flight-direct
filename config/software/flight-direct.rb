@@ -26,6 +26,18 @@ dependency 'clusterware'
 dependency 'pry' if overrides[:development]
 
 build do
+  # Deletes any pre-existing bundle configs as the gems need to be installed
+  # in a specific way
+  delete "#{project_dir}/.bundle"
+
+  gem_home = "#{install_dir}/vendor/flight"
+  mkdir gem_home
+  env = with_standard_compiler_flags(with_embedded_path({
+    "GEM_HOME" => gem_home,
+    "GEM_PATH" => gem_home,
+    "BUNDLE_PATH" => gem_home
+  }))
+
   # Moves the project into place
   ['Gemfile', 'Gemfile.lock'].each do |file|
     copy "#{project_dir}/#{file}", "#{install_dir}/#{file}"
@@ -39,7 +51,7 @@ build do
     '--standalone',
     "--with#{overrides[:development] ? '' : 'out'} development"
   ].join(' ')
-  command "cd #{install_dir} && embedded/bin/bundle install #{flags}"
+  command "cd #{install_dir} && embedded/bin/bundle install #{flags}", env: env
 
   # Set the development environment variable. This is used to bundle the ruby gems into the
   # project

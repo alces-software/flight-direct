@@ -21,6 +21,18 @@ dependency 'bundler'
 dependency 'unzip'
 
 build do
+  # Deletes any pre-existing bundle configs as the gems need to be installed
+  # in a specific way
+  delete "#{project_dir}/.bundle"
+
+  gem_home = "#{install_dir}/vendor/share"
+  mkdir gem_home
+  env = with_standard_compiler_flags(with_embedded_path({
+    "GEM_HOME" => gem_home,
+    "GEM_PATH" => gem_home,
+    "BUNDLE_PATH" => gem_home
+  }))
+
   # Moves forge into `opt/forge`
   forge_dir = "#{install_dir}/opt/forge"
   mkdir forge_dir
@@ -35,13 +47,6 @@ build do
   sync "#{project_dir}/libexec", "#{install_dir}/libexec"
 
   # Installs the gems to the shared `vendor/cache`
-  flags = [
-    '--no-cache',
-    "--path #{install_dir}/vendor/gems"
-  ].join(' ')
-  command "cd #{forge_dir} && #{embedded_bin('bundle')} install #{flags}"
-
-  # Removes the `.bundle` file. The BUNDLE_PATH will be set as an environment variable
-  delete "#{forge_dir}/.bundle"
+  command "cd #{forge_dir} && #{embedded_bin('bundle')} install", env: env
 end
 
