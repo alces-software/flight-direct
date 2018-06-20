@@ -16,7 +16,10 @@ require "#{default_root}/vendor/flight/bundler/setup"
 $LOAD_PATH << File.join(load_root, 'lib', 'flight_direct')
 
 # Adds additional debugging tools
-require 'pry' if dev_mode
+if dev_mode
+  require 'pry'
+  require 'pry-byebug'
+end
 
 # NOTE: The `FlightDirect.root_dir` is always set to the `default_root`.
 # FlightDirect is modular by nature and needs to know its install path. As
