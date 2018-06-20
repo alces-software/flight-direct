@@ -23,7 +23,6 @@ dependency 'jq'
 dependency 'jo'
 dependency 'forge'
 dependency 'clusterware'
-dependency 'pry' if overrides[:development]
 
 build do
   # Deletes any pre-existing bundle configs as the gems need to be installed
