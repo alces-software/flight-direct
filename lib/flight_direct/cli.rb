@@ -1,15 +1,14 @@
 
 require 'thor'
+require 'ostruct'
 
 module FlightDirect
   class CLI < Thor
     class << self
       alias_method :run!, :start
 
-      def actions_hash
-        action_paths.map do |path|
-          [File.basename(path, '.*'), path]
-        end.to_h
+      def actions_info
+        action_paths.map { |path| extract_info(path) }
       end
 
       private
@@ -17,12 +16,28 @@ module FlightDirect
       def action_paths
         Dir.glob(File.join(FlightDirect.root_dir, 'libexec/actions/**/*'))
       end
+
+      # Extracts the info block contained at the top of the action files
+      def extract_info(path)
+        cmd = OpenStruct.new(path: path)
+        File.read(path).each_line.map(&:chomp).each do |line|
+          # Only match lines that start with `: `
+          # However skip any lines that start with `: '`
+          # The loop is stopped once the name and synopsis have been set
+          break if cmd.name && cmd.synopsis
+          next unless /\A:\s(?!').*:\s.*/.match?(line)
+          label = /(?<=\A:\s).*(?=:)/.match(line)[0]
+          data = /(?<=:\s#{label}:\s).*/.match(line)[0]
+          cmd[label.downcase.to_sym] = data
+        end
+        cmd
+      end
     end
 
     # Defines the contents of `libexec/actions` as commands
-    actions_hash.each do |action, path|
-      desc action, "Run: #{action}"
-      define_method(action) { |*args| exec_action(path, *args) }
+    actions_info.each do |cmd|
+      desc cmd.name, cmd.synopsis
+      define_method(cmd.name) { |*args| exec_action(cmd.path, *args) }
     end
 
     private
