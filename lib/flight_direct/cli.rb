@@ -35,15 +35,37 @@ module FlightDirect
     end
 
     # Defines the contents of `libexec/actions` as commands
+    # `*args` is used as it contains all arguments including flags
+    # It also means the inbuilt `options` hash is empty
     actions_info.each do |cmd|
       desc cmd.name, cmd.synopsis
       define_method(cmd.name) { |*args| exec_action(cmd.path, *args) }
     end
 
+    # Overrides the help command. Only display the help for the root,
+    # `flight`, command. Otherwise re-execute with a --help flag
+    def help(*all_args)
+      command = all_args.reject { |a| /\A-/.match?(a) }
+                        .first
+      if command
+        invoke(command, [], help: true)
+      else
+        super
+      end
+    end
+
     private
 
+    # Typically the thor `options` are empty for the action commands.
+    # This is because the commands are defined with `*args` inputs which
+    # contain the options already.
+    # However when the overridden `help` method "invokes" other commands,
+    # the "help" flag ends up in the options. For this reason, only the
+    # help is flag is appended.
+    # All other flags should be implicitly handled already
     def exec_action(path, *args)
-      exec("bash #{path} " + stringify_args(args))
+      append_help = (options['help'] ? ' --help' : '')
+      exec("bash #{path} " + stringify_args(args) + append_help)
     end
 
     # The argument array needs to be converted back to a space separated
