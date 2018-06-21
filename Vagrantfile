@@ -21,6 +21,7 @@ Vagrant.configure(2) do |config|
   config.vm.define 'master', primary: true do |master|
     master.vm.hostname = 'master'
     master.vm.synced_folder '.', $dev_path
+    master.vm.synced_folder '../forge-cli', '/tmp/forge'
     master.vm.provision 'shell', inline: $master_script
   end
 
