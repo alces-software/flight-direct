@@ -47,11 +47,7 @@ module FlightDirect
     def help(*all_args)
       command = all_args.reject { |a| /\A-/.match?(a) }
                         .first
-      if command
-        invoke(command, [], help: true)
-      else
-        super
-      end
+      command ? invoke(command, [], help: true) : super
     end
 
     private
