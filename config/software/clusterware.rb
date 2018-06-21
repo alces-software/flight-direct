@@ -12,7 +12,7 @@
 #
 
 name "clusterware"
-default_version 'master'
+default_version 'develop'
 
 source git: 'https://github.com/alces-software/clusterware'
 
