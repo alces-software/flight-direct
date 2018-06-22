@@ -14,7 +14,9 @@ module FlightDirect
       private
 
       def action_paths
-        Dir.glob(File.join(FlightDirect.root_dir, 'libexec/actions/**/*'))
+        [FlightDirect.root_dir, ENV['cw_ROOT']].map do |root|
+          Dir.glob(File.join(root, 'libexec/actions/**/*'))
+        end.flatten
       end
 
       # Extracts the info block contained at the top of the action files
