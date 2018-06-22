@@ -21,6 +21,6 @@ build do
   mkdir clusterware_dir
   copy "#{project_dir}/lib/clusterware.kernel.sh",
        "#{clusterware_dir}/clusterware.kernel.sh"
-  sync "#{project_dir}/lib/functions", "#{clusterware_dir}/functions"
+  sync "#{project_dir}/lib/functions", "#{clusterware_dir}/lib/functions"
 end
 

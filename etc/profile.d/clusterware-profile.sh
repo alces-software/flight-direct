@@ -1,5 +1,5 @@
 export cw_ROOT=$FLIGHT_DIRECT_ROOT/opt/clusterware
-export cw_LIBPATH=$cw_ROOT/opt/clusterware/functions
+export cw_LIBPATH=$cw_ROOT/opt/clusterware/lib/functions
 
 # Runs the clusterware profile scripts, this is required by the legacy
 # packages
