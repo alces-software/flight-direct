@@ -57,6 +57,16 @@ build do
     copy "#{project_dir}/development-mode.sh", "#{install_dir}/etc/profile.d"
   end
 
+  cw_root = "#{install_dir}/opt/clusterware"
+  gem_home = "#{install_dir}/vendor/share"
+  mkdir gem_home
+  env = with_standard_compiler_flags(with_embedded_path({
+    "GEM_HOME" => gem_home,
+    "GEM_PATH" => gem_home,
+    "BUNDLE_PATH" => gem_home
+  }))
+  command "cd #{cw_root} && #{embedded_bin('bundle')} install", env: env
+
   # The compiled version of ruby hard-codes the path to itself in:
   # embedded/bin/{gem, irb, ....}. This ensures those files always run with the version of
   # ruby they where installed with. However it means the files are no longer portable.
