@@ -10,7 +10,7 @@ load_root = (dev_mode && dev_root) ? dev_root : default_root
 # which removes the run time dependency on Bundler. This prevents it
 # changing the Bundler environment variables. This script takes the place
 # of the `bundler` require
-require "#{default_root}/vendor/flight/bundler/setup"
+require "#{default_root}/vendor/share/bundler/flight-setup"
 
 # Sets up the load paths
 $LOAD_PATH << File.join(load_root, 'lib', 'flight_direct')

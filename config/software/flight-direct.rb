@@ -28,7 +28,7 @@ build do
   # in a specific way
   delete "#{project_dir}/.bundle"
 
-  gem_home = "#{install_dir}/vendor/flight"
+  gem_home = "#{install_dir}/vendor/share"
   mkdir gem_home
   env = with_standard_compiler_flags(with_embedded_path({
     "GEM_HOME" => gem_home,
@@ -50,6 +50,7 @@ build do
     "--with#{overrides[:development] ? '' : 'out'} development"
   ].join(' ')
   command "cd #{install_dir} && embedded/bin/bundle install #{flags}", env: env
+  move "#{gem_home}/bundler/setup.rb", "#{gem_home}/bundler/flight-setup.rb"
 
   # Set the development environment variable. This is used to bundle the ruby gems into the
   # project
@@ -58,13 +59,6 @@ build do
   end
 
   cw_root = "#{install_dir}/opt/clusterware"
-  gem_home = "#{install_dir}/vendor/share"
-  mkdir gem_home
-  env = with_standard_compiler_flags(with_embedded_path({
-    "GEM_HOME" => gem_home,
-    "GEM_PATH" => gem_home,
-    "BUNDLE_PATH" => gem_home
-  }))
   command "cd #{cw_root} && #{embedded_bin('bundle')} install", env: env
 
   # The compiled version of ruby hard-codes the path to itself in:
