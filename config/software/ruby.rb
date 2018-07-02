@@ -196,7 +196,7 @@ build do
     patch source: "prelude_25_el6_no_pragma.patch", plevel: 0, env: patch_env
   end
 
-  configure_command = ["--enable-shared",
+  configure_command = ["--enable-load-relative",
                        "--disable-install-doc",
                        "--without-gmp",
                        "--without-gdbm",
@@ -312,7 +312,5 @@ build do
     # Mark it as writable so that we can install other version of rake without
     # running into permission errors.
     command "attrib -r #{install_dir}/embedded/bin/rake.bat"
-
   end
-
 end

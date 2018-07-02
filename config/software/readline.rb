@@ -30,6 +30,8 @@ source url: "https://ftp.gnu.org/gnu/readline/readline-#{version}.tar.gz"
 # license_file "README"
 # skip_transitive_dependency_licensing true
 
+dependency "ncurses"
+
 relative_path "readline-#{version}"
 
 build do

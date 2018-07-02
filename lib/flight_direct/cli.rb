@@ -1,79 +1,77 @@
 
-require 'commander'
-
-##
-# Under development, there are some common features of Commander::Command which
-# I would like to generalize. However until such time that the code stabilized, the
-# new features will be defined here.
-
-class Commander::Command
-  ##
-  # Auto runs all the default methods
-  #
-  def run_with_defaults(*command_args)
-    default_syntax(*command_args)
-    default_action
-  end
-
-  ##
-  # Uses the commands "name" to build the command syntax
-  # "PROGRAM_NAME COMMAND_NAME [ARGUMMENTS] [options]"
-  # The syntax is construct as the following:
-  #   1. It is prefixed by the program(:name) set in the CLI object
-  #   2. Appends the command "name"
-  #   3. Joins the arguments, "args", to the command (this is optional)
-  #   4. Adds the "[options]" suffix which is always requried
-  #
-  def default_syntax(*args)
-    argument_string = args.join(' ') + (args.empty? ? '' : ' ')
-    self.syntax = "#{program(:name)} #{name} #{argument_string}[options]"
-  end
-
-  ##
-  # Hooks into the new "command_module" attribute and appends the command "name"
-  # This then converted to a constant which is used as the command class
-  # The class is initialized with the arguments from Commander and then calls the `run!`
-  # method
-  #
-  def default_action
-    class_str = "#{program(:commands_module)}::#{name.split.map(&:capitalize).join('::')}"
-    klass = class_str.constantize # Ensures the command exists when the CLI is parsed
-    action { |*a| klass.new(*a).run! }
-  end
-
-  private
-
-  def program(*args)
-    Commander::Runner.instance.program(*args)
-  end
-end
+require 'thor'
+require 'ostruct'
 
 module FlightDirect
-  class CLI
-    extend Commander::Delegates
+  class CLI < Thor
+    class << self
+      alias_method :run!, :start
 
-    program :name, 'flight'
-    program :version, '0.0.0'
-    program :description, 'Cluster Management Tool'
-    program :commands_module, 'FlightDirect::Commands'
+      def actions_info
+        action_paths.map { |path| extract_info(path) }
+      end
 
-    # global_option('--debug', 'Enables the development mode')
+      private
 
-    # suppress_trace_class UserError
+      def action_paths
+        [FlightDirect.root_dir, ENV['cw_ROOT']].map do |root|
+          Dir.glob(File.join(root, 'libexec/actions/**/*'))
+        end.flatten
+      end
 
-    # Display the help if there is no input arguments
-    ARGV.push '--help' if ARGV.empty?
-
-    command :server do |c|
-      c.default_syntax
-      c.description = 'Manage the download server'
-      c.sub_command_group = true
+      # Extracts the info block contained at the top of the action files
+      def extract_info(path)
+        cmd = OpenStruct.new(path: path)
+        File.read(path).each_line.map(&:chomp).each do |line|
+          # Only match lines that start with `: `
+          # However skip any lines that start with `: '`
+          # The loop is stopped once the name and synopsis have been set
+          break if cmd.name && cmd.synopsis
+          next unless /\A:\s(?!').*:\s.*/.match?(line)
+          label = /(?<=\A:\s).*(?=:)/.match(line)[0]
+          data = /(?<=:\s#{label}:\s).*/.match(line)[0]
+          cmd[label.downcase.to_sym] = data
+        end
+        cmd
+      end
     end
 
-    command :'server create' do |c|
-      c.run_with_defaults
-      c.description = 'Starts the flight direct download server'
-      c.hidden = true
+    # Defines the contents of `libexec/actions` as commands
+    # `*args` is used as it contains all arguments including flags
+    # It also means the inbuilt `options` hash is empty
+    actions_info.each do |cmd|
+      desc cmd.name, cmd.synopsis
+      define_method(cmd.name) { |*args| exec_action(cmd.path, *args) }
+    end
+
+    # Overrides the help command. Only display the help for the root,
+    # `flight`, command. Otherwise re-execute with a --help flag
+    def help(*all_args)
+      command = all_args.reject { |a| /\A-/.match?(a) }
+                        .first
+      command ? invoke(command, [], help: true) : super
+    end
+
+    private
+
+    # Typically the thor `options` are empty for the action commands.
+    # This is because the commands are defined with `*args` inputs which
+    # contain the options already.
+    # However when the overridden `help` method "invokes" other commands,
+    # the "help" flag ends up in the options. For this reason, only the
+    # help is flag is appended.
+    # All other flags should be implicitly handled already
+    def exec_action(path, *args)
+      append_help = (options['help'] ? ' --help' : '')
+      exec("bash #{path} " + stringify_args(args) + append_help)
+    end
+
+    # The argument array needs to be converted back to a space separated
+    # list. However any strings containing a \n, need to be encapsulated
+    # in quotes. This should hopefully keep them together
+    def stringify_args(args)
+      args.map { |s| s.include?("\s") ? "'#{s}'" : s }
+          .join(" ")
     end
   end
 end

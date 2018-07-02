@@ -1,31 +1,81 @@
-flight-direct Omnibus project
-=============================
-This project creates full-stack platform-specific packages for
-`flight-direct`!
+# FlightDirect
+## Environment Information
 
-Installation
-------------
-You must have a sane Ruby 2.0.0+ environment with Bundler installed. Ensure all
-the required gems are installed:
+By sourcing `profile.sh` the `FLIGHT_DIRECT_ROOT` and `flight` function are
+set in your environment. This tells `flight` where to look for its source
+code. The moosebird banner and `MOT` are also triggered on the login shell.
+NOTE: `forge` packages may make additional changes to the environment, 
+please see the packages documentation for details.
+
+`flight direct` currently wraps a slimmed down version of the `clusterware`
+utility which runs the legacy code. Clusterware is always installed to
+`$FLIGHT_DIRECT_ROOT/opt/clusterware`. This directory is set as the
+`cw_ROOT` which tells clusterware kernel where to look for its functions.
+
+The `flight direct` core utility (inc clusterware) has been designed to be
+self contained. There are no runtime dependencies required (beyond a blank
+Centos7 image). When the `flight` bash function is invoked, the
+`etc/runtime.sh` file is sourced. This sets up the `PATH`, `LD_LIBRARY_PATH`,
+etc to point to the `FLIGHT_DIRECT_ROOT` directory. Refer to `runtime.sh` 
+for a full list of changes.
+
+The runtime environment is sourced with a sub-shell and thus any changes
+will not persist after the command has executed. However it does mean the
+flight-direct version of libraries will be used instead of the system ones.
+
+### Configuring Forge
+
+Whilst `forge` is automatically installed with `flight direct`, it is
+maintained in a separate repo. Please consult `forge-cli` itself for
+configuration details:
+https://github.com/alces-software/forge-cli
+
+## Build From Source
+### Build Requirements
+You must have a sane Ruby 2.0.0+ environment with Bundler installed. Ensure
+the development gems are installed.
+
+The default install location is into `/opt/flight-direct`. If you do not
+have write permission to opt, the install directory can be changed by 
+setting `FLIGHT_DIRECT_ROOT` environment variable.
 
 ```shell
-$ bundle install --binstubs
+$ cd <source-code-location>
+$ bundle install --without defaults --with development
 ```
-
-Usage
------
 ### Build
 
 You create a platform-specific package using the `build project` command:
 
 ```shell
-$ bin/omnibus build flight-direct
+$ omnibus build flight-direct
 ```
 
-The platform/architecture type of the package created will match the platform
-where the `build project` command is invoked. For example, running this command
-on a MacBook Pro will generate a Mac OS X package. After the build completes
-packages will be available in the `pkg/` folder.
+To install in development mode, run:
+
+```shell
+$ omnibus build flight-direct-dev
+```
+
+#### NOTE: Building as a non-root user
+
+By default, `flight-direct` is built into `/opt/flight-direct`. If you do
+not have write permissions within `/opt`, you will need to change the
+`FLIGHT_DIRECT_ROOT` environment variable to be within your `$HOME`
+directory.
+
+#### NOTE: RPM Build Error
+
+Omnibus was originally designed to create `rpm's`, however tarballs are the
+preferred publishing mechanism. As such the tarball is created directly
+from the root directory.
+
+However `Omnibus` continues to try and create the rpm, which will result in
+an error if `rpm-build` hasn't been installed. This error means that the
+build was successful and can be safely ignored.
+
+Alternatively installing `rpm-build` will suppress the error, however the
+`rpm` will be built.
 
 ### Clean
 
@@ -44,27 +94,7 @@ the package cache directory (`/var/cache/omnibus/pkg`):
 $ bin/omnibus clean flight-direct --purge
 ```
 
-### Publish
-
-Omnibus has a built-in mechanism for releasing to a variety of "backends", such
-as Amazon S3. You must set the proper credentials in your `omnibus.rb` config
-file or specify them via the command line.
-
-```shell
-$ bin/omnibus publish path/to/*.deb --backend s3
-```
-
-### Help
-
-Full help for the Omnibus command line interface can be accessed with the
-`help` command:
-
-```shell
-$ bin/omnibus help
-```
-
-Version Manifest
-----------------
+### Version Manifest
 
 Git-based software definitions may specify branches as their
 default_version. In this case, the exact git revision to use will be
@@ -79,42 +109,3 @@ omnibus manifest PROJECT -l warn
 This will output a JSON-formatted manifest containing the resolved
 version of every software definition.
 
-
-Kitchen-based Build Environment
--------------------------------
-Every Omnibus project ships will a project-specific
-[Berksfile](http://berkshelf.com/) that will allow you to build your omnibus projects on all of the projects listed
-in the `.kitchen.yml`. You can add/remove additional platforms as needed by
-changing the list found in the `.kitchen.yml` `platforms` YAML stanza.
-
-This build environment is designed to get you up-and-running quickly. However,
-there is nothing that restricts you to building on other platforms. Simply use
-the [omnibus cookbook](https://github.com/opscode-cookbooks/omnibus) to setup
-your desired platform and execute the build steps listed above.
-
-The default build environment requires Test Kitchen and VirtualBox for local
-development. Test Kitchen also exposes the ability to provision instances using
-various cloud providers like AWS, DigitalOcean, or OpenStack. For more
-information, please see the [Test Kitchen documentation](http://kitchen.ci).
-
-Once you have tweaked your `.kitchen.yml` (or `.kitchen.local.yml`) to your
-liking, you can bring up an individual build environment using the `kitchen`
-command.
-
-```shell
-$ bin/kitchen converge ubuntu-1204
-```
-
-Then login to the instance and build the project as described in the Usage
-section:
-
-```shell
-$ bundle exec kitchen login ubuntu-1204
-[vagrant@ubuntu...] $ cd flight-direct
-[vagrant@ubuntu...] $ bundle install
-[vagrant@ubuntu...] $ ...
-[vagrant@ubuntu...] $ bin/omnibus build flight-direct
-```
-
-For a complete list of all commands and platforms, run `kitchen list` or
-`kitchen help`.
