@@ -15,6 +15,9 @@ require "#{default_root}/vendor/share/bundler/flight-setup"
 # Sets up the load paths
 $LOAD_PATH << File.join(load_root, 'lib', 'flight_direct')
 
+# Requires the versioning info
+require 'version'
+
 # Adds additional debugging tools
 if dev_mode
   require 'pry'

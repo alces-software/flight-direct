@@ -11,10 +11,18 @@
 # NOTE: Ignore the `chef-cookbook` stuff for now, that is an extension off `omnibus`
 #
 
-name "flight-direct"
-# version "5.6.9"
+require_relative File.join(
+  Omnibus::Config.project_root, 'lib', 'flight_direct', 'version.rb'
+)
 
-source path: Omnibus::Config.project_root
+name "flight-direct"
+default_version FlightDirect::VERSION
+
+source git: 'https://github.com/alces-software/flight-direct'
+
+version 'local' do
+  source path: Omnibus::Config.project_root
+end
 
 dependency "ruby"
 dependency "git"
