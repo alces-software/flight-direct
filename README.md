@@ -1,6 +1,5 @@
-flight-direct Omnibus project
-=============================
-# Environment Information
+# FlightDirect
+## Environment Information
 
 By sourcing `profile.sh` the `FLIGHT_DIRECT_ROOT` and `flight` function are
 set in your environment. This tells `flight` where to look for its source
@@ -24,16 +23,15 @@ The runtime environment is sourced with a sub-shell and thus any changes
 will not persist after the command has executed. However it does mean the
 flight-direct version of libraries will be used instead of the system ones.
 
-## Configuring Forge
+### Configuring Forge
 
 Whilst `forge` is automatically installed with `flight direct`, it is
 maintained in a separate repo. Please consult `forge-cli` itself for
 configuration details:
 https://github.com/alces-software/forge-cli
 
-# Build From Source
--------------------
-## Build Requirements
+## Build From Source
+### Build Requirements
 You must have a sane Ruby 2.0.0+ environment with Bundler installed. Ensure
 the development gems are installed.
 
@@ -45,7 +43,7 @@ setting `FLIGHT_DIRECT_ROOT` environment variable.
 $ cd <source-code-location>
 $ bundle install --without defaults --with development
 ```
-## Build
+### Build
 
 You create a platform-specific package using the `build project` command:
 
@@ -59,14 +57,14 @@ To install in development mode, run:
 $ omnibus build flight-direct-dev
 ```
 
-### NOTE: Building as a non-root user
+#### NOTE: Building as a non-root user
 
 By default, `flight-direct` is built into `/opt/flight-direct`. If you do
 not have write permissions within `/opt`, you will need to change the
 `FLIGHT_DIRECT_ROOT` environment variable to be within your `$HOME`
 directory.
 
-### NOTE: RPM Build Error
+#### NOTE: RPM Build Error
 
 Omnibus was originally designed to create `rpm's`, however tarballs are the
 preferred publishing mechanism. As such the tarball is created directly
@@ -79,7 +77,7 @@ build was successful and can be safely ignored.
 Alternatively installing `rpm-build` will suppress the error, however the
 `rpm` will be built.
 
-## Clean
+### Clean
 
 You can clean up all temporary files generated during the build process with
 the `clean` command:
@@ -96,7 +94,7 @@ the package cache directory (`/var/cache/omnibus/pkg`):
 $ bin/omnibus clean flight-direct --purge
 ```
 
-## Version Manifest
+### Version Manifest
 
 Git-based software definitions may specify branches as their
 default_version. In this case, the exact git revision to use will be
