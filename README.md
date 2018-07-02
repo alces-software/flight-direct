@@ -3,8 +3,9 @@ flight-direct Omnibus project
 This project creates full-stack platform-specific packages for
 `flight-direct`!
 
-Installation
-------------
+# Build From Source
+-------------------
+## Build Requirements
 You must have a sane Ruby 2.0.0+ environment with Bundler installed. Ensure
 the development gems are installed.
 
@@ -16,31 +17,28 @@ setting `FLIGHT_DIRECT_ROOT` environment variable.
 $ cd <source-code-location>
 $ bundle install --without defaults --with development
 ```
-
-Usage
------
-### Build
+## Build
 
 You create a platform-specific package using the `build project` command:
 
 ```shell
-$ bin/omnibus build flight-direct
+$ omnibus build flight-direct
 ```
 
 To install in development mode, run:
 
 ```shell
-$ bin/omnibus build flight-direct-dev
+$ omnibus build flight-direct-dev
 ```
 
-#### NOTE: Building as a non-root user
+### NOTE: Building as a non-root user
 
 By default, `flight-direct` is built into `/opt/flight-direct`. If you do
 not have write permissions within `/opt`, you will need to change the
 `FLIGHT_DIRECT_ROOT` environment variable to be within your `$HOME`
 directory.
 
-### Clean
+## Clean
 
 You can clean up all temporary files generated during the build process with
 the `clean` command:
@@ -57,8 +55,7 @@ the package cache directory (`/var/cache/omnibus/pkg`):
 $ bin/omnibus clean flight-direct --purge
 ```
 
-Version Manifest
-----------------
+## Version Manifest
 
 Git-based software definitions may specify branches as their
 default_version. In this case, the exact git revision to use will be
