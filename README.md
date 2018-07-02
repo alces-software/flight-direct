@@ -1,7 +1,5 @@
 flight-direct Omnibus project
 =============================
-This project creates full-stack platform-specific packages for
-`flight-direct`!
 
 # Build From Source
 -------------------
