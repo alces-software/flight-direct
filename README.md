@@ -24,6 +24,13 @@ The runtime environment is sourced with a sub-shell and thus any changes
 will not persist after the command has executed. However it does mean the
 flight-direct version of libraries will be used instead of the system ones.
 
+## Configuring Forge
+
+Whilst `forge` is automatically installed with `flight direct`, it is
+maintained in a separate repo. Please consult `forge-cli` itself for
+configuration details:
+https://github.com/alces-software/forge-cli
+
 # Build From Source
 -------------------
 ## Build Requirements
