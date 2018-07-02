@@ -33,6 +33,13 @@ To install in development mode, run:
 $ bin/omnibus build flight-direct-dev
 ```
 
+#### NOTE: Building as a non-root user
+
+By default, `flight-direct` is built into `/opt/flight-direct`. If you do
+not have write permissions within `/opt`, you will need to change the
+`FLIGHT_DIRECT_ROOT` environment variable to be within your `$HOME`
+directory.
+
 ### Clean
 
 You can clean up all temporary files generated during the build process with
