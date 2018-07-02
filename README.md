@@ -50,25 +50,6 @@ the package cache directory (`/var/cache/omnibus/pkg`):
 $ bin/omnibus clean flight-direct --purge
 ```
 
-### Publish
-
-Omnibus has a built-in mechanism for releasing to a variety of "backends", such
-as Amazon S3. You must set the proper credentials in your `omnibus.rb` config
-file or specify them via the command line.
-
-```shell
-$ bin/omnibus publish path/to/*.deb --backend s3
-```
-
-### Help
-
-Full help for the Omnibus command line interface can be accessed with the
-`help` command:
-
-```shell
-$ bin/omnibus help
-```
-
 Version Manifest
 ----------------
 
