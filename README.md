@@ -38,6 +38,19 @@ not have write permissions within `/opt`, you will need to change the
 `FLIGHT_DIRECT_ROOT` environment variable to be within your `$HOME`
 directory.
 
+### NOTE: RPM Build Error
+
+Omnibus was originally designed to create `rpm's`, however tarballs are the
+preferred publishing mechanism. As such the tarball is created directly
+from the root directory.
+
+However `Omnibus` continues to try and create the rpm, which will result in
+an error if `rpm-build` hasn't been installed. This error means that the
+build was successful and can be safely ignored.
+
+Alternatively installing `rpm-build` will suppress the error, however the
+`rpm` will be built.
+
 ## Clean
 
 You can clean up all temporary files generated during the build process with
