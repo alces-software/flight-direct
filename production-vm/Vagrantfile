@@ -14,6 +14,7 @@ require_relative File.join(
 $dev_path = '/tmp/omnibus-flight-direct'
 $build_dir= '~/production-build'
 $build_root = "#{$build_dir}/flight-direct"
+$tarball_name = "flight-direct-#{FlightDirect::VERSION}.tar.gz"
 
 # NOTE: rpm-build is only installed so the omnibus build doesn't fail, and
 # exits normally. The `rpm` is otherwise ignored
@@ -22,7 +23,9 @@ $script = <<-SCRIPT
   set -e
 
   # Installs the required yum packages
-  yum install git rpm-build -y
+  yum install epel-release -y
+  yum update -y
+  yum install git rpm-build python-pip -y
 
   # Installs a stable version of ruby with rvm
   gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
@@ -40,7 +43,11 @@ $script = <<-SCRIPT
 
   # Creates the tarball
   cd #{$build_dir}
-  tar -zcvf flight-direct-#{FlightDirect::VERSION}.tar.gz flight-direct
+  tar -zcvf #{$tarball_name} flight-direct
+
+  # Publishes the tarball to S3
+  pip install awscli --upgrade --user
+  aws s3 #{$tarball_name} s3://flight-direct/releases
 SCRIPT
 
 Vagrant.configure(2) do |config|
@@ -49,6 +56,11 @@ Vagrant.configure(2) do |config|
   config.vm.synced_folder ".", "/vagrant", disabled: true
 
   config.vm.synced_folder '..', $dev_path
-  config.vm.provision 'shell', inline: $script
+
+  # Runs the deployment script
+  env_vars = ['AWS_ACCESS_KEY_ID', 'AWS_SECRET_ACCESS_KEY']
+  config.vm.provision 'shell',
+    inline: $script,
+    env: env_vars.map { |v| [v, ENV[v]] }.to_h
   config.vm.provider('virtualbox') { |v| v.cpus = `nproc`.to_i }
 end
