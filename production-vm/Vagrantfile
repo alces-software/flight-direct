@@ -25,7 +25,9 @@ $script = <<-SCRIPT
   set -e
 
   # Ensures the build environment is clean and is working off
-  # the correct git tag
+  # the correct git tag.
+  # NOTE: This is an ERB template. There ERB tags are rendered
+  # (and thus `git` runs) on the host machine
   <%  unless `git status --porcelain`.empty? %>
     echo 'There is uncommited work in the git repo' >&2
     exit 1
@@ -35,7 +37,7 @@ $script = <<-SCRIPT
       tag_sum = `git rev-list -n 1 #{FlightDirect::VERSION}`
       unless head_sum == tag_sum
   %>
-    echo 'You must build off the tagged commit' 2>&2
+    echo 'You must build off the tagged commit' >&2
     exit 1
   <%  end %>
 
@@ -65,7 +67,7 @@ $script = <<-SCRIPT
   # Publishes the tarball to S3
   export PATH=~/.local/bin:$PATH
   pip install awscli --upgrade --user
-  aws s3 cp #{$tarball_name} s3://flight-direct/releases/el7/#{$tarball_name}
+  aws s3 cp #{$tarball_name} s3://flight-direct/releases/el7/#{$tarball_name} --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
 SCRIPT
 
 Vagrant.configure(2) do |config|
