@@ -1,0 +1,103 @@
+#!/bin/bash
+#==============================================================================
+# Copyright (C) 2015-2016 Stephen F. Norledge and Alces Software Ltd.
+#
+# This file/package is part of Alces Clusterware.
+#
+# Alces Clusterware is free software: you can redistribute it and/or
+# modify it under the terms of the GNU Affero General Public License
+# as published by the Free Software Foundation, either version 3 of
+# the License, or (at your option) any later version.
+#
+# Alces Clusterware is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this package.  If not, see <http://www.gnu.org/licenses/>.
+#
+# For more information on the Alces Clusterware, please visit:
+# https://github.com/alces-software/clusterware
+#==============================================================================
+require action
+
+main() {
+    action=$1
+    shift
+
+    case $action in
+        help)
+            help_for_${action}
+            ;;
+        ?*)
+            if [ -f "$cw_ROOT"/etc/meta.d/${action}.rc ]; then
+                extract_info "$cw_ROOT"/etc/meta.d/${action}.rc
+                help_for_action
+            else
+                echo "${cw_BINNAME}: no such topic: ${action}"
+                echo ""
+                general_help
+            fi
+            ;;
+        *)
+            general_help
+            ;;
+    esac
+}
+
+help_for_action() {
+    cat <<EOF
+  SYNOPSIS:
+
+    alces about ${action}
+
+  DESCRIPTION:
+
+$(fold -s -w66 <<< "${cmd_HELP}" | sed 's/^/    /g')
+
+EOF
+}
+
+help_for_help() {
+    cat <<EOF
+  SYNOPSIS:
+
+    alces about help [<command>]
+
+  DESCRIPTION:
+
+    Get help with about commands.  If no <command> is specified,
+    show some general help.
+
+EOF
+}
+
+general_help() {
+    local binname
+    binname="${cw_BINNAME% *}"
+    cat <<EOF
+  NAME:
+
+    ${binname}
+
+  DESCRIPTION:
+
+    Information about the Clusterware configuration of this system.
+
+  COMMANDS:
+
+EOF
+printf "    %-22s  %s\n" "$binname help" "More help about this command."
+for a in "$cw_ROOT"/etc/meta.d/*.rc; do
+    extract_info "$a"
+    printf "    %-22s  %s\n" "$binname $(basename "$a" .rc)" "${cmd_SYNOPSIS}."
+done
+cat <<EOF
+
+Please report bugs to support@alces-software.com
+Alces Software home page: <http://alces-software.com>
+EOF
+}
+
+main "$@"

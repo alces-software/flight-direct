@@ -1,0 +1,56 @@
+#!/bin/bash
+#==============================================================================
+# Copyright (C) 2015-2016 Stephen F. Norledge and Alces Software Ltd.
+#
+# This file/package is part of Alces Clusterware.
+#
+# Alces Clusterware is free software: you can redistribute it and/or
+# modify it under the terms of the GNU Affero General Public License
+# as published by the Free Software Foundation, either version 3 of
+# the License, or (at your option) any later version.
+#
+# Alces Clusterware is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this package.  If not, see <http://www.gnu.org/licenses/>.
+#
+# For more information on the Alces Clusterware, please visit:
+# https://github.com/alces-software/clusterware
+#==============================================================================
+require action
+require files
+
+_show() {
+    local name val
+    name="$1"
+    val="$2"
+    _SHOWN=true
+    printf "%25s: %s\n" "${name}" "${val}"
+}
+
+main() {
+    local name a
+    name="$1"
+    files_load_config meta.d/"${name}"
+    for a in $(cat "${cw_ROOT}"/etc/meta.d/"${name}.rc" | grep '^\s*cw_META' | cut -f1 -d=); do
+        case $a in
+            *_desc)
+                :
+                ;;
+            *)
+                desc="${a}_desc"
+                if [ "${!a}" -a "${!desc}" ]; then
+                    _show "${!desc}" "${!a}"
+                fi
+                ;;
+        esac
+    done
+    if [ -z "${_SHOWN}" ]; then
+        action_die "no data currently available: ${name}"
+    fi
+}
+
+main "$@"

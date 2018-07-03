@@ -1,0 +1,73 @@
+: '
+: NAME: info
+: SYNOPSIS: Information about your compute environment
+: VERSION: 1.0.0
+: '
+#==============================================================================
+# Copyright (C) 2015-2016 Stephen F. Norledge and Alces Software Ltd.
+#
+# This file/package is part of Alces Clusterware.
+#
+# Alces Clusterware is free software: you can redistribute it and/or
+# modify it under the terms of the GNU Affero General Public License
+# as published by the Free Software Foundation, either version 3 of
+# the License, or (at your option) any later version.
+#
+# Alces Clusterware is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this package.  If not, see <http://www.gnu.org/licenses/>.
+#
+# For more information on the Alces Clusterware, please visit:
+# https://github.com/alces-software/clusterware
+#==============================================================================
+# vim: set filetype=sh :
+action=$1
+shift
+cw_BINNAME="${cw_BINNAME} $(basename "$0")"
+
+case $action in
+    h|he|hel|help)
+        exec /bin/bash $cw_ROOT/libexec/info/actions/help "$@"
+        ;;
+    ?*)
+        x=("$cw_ROOT/etc/meta.d/$action"*.rc)
+        if [ $x == "$cw_ROOT/etc/meta.d/$action"'*.rc' ]; then
+            echo "${cw_BINNAME}: no data for $action"
+            exit 1
+        elif [ ${#x[*]} = 1 ]; then
+            # matched one
+            exec /bin/bash $cw_ROOT/libexec/info/actions/show "$(basename "${x[0]}" .rc)" "$@"
+        elif [ ${#x[*]} -gt 1 ]; then
+            # matched > 1
+            echo "$cw_BINNAME: ambiguous selection: $action"
+            echo "Did you mean one of these?"
+            for a in ${x[*]}; do
+                echo "        `basename $a .rc`"
+            done
+            echo ""
+            exit 1
+        fi
+        ;;
+    *)
+      cat <<EOF
+Usage: $cw_BINNAME COMMAND [[OPTION]... [ARGS]]
+Information about your compute environment.
+
+Commands:
+EOF
+      printf "  %-22s  %s\n" "$cw_BINNAME help" "More help about this command."
+      for a in "$cw_ROOT"/etc/meta.d/*.rc; do
+          extract_info "$a"
+          printf "  %-22s  %s\n" "$cw_BINNAME $(basename "$a" .rc)" "${cmd_SYNOPSIS}."
+      done
+      cat <<EOF
+
+Please report bugs to support@alces-software.com
+Alces Software home page: <http://alces-software.com/>
+EOF
+      ;;
+esac
