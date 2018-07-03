@@ -1,0 +1,3 @@
+[submodule "opt/clusterware"]
+	path = opt/clusterware
+	url = git@github.com:alces-software/clusterware.git
