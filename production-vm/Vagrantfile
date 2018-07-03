@@ -6,6 +6,8 @@
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
 
+require 'erb'
+
 # Requires the version of FlightDirect that is being built
 require_relative File.join(
   File.dirname(__FILE__), '..', 'lib', 'flight_direct', 'version.rb'
@@ -21,6 +23,21 @@ $tarball_name = "flight-direct-#{FlightDirect::VERSION}.tar.gz"
 $script = <<-SCRIPT
   # Exit if anything exists with a non-zero status
   set -e
+
+  # Ensures the build environment is clean and is working off
+  # the correct git tag
+  <%  unless `git status --porcelain`.empty? %>
+    echo 'There is uncommited work in the git repo' >&2
+    exit 1
+  <%  end %>
+  <%
+      head_sum = `git rev-list -n 1 HEAD`
+      tag_sum = `git rev-list -n 1 #{FlightDirect::VERSION}`
+      unless head_sum == tag_sum
+  %>
+    echo 'You must build off the tagged commit' 2>&2
+    exit 1
+  <%  end %>
 
   # Installs the required yum packages
   yum install epel-release -y
@@ -61,7 +78,7 @@ Vagrant.configure(2) do |config|
   # Runs the deployment script
   env_vars = ['AWS_ACCESS_KEY_ID', 'AWS_SECRET_ACCESS_KEY']
   config.vm.provision 'shell',
-    inline: $script,
+    inline: ERB.new($script).result(binding),
     env: env_vars.map { |v| [v, ENV[v]] }.to_h
   config.vm.provider('virtualbox') { |v| v.cpus = `nproc`.to_i }
 end
