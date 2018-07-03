@@ -6,6 +6,8 @@
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
 
+require 'erb'
+
 # Requires the version of FlightDirect that is being built
 require_relative File.join(
   File.dirname(__FILE__), '..', 'lib', 'flight_direct', 'version.rb'
@@ -14,6 +16,7 @@ require_relative File.join(
 $dev_path = '/tmp/omnibus-flight-direct'
 $build_dir= '~/production-build'
 $build_root = "#{$build_dir}/flight-direct"
+$tarball_name = "flight-direct-#{FlightDirect::VERSION}.tar.gz"
 
 # NOTE: rpm-build is only installed so the omnibus build doesn't fail, and
 # exits normally. The `rpm` is otherwise ignored
@@ -21,8 +24,25 @@ $script = <<-SCRIPT
   # Exit if anything exists with a non-zero status
   set -e
 
+  # Ensures the build environment is clean and is working off
+  # the correct git tag
+  <%  unless `git status --porcelain`.empty? %>
+    echo 'There is uncommited work in the git repo' >&2
+    exit 1
+  <%  end %>
+  <%
+      head_sum = `git rev-list -n 1 HEAD`
+      tag_sum = `git rev-list -n 1 #{FlightDirect::VERSION}`
+      unless head_sum == tag_sum
+  %>
+    echo 'You must build off the tagged commit' 2>&2
+    exit 1
+  <%  end %>
+
   # Installs the required yum packages
-  yum install git rpm-build -y
+  yum install epel-release -y
+  yum update -y
+  yum install git rpm-build python-pip -y
 
   # Installs a stable version of ruby with rvm
   gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
@@ -40,7 +60,12 @@ $script = <<-SCRIPT
 
   # Creates the tarball
   cd #{$build_dir}
-  tar -zcvf flight-direct-#{FlightDirect::VERSION}.tar.gz flight-direct
+  tar -zcvf #{$tarball_name} flight-direct
+
+  # Publishes the tarball to S3
+  export PATH=~/.local/bin:$PATH
+  pip install awscli --upgrade --user
+  aws s3 cp #{$tarball_name} s3://flight-direct/releases/el7/#{$tarball_name}
 SCRIPT
 
 Vagrant.configure(2) do |config|
@@ -49,6 +74,11 @@ Vagrant.configure(2) do |config|
   config.vm.synced_folder ".", "/vagrant", disabled: true
 
   config.vm.synced_folder '..', $dev_path
-  config.vm.provision 'shell', inline: $script
+
+  # Runs the deployment script
+  env_vars = ['AWS_ACCESS_KEY_ID', 'AWS_SECRET_ACCESS_KEY']
+  config.vm.provision 'shell',
+    inline: ERB.new($script).result(binding),
+    env: env_vars.map { |v| [v, ENV[v]] }.to_h
   config.vm.provider('virtualbox') { |v| v.cpus = `nproc`.to_i }
 end
