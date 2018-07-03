@@ -46,8 +46,9 @@ $script = <<-SCRIPT
   tar -zcvf #{$tarball_name} flight-direct
 
   # Publishes the tarball to S3
+  export PATH=~/.local/bin:$PATH
   pip install awscli --upgrade --user
-  aws s3 #{$tarball_name} s3://flight-direct/releases
+  aws s3 #{$tarball_name} s3://flight-direct/releases/el7
 SCRIPT
 
 Vagrant.configure(2) do |config|
