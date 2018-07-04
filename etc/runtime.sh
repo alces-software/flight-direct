@@ -8,4 +8,4 @@ export GEM_HOME=$root/vendor/share
 export GEM_PATH=$GEM_HOME:$vendor_flight
 export BUNDLE_PATH=$GEM_HOME
 export SSL_CERT_FILE=$root/embedded/ssl/certs/cacert.pem
-source $root/opt/clusterware/lib/clusterware.kernel.sh
+source $cw_ROOT/lib/clusterware.kernel.sh
