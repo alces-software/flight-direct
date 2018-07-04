@@ -12,4 +12,5 @@ flight() {
   )
 }
 alias flight-direct=flight
+alias fl=flight
 
