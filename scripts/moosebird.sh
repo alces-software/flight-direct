@@ -14,9 +14,9 @@ frame() {
     esc="1;38;5;$col"
   fi
   welcome="$(printf %$((43+${#esc}))s "Welcome to [${esc}m${cluster}")"
-  cat | sed -e "s/%WELCOME%/$welcome/g" \
-            -e "s/%VERSION%/$version/g" \
-            -e "s/%DISTRO%/$distro/g"
+  cat | sed -e "s#%WELCOME%#$welcome#g" \
+            -e "s#%VERSION%#$version#g" \
+            -e "s#%DISTRO%#$distro#g"
 }
 
 delay() {
