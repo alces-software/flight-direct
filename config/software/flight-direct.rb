@@ -18,10 +18,10 @@ require_relative File.join(
 name "flight-direct"
 default_version FlightDirect::VERSION
 
-source git: 'https://github.com/alces-software/flight-direct'
-
-version 'local' do
+if overrides[:version] == 'local'
   source path: Omnibus::Config.project_root
+else
+  source git: 'https://github.com/alces-software/flight-direct'
 end
 
 dependency "ruby"
