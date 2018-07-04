@@ -1,6 +1,9 @@
 # Sets up the `FlightDirect` environment
 export FLIGHT_DIRECT_ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
 export cw_ROOT=$FLIGHT_DIRECT_ROOT/opt/clusterware
+_cw_root() {
+  echo "$cw_ROOT"
+}
 
 _fd_source_profile_d() {
   local path="$1"
