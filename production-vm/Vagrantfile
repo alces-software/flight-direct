@@ -14,7 +14,7 @@ require_relative File.join(
 )
 
 $dev_path = '/tmp/omnibus-flight-direct'
-$build_dir= '~/production-build'
+$build_dir= '/opt'
 $build_root = "#{$build_dir}/flight-direct"
 $tarball_name = "flight-direct-#{FlightDirect::VERSION}.tar.gz"
 
