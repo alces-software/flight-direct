@@ -9,3 +9,9 @@ export GEM_PATH=$GEM_HOME:$vendor_flight
 export BUNDLE_PATH=$GEM_HOME
 export SSL_CERT_FILE=$root/embedded/ssl/certs/cacert.pem
 source $cw_ROOT/lib/clusterware.kernel.sh
+
+# Adds support for running the legacy gridware package
+function cw_RUBY_EXEC {
+  exec ruby $0 "$@"
+}
+export -f cw_RUBY_EXEC
