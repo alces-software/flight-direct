@@ -26,5 +26,8 @@
 #==============================================================================
 # vim: set filetype=sh :
 
+# Reference to the different bash flags:
+# https://unix.stackexchange.com/questions/304447/is-it-possible-for-there-to-be-a-login-shell-thats-not-interactive
+
 bash --norc "$@"
 
