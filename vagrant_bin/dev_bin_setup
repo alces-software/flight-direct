@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# The `dev_root` will be used by other helper scripts to find the source code
+export fd_dev_root="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
+
+# Adds the other scripts to the path
+export PATH=$fd_dev_root/vagrant_bin:$PATH
