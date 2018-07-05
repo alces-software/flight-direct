@@ -29,5 +29,8 @@
 # Reference to the different bash flags:
 # https://unix.stackexchange.com/questions/304447/is-it-possible-for-there-to-be-a-login-shell-thats-not-interactive
 
-bash --norc "$@"
+# Still source the base bash functions. This means that shell can call
+# `flight` again
+path=$FLIGHT_DIRECT_ROOT/etc/profile.d/base.sh
+bash --noprofile --rcfile <(echo "source $path")
 
