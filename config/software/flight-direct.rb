@@ -46,15 +46,11 @@ build do
   }))
 
   # Moves the project into place
-  ['Gemfile', 'Gemfile.lock'].each do |file|
-    copy "#{project_dir}/#{file}", "#{install_dir}/#{file}"
-  end
-  dirs = [
-    'bin', 'etc', 'lib', 'libexec', 'opt', 'scripts'
-  ]
-  dirs.each do |sub_dir|
-    copy "#{project_dir}/#{sub_dir}",
-         File.expand_path("#{install_dir}/#{sub_dir}/../")
+  [
+    'Gemfile', 'Gemfile.lock', 'bin', 'etc', 'lib', 'libexec', 'opt',
+    'scripts'
+  ].each do |file|
+    copy file, File.expand_path("#{install_dir}/#{file}/../")
   end
 
   # Installs the gems to the shared `vendor/gems/--some-where-?--`
