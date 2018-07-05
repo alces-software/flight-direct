@@ -8,9 +8,18 @@
 
 $dev_path='/tmp/omnibus-flight-direct'
 $profile='/etc/profile.d/fd-vagrant.sh'
+$credentials="#{ENV['HOME']}/.credentials.sh"
 
 $master_script = <<-MASTER_SCRIPT
+# Put the development tools on the path
 echo 'source #{$dev_path}/vagrant_bin/dev_bin_setup' > #{$profile}
+
+# Load the aws credentials into the vm environment. Vagrant can not
+# provision files directly into a root diretory BUT this script is
+# ran as `sudo`. Thus a heredoc is used to write into profile.d
+cat <<'EOF' > /etc/profile.d/vm_host_credentials.sh
+#{File.read($credentials) if File.exist?($credentials)}
+EOF
 MASTER_SCRIPT
 
 Vagrant.configure(2) do |config|
