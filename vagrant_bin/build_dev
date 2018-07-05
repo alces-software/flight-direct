@@ -1,0 +1,7 @@
+#!/bin/bash
+
+export FLIGHT_DIRECT_ROOT=${FLIGHT_DIRECT_ROOT:-"$HOME/flight-direct"}
+pushd $fd_dev_root >/dev/null
+omnibus build flight-direct-dev
+popd >/dev/null
+
