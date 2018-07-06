@@ -13,6 +13,9 @@ export BUNDLE_PATH=$GEM_HOME
 export SSL_CERT_FILE=$root/embedded/ssl/certs/cacert.pem
 source $cw_ROOT/lib/clusterware.kernel.sh
 
+# Source the distribution specific runtime environment
+source $root/etc/dist-runtime.sh
+
 # Adds support for running the legacy gridware package
 kernel_load() { source "${cw_ROOT}/lib/clusterware.kernel.sh"; }
 cw_RUBY_EXEC() { exec ruby $0 "$@"; }

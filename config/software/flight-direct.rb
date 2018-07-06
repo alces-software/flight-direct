@@ -53,6 +53,16 @@ build do
     copy file, File.expand_path("#{install_dir}/#{file}/../")
   end
 
+  # Renders the distribution specific runtime environment
+  cw_DIST = centos? ? 'el7' : (raise <<~EOF.squish
+      FlightDirect can currently only be built for el7
+    EOF
+  )
+  erb source: 'dist-runtime.sh.erb',
+      dest: "#{install_dir}/etc/dist-runtime.sh",
+      mode: 0664,
+      vars: { cw_DIST: cw_DIST }
+
   # Installs the gems to the shared `vendor/gems/--some-where-?--`
   flags = [
     '--standalone',
@@ -61,12 +71,12 @@ build do
   command "cd #{install_dir} && embedded/bin/bundle install #{flags}", env: env
   move "#{gem_home}/bundler/setup.rb", "#{gem_home}/bundler/flight-setup.rb"
 
-  # Set the development environment variable. This is used to bundle the ruby gems into the
-  # project
+  # Set the development environment variable
   if overrides[:development]
     copy "#{project_dir}/development-mode.sh", "#{install_dir}/etc/profile.d"
   end
 
+  # Installs clusterware's gems
   cw_root = "#{install_dir}/opt/clusterware"
   command "cd #{cw_root} && #{embedded_bin('bundle')} install", env: env
 
