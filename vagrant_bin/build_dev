@@ -1,6 +1,12 @@
 #!/bin/bash
 
-export FLIGHT_DIRECT_ROOT=${FLIGHT_DIRECT_ROOT:-"$HOME/flight-direct"}
+if [ -z "$FLIGHT_DIRECT_ROOT" ]; then
+  case "$EUID" in
+    0) root='/opt' ;;
+    *) root='~'    ;;
+  esac
+  export FLIGHT_DIRECT_ROOT="$root/flight-direct"
+fi
 pushd $fd_dev_root >/dev/null
 omnibus build flight-direct-dev
 popd >/dev/null
