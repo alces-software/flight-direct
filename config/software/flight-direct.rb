@@ -30,7 +30,6 @@ dependency 'bundler'
 dependency 'jq'
 dependency 'jo'
 dependency 'forge'
-dependency 'uuid'
 
 build do
   # Deletes any pre-existing bundle configs as the gems need to be installed
