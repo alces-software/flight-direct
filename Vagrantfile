@@ -35,7 +35,8 @@ Vagrant.configure(2) do |config|
     master.vm.synced_folder '../.omnibus-cache', '/tmp/.omnibus-cache'
     master.vm.synced_folder '../gridware', '/tmp/gridware'
     master.vm.provision 'shell', inline: $master_script
-    master.vm.provider('virtualbox') { |v| v.cpus = `nproc`.to_i }
+    nproc = `nproc`.to_i
+    master.vm.provider('virtualbox') { |v| nproc > 1 ? nproc - 1 : 1 }
   end
 
   config.vm.define 'slave' do |slave|
