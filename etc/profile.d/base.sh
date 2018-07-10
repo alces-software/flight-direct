@@ -11,8 +11,14 @@ flight() {
     bin/flight "$@"
   )
 }
-alias flight-direct=flight
-alias fl=flight
-alias alces=flight
-alias al=flight
+export -f flight
+
+# Exports the aliases so they are available in subshells
+declare -a aliases=('flight-direct' 'fl' 'alces' 'al')
+for a in "${aliases[@]}"; do
+  eval "$a() { flight \"\$@\"; }"
+  export -f "$a"
+  unset a
+done
+unset aliases
 

@@ -31,6 +31,5 @@
 
 # Still source the base bash functions. This means that shell can call
 # `flight` again
-path=$FLIGHT_DIRECT_ROOT/etc/profile.d/base.sh
-bash --noprofile --rcfile <(echo "source $path")
+bash --noprofile --norc
 
