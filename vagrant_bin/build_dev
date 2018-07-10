@@ -7,6 +7,14 @@ if [ -z "$FLIGHT_DIRECT_ROOT" ]; then
   esac
   export FLIGHT_DIRECT_ROOT="$root/flight-direct"
 fi
+
+# The mounted cache directory can cause some weird file permission issues
+# when running as root. So instead, the `flight-direct` cache will be
+# removed instead. This means the `flight` and `clusterware` gems will
+# need to be re-installed each time. The remainder of the cache is
+# unaffected
+rm /tmp/.omnibus-cache/src/flight-direct -rf
+
 pushd $fd_dev_root >/dev/null
 omnibus build flight-direct-dev
 popd >/dev/null
