@@ -64,11 +64,9 @@ build do
 
   # Installs the gems to the shared `vendor/gems/--some-where-?--`
   flags = [
-    '--standalone',
     "--with#{overrides[:development] ? '' : 'out'} development"
   ].join(' ')
   command "cd #{install_dir} && embedded/bin/bundle install #{flags}", env: env
-  move "#{gem_home}/bundler/setup.rb", "#{gem_home}/bundler/flight-setup.rb"
 
   # Set the development environment variable
   if overrides[:development]

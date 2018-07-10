@@ -63,7 +63,9 @@ module FlightDirect
     # All other flags should be implicitly handled already
     def exec_action(path, *args)
       append_help = (options['help'] ? ' --help' : '')
-      exec("bash #{path} " + stringify_args(args) + append_help)
+      Bundler.with_clean_env do
+        exec("bash #{path} " + stringify_args(args) + append_help)
+      end
     end
 
     # The argument array needs to be converted back to a space separated
