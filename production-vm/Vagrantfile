@@ -21,8 +21,12 @@ $script = <<-SCRIPT
   # Exit if anything exists with a non-zero status
   set -e
 
+  # Installs the required yum packages
+  yum install epel-release -y
+  yum update -y
+  yum install git rpm-build python-pip cmake -y
+
   # Checks out the build version from git
-  yum install git -y
   cd ~
   git clone https://github.com/alces-software/flight-direct.git
   cd flight-direct
