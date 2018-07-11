@@ -26,6 +26,7 @@ end
 
 dependency "ruby"
 dependency "git"
+dependency 'libgit2'
 dependency 'bundler'
 dependency 'jq'
 dependency 'jo'
