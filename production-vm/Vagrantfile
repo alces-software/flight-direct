@@ -6,14 +6,11 @@
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
 
-require 'erb'
-
 # Requires the version of FlightDirect that is being built
 require_relative File.join(
   File.dirname(__FILE__), '..', 'lib', 'flight_direct', 'version.rb'
 )
 
-$dev_path = '/tmp/omnibus-flight-direct'
 $build_dir= '/opt'
 $build_root = "#{$build_dir}/flight-direct"
 $tarball_name = "flight-direct-#{FlightDirect::VERSION}.tar.gz"
@@ -24,37 +21,18 @@ $script = <<-SCRIPT
   # Exit if anything exists with a non-zero status
   set -e
 
-  # Ensures the build environment is clean and is working off
-  # the correct git tag.
-  # NOTE: This is an ERB template. There ERB tags are rendered
-  # (and thus `git` runs) on the host machine
-  <%  unless `git status --porcelain`.empty? %>
-    echo 'There is uncommited work in the git repo' >&2
-    exit 1
-  <%  end %>
-  <%
-      head_sum = `git rev-list -n 1 HEAD`
-      tag_sum = `git rev-list -n 1 #{FlightDirect::VERSION}`
-      unless head_sum == tag_sum
-  %>
-    echo 'You must build off the tagged commit' >&2
-    exit 1
-  <%  end %>
+  # Checks out the build version from git
+  yum install git -y
+  cd ~
+  git clone https://github.com/alces-software/flight-direct.git
+  cd flight-direct
+  git fetch
+  git checkout #{FlightDirect::VERSION}
 
-  # Installs the required yum packages
-  yum install epel-release -y
-  yum update -y
-  yum install git rpm-build python-pip cmake -y
-
-  # Installs a stable version of ruby with rvm
-  gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
-  curl -sSL https://get.rvm.io | bash -s stable --ruby
-  source /usr/local/rvm/scripts/rvm
-
-  # Installs the development gems
-  cd #{$dev_path}
-  gem install bundler
-  bundle install --without default --with development
+  # Installs rvm, bundler, and development gems
+  . vagrant_bin/dev_bin_setup
+  bundle_install_rvm
+  . ~/.bashrc
 
   # Builds the project
   export FLIGHT_DIRECT_ROOT=#{$build_root}
@@ -76,12 +54,9 @@ Vagrant.configure(2) do |config|
   config.vm.network "private_network", type: 'dhcp'
   config.vm.synced_folder ".", "/vagrant", disabled: true
 
-  config.vm.synced_folder '..', $dev_path
-
   # Runs the deployment script
   env_vars = ['AWS_ACCESS_KEY_ID', 'AWS_SECRET_ACCESS_KEY']
-  config.vm.provision 'shell',
-    inline: ERB.new($script).result(binding),
+  config.vm.provision 'shell', inline: $script,
     env: env_vars.map { |v| [v, ENV[v]] }.to_h
   config.vm.provider('virtualbox') { |v| v.cpus = `nproc`.to_i }
 end
