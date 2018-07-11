@@ -9,6 +9,7 @@ if [ -z "$FLIGHT_DIRECT_ROOT" ]; then
 fi
 
 pushd $fd_dev_root >/dev/null
+export LD_LIBRARY_PATH=$FLIGHT_DIRECT_ROOT/embedded/lib:$LD_LIBRARY_PATH
 omnibus build flight-direct-dev
 popd >/dev/null
 
