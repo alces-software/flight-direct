@@ -62,8 +62,12 @@ module FlightDirect
     # help is flag is appended.
     # All other flags should be implicitly handled already
     def exec_action(path, *args)
-      append_help = (options['help'] ? ' --help' : '')
-      exec("bash #{path} " + stringify_args(args) + append_help)
+      append_help = (options['help'] ? '--help' : '')
+      flags = '--norc --noprofile'
+      cmd =[
+        'bash', flags, path, stringify_args(args), append_help
+      ].join(' ')
+      Bundler.with_clean_env { exec(cmd) }
     end
 
     # The argument array needs to be converted back to a space separated

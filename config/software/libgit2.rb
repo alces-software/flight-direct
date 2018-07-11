@@ -19,17 +19,31 @@
 # limitations under the License.
 #
 
-name "uuid"
-default_version "1.6.2"
+name 'libgit2'
+default_version "v0.27.0"
 
-relative_path "uuid-#{version}"
-source url: "https://www.mirrorservice.org/sites/ftp.ossp.org/pkg/lib/uuid/#{relative_path}.tar.gz"
+relative_path "libgit2-#{version}"
+source git: 'https://github.com/libgit2/libgit2.git'
 
-version('1.6.2') { source md5: '5db0d43a9022a6ebbbc25337ae28942f' }
+# license "Zlib"
+# license_file "README"
+# skip_transitive_dependency_licensing true
+
+dependency 'git'
+
+env = with_standard_compiler_flags(with_embedded_path)
 
 build do
-  env = with_standard_compiler_flags
-  configure env: env
-  make "-j #{workers}", env: env
-  make "-j #{workers} install", env: env
+  # Creates the build directory
+  cmake_build_dir = "#{project_dir}/build"
+  mkdir cmake_build_dir
+
+  # Builds and installs libgit2
+  prefix = "#{install_dir}/embedded"
+  command <<-CMD, env: env
+    cd #{cmake_build_dir}
+    cmake .. -DCMAKE_INSTALL_PREFIX=#{prefix} -DCMAKE_PREFIX_PATH=#{prefix}
+    export LD_LIBRARY_PATH=#{prefix}/lib
+    cmake --build . --target install
+  CMD
 end

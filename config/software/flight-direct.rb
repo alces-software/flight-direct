@@ -26,11 +26,11 @@ end
 
 dependency "ruby"
 dependency "git"
+dependency 'libgit2'
 dependency 'bundler'
 dependency 'jq'
 dependency 'jo'
 dependency 'forge'
-dependency 'uuid'
 
 build do
   # Deletes any pre-existing bundle configs as the gems need to be installed
@@ -46,27 +46,35 @@ build do
   }))
 
   # Moves the project into place
-  ['Gemfile', 'Gemfile.lock'].each do |file|
-    copy "#{project_dir}/#{file}", "#{install_dir}/#{file}"
+  [
+    'Gemfile', 'Gemfile.lock', 'bin', 'etc', 'lib', 'libexec', 'opt',
+    'scripts'
+  ].each do |file|
+    copy file, File.expand_path("#{install_dir}/#{file}/../")
   end
-  ['bin', 'etc', 'lib', 'opt/clusterware', 'scripts'].each do |sub_dir|
-    sync "#{project_dir}/#{sub_dir}/", "#{install_dir}/#{sub_dir}/"
-  end
+
+  # Renders the distribution specific runtime environment
+  cw_DIST = centos? ? 'el7' : (raise <<~EOF.squish
+      FlightDirect can currently only be built for el7
+    EOF
+  )
+  erb source: 'dist-runtime.sh.erb',
+      dest: "#{install_dir}/etc/dist-runtime.sh",
+      mode: 0664,
+      vars: { cw_DIST: cw_DIST }
 
   # Installs the gems to the shared `vendor/gems/--some-where-?--`
   flags = [
-    '--standalone',
     "--with#{overrides[:development] ? '' : 'out'} development"
   ].join(' ')
   command "cd #{install_dir} && embedded/bin/bundle install #{flags}", env: env
-  move "#{gem_home}/bundler/setup.rb", "#{gem_home}/bundler/flight-setup.rb"
 
-  # Set the development environment variable. This is used to bundle the ruby gems into the
-  # project
+  # Set the development environment variable
   if overrides[:development]
     copy "#{project_dir}/development-mode.sh", "#{install_dir}/etc/profile.d"
   end
 
+  # Installs clusterware's gems
   cw_root = "#{install_dir}/opt/clusterware"
   command "cd #{cw_root} && #{embedded_bin('bundle')} install", env: env
 

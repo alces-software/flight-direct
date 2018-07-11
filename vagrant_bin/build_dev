@@ -1,0 +1,15 @@
+#!/bin/bash
+
+if [ -z "$FLIGHT_DIRECT_ROOT" ]; then
+  case "$EUID" in
+    0) root='/opt' ;;
+    *) root='~'    ;;
+  esac
+  export FLIGHT_DIRECT_ROOT="$root/flight-direct"
+fi
+
+pushd $fd_dev_root >/dev/null
+export LD_LIBRARY_PATH=$FLIGHT_DIRECT_ROOT/embedded/lib:$LD_LIBRARY_PATH
+omnibus build flight-direct-dev
+popd >/dev/null
+

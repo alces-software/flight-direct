@@ -13,7 +13,7 @@
 #
 # Uncomment this line to change the default base directory to "local"
 # -------------------------------------------------------------------
-base_dir "#{ENV['HOME']}/.omnibus-cache"
+base_dir "/tmp/.omnibus-cache"
 #
 # Alternatively you can tune the individual values
 # ------------------------------------------------

@@ -31,5 +31,14 @@ dependency "version-manifest"
 #
 override 'ruby', version: '2.5.1'
 
+# Work around the bud in Bundler `1.16.2` which struggles with `git` paths
+# https://github.com/bundler/bundler/issues/6563
+# It has been recommended to down grade to version `1.16.0`
+# RubyGem also packages in bundler in latter versions, so it also needs to be
+# downgraded for the meantime
+override 'rubygems', version: '2.7.0'
+override 'bundler', version: '1.16.0'
+
 exclude "**/.git"
 exclude "**/bundler/git"
+

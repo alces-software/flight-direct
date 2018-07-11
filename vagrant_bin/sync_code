@@ -1,0 +1,8 @@
+#!/bin/bash
+
+msg='Can not determine the flight direct install location'
+: ${FLIGHT_DIRECT_ROOT?$msg}
+
+pushd $fd_dev_root >/dev/null
+rsync -arv bin etc lib libexec scripts opt Gemfile* $FLIGHT_DIRECT_ROOT/
+popd >/dev/null
