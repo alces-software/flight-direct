@@ -34,4 +34,7 @@ if [[ -z "${FLIGHT_DIRECT_SOURCED}" ]]; then
 
   # Unsets the helper function
   unset -f _fd_source_profile_d
+
+  # Ensure that errors don't crash the shell
+  set +e
 fi
