@@ -5,9 +5,15 @@
 ##
 ################################################################################
 
+# The delimiter is defined with interpolation so it does not get subbed
+# when the env is being parsed
 flight() {
-  ( source "$FLIGHT_DIRECT_ROOT"/etc/runtime.sh && \
-    cd "$FLIGHT_DIRECT_ROOT" && \
+  ( set -e
+    unset FLIGHT_DIRECT_ENV_BACKUP
+    delim=":$(echo 'FD_DELIM'):"
+    export FLIGHT_DIRECT_ENV_BACKUP="$(env -0 | sed "s/\x0/$delim/g")"
+    source "$FLIGHT_DIRECT_ROOT"/etc/runtime.sh
+    cd "$FLIGHT_DIRECT_ROOT"
     bin/flight "$@"
   )
 }
