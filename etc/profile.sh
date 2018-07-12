@@ -8,6 +8,9 @@ if [[ -z "${FLIGHT_DIRECT_SOURCED}" ]]; then
   _cw_root() { echo "$cw_ROOT"; }
   export -f _cw_root
 
+  # source the distribution specific runtime environment
+  source $FLIGHT_DIRECT_ROOT/etc/dist-runtime.sh
+
   # Helper function for sourcing `profile.d` scripts
   _fd_source_profile_d() {
     local path="$1"
