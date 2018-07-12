@@ -22,7 +22,7 @@ export -f _flight
 
 flight() {
   # The module command needs to be `eval'd` within the current shell
-  # Thus it polls `flight modulecmd` for the string and then runs it
+  # Thus it polls `_flight module` for the string and then evals
   # It only matches shorthand between `mo-module`
   if [[ $1 == 'mo'* && 'module' == "$1"* ]]; then
     shift 1
@@ -35,22 +35,22 @@ flight() {
     case $1 in
       fl*|al*|h*|-h|--help)
         if [[ ":$cw_FLAGS:" =~ :nopager: ]]; then
-          _flight 'modulecmd' "$@" 0>&1 2>&1
+          _flight 'module' "$@" 0>&1 2>&1
         else
-          _flight 'modulecmd' "$@" 0>&1 2>&1 | less -FRX
+          _flight 'module' "$@" 0>&1 2>&1 | less -FRX
         fi
         ;;
       *)
         if [[ ":$cw_FLAGS:" =~ :nopager: ]]; then
-          eval $(_flight 'modulecmd' "$@") 2>&1
+          eval $(_flight 'module' "$@") 2>&1
         elif [ -n "$POSIXLY_CORRECT" ]; then
-          eval $(_flight 'modulecmd' "$@") 2>&1
+          eval $(_flight 'module' "$@") 2>&1
         elif [ "$2" == "load" -o "$2" == "add" ]; then
-          eval $(_flight 'modulecmd' "$@") 2>&1
+          eval $(_flight 'module' "$@") 2>&1
         else
           local p
           p="${_cw_ROOT}"
-          eval $(_flight 'modulecmd' "$@" 2> >(less -FRX >&2)) 2>&1
+          eval $(_flight 'module' "$@" 2> >(less -FRX >&2)) 2>&1
         fi
         ;;
     esac
