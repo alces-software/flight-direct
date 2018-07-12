@@ -14,6 +14,8 @@ export SSL_CERT_FILE=$root/embedded/ssl/certs/cacert.pem
 source $root/etc/dist-runtime.sh
 
 # Sets up clusterware
+export cw_BINNAME="alces"
+export cw_CMDDIR="$cw_ROOT/libexec/actions"
 source $cw_ROOT/lib/clusterware.kernel.sh
 if [[ -t 1 && "$TERM" != linux ]]; then
     export cw_COLOUR=1
@@ -21,6 +23,52 @@ else
     export cw_COLOUR=0
 fi
 export cw_SHELL=bash
+
+extract_info() {
+    info=$(awk -f <(cat <<\EOF
+  {
+    if (substr($0,0,1) != ":") {
+      next
+    }
+    split($0, a, ": ")
+    gsub(/[[:space:]]*/, "", a[2])
+    if (a[3]) {
+      print "cmd_" a[2] "='" a[3] "'"
+    }
+    if (a[2]=="'") {
+      if (started) {
+        exit
+      } else {
+        started=1
+      }
+    }
+  }
+EOF
+    ) $1)
+    unset cmd_NAME cmd_SYNOPSIS cmd_VERSION cmd_HELP
+    if [ "$info" ]; then
+        eval "$info"
+    fi
+}
+export -f extract_info
+
+display_help() {
+    extract_info $1
+    # Render a help template here
+    cat <<EOF
+  NAME:
+
+    $cw_BINNAME $cmd_NAME
+
+  DESCRIPTION:
+
+    $cmd_SYNOPSIS.
+
+EOF
+    #printf "    %-20s %s" "command" "XXX Command synopsis."
+    echo ""
+}
+export -f display_help
 
 # Adds support for running the legacy gridware package
 kernel_load() { source "${cw_ROOT}/lib/clusterware.kernel.sh"; }

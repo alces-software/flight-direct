@@ -1,4 +1,4 @@
-# Do source any files if already sourced
+# Do not source any files if already sourced
 if [[ -z "${FLIGHT_DIRECT_SOURCED}" ]]; then
   export FLIGHT_DIRECT_SOURCED=true
 
