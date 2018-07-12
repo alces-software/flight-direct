@@ -8,33 +8,55 @@
 # The delimiter is defined with interpolation so it does not get subbed
 # when the env is being parsed
 
-flight() {
-  _flight() {
-    ( set -e
-      unset FLIGHT_DIRECT_ENV_BACKUP
-      delim=":$(echo 'FD_DELIM'):"
-      export FLIGHT_DIRECT_ENV_BACKUP="$(env -0 | sed "s/\x0/$delim/g")"
-      source "$FLIGHT_DIRECT_ROOT"/etc/runtime.sh
-      cd "$FLIGHT_DIRECT_ROOT"
-      bin/flight "$@"
-    )
-  }
+_flight() {
+  ( set -e
+    unset FLIGHT_DIRECT_ENV_BACKUP
+    delim=":$(echo 'FD_DELIM'):"
+    export FLIGHT_DIRECT_ENV_BACKUP="$(env -0 | sed "s/\x0/$delim/g")"
+    source "$FLIGHT_DIRECT_ROOT"/etc/runtime.sh
+    cd "$FLIGHT_DIRECT_ROOT"
+    bin/flight "$@"
+  )
+}
+export -f _flight
 
+flight() {
   # The module command needs to be `eval'd` within the current shell
   # Thus it polls `flight modulecmd` for the string and then runs it
   # It only matches shorthand between `mo-module`
   if [[ $1 == 'mo'* && 'module' == "$1"* ]]; then
     shift 1
-    if module_env=$(_flight 'modulecmd' "$@"); then
-      eval $module_env
-    else
-      echo 'An error has occurred running module' >&2
-      echo "$module_env" >&2
+    if [[ ! $(ps -o 'command=' -p "$$" 2>/dev/null) =~ ^- ]]; then
+      # Not an interactive shell
+      if [[ ! ":$cw_FLAGS:" =~ :verbose-modules: ]]; then
+        export cw_MODULES_VERBOSE=0
+      fi
     fi
+    case $1 in
+      fl*|al*|h*|-h|--help)
+        if [[ ":$cw_FLAGS:" =~ :nopager: ]]; then
+          _flight 'modulecmd' "$@" 0>&1 2>&1
+        else
+          _flight 'modulecmd' "$@" 0>&1 2>&1 | less -FRX
+        fi
+        ;;
+      *)
+        if [[ ":$cw_FLAGS:" =~ :nopager: ]]; then
+          eval $(_flight 'modulecmd' "$@") 2>&1
+        elif [ -n "$POSIXLY_CORRECT" ]; then
+          eval $(_flight 'modulecmd' "$@") 2>&1
+        elif [ "$2" == "load" -o "$2" == "add" ]; then
+          eval $(_flight 'modulecmd' "$@") 2>&1
+        else
+          local p
+          p="${_cw_ROOT}"
+          eval $(_flight 'modulecmd' "$@" 2> >(less -FRX >&2)) 2>&1
+        fi
+        ;;
+    esac
   else
     _flight "$@"
   fi
-  unset _flight
 }
 export -f flight
 
