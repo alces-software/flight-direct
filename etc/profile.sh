@@ -2,6 +2,7 @@
 export FLIGHT_DIRECT_ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
 export cw_ROOT=$FLIGHT_DIRECT_ROOT/opt/clusterware
 _cw_root() { echo "$cw_ROOT"; }
+export -f _cw_root
 
 # Helper function for sourcing `profile.d` scripts
 _fd_source_profile_d() {
