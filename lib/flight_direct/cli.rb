@@ -1,6 +1,7 @@
 
 require 'thor'
 require 'ostruct'
+require 'erb'
 
 module FlightDirect
   class CLI < Thor
@@ -79,3 +80,12 @@ module FlightDirect
     end
   end
 end
+
+template = File.read(
+  File.join(FlightDirect.root_dir, 'scripts/bash_completion.sh.erb')
+)
+context = FlightDirect::CLI.instance_eval { binding }
+completion = ERB.new(template).result(context)
+file = File.join(FlightDirect.root_dir, 'etc/profile.d/completion.sh')
+File.write(file, completion)
+

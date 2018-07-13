@@ -1,0 +1,17 @@
+_flight_complete() {
+  local cur prev cmds
+
+  cur=${COMP_WORDS[COMP_CWORD]}
+  prev=${COMP_WORDS[COMP_CWORD-1]}
+
+  COMPREPLY=()
+  cmds="ls $cw_ROOT/libexec/actions"
+
+  case ${COMP_CWORD} in
+    1)
+      COMPREPLY=($(compgen -W '<%= commands.keys.join(' ') %>' -- "$cur"))
+      ;;
+  esac
+}
+
+complete -F _flight_complete flight fl
