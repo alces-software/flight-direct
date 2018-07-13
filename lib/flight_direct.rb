@@ -32,9 +32,20 @@ module FlightDirect
       @root_dir ||= root.dup.freeze
     end
     attr_reader :root_dir
+
+    def env_backup=(env)
+      @env_backup ||= env.dup.freeze
+    end
+    attr_reader :env_backup
   end
 end
 FlightDirect.root_dir = default_root
+
+# Converts the environment backup string to a hash
+FlightDirect.env_backup = ENV['FLIGHT_DIRECT_ENV_BACKUP']
+  .split(':FD_DELIM:')
+  .map { |e| e.split('=', 2) }
+  .to_h
 
 # Requires the common gems used throughout the project
 require 'active_support/core_ext/string'
