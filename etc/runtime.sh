@@ -2,7 +2,7 @@
 set -e
 
 # Setup the environment
-root=$FLIGHT_DIRECT_ROOT
+root=$FL_ROOT
 export PATH=$root/embedded/bin/:$PATH
 export LD_LIBRARY_PATH=$root/embedded/lib:$LD_LIBRARY_PATH
 export TERMINFO=$root/embedded/lib/terminfo

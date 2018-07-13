@@ -19,7 +19,7 @@
 # For more information on the Alces Clusterware, please visit:
 # https://github.com/alces-software/clusterware
 #==============================================================================
-GIT="${FLIGHT_DIRECT_ROOT}/embedded/bin/git"
+GIT="${FL_ROOT}/embedded/bin/git"
 
 git_update() {
     local clonedir

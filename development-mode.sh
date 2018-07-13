@@ -9,5 +9,5 @@
 # Deleting this file will switch development mode off (mostly?) in all future terminals
 #
 
-export FLIGHT_DIRECT_DEVELOPMENT_MODE='true'
+export FL_DEVELOPMENT_MODE='true'
 

@@ -10,11 +10,11 @@
 
 _flight() {
   ( set -e
-    unset FLIGHT_DIRECT_ENV_BACKUP
+    unset FL_ENV_BACKUP
     delim=":$(echo 'FD_DELIM'):"
-    export FLIGHT_DIRECT_ENV_BACKUP="$(env -0 | sed "s/\x0/$delim/g")"
-    source "$FLIGHT_DIRECT_ROOT"/etc/runtime.sh
-    cd "$FLIGHT_DIRECT_ROOT"
+    export FL_ENV_BACKUP="$(env -0 | sed "s/\x0/$delim/g")"
+    source "$FL_ROOT"/etc/runtime.sh
+    cd "$FL_ROOT"
     bin/flight "$@"
   )
 }

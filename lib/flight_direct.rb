@@ -1,4 +1,4 @@
-fd = 'FLIGHT_DIRECT'
+fd = 'FL'
 
 # Sets the load path and development mode from the environment
 dev_mode = (ENV["#{fd}_DEVELOPMENT_MODE"] == 'true')
@@ -42,7 +42,7 @@ end
 FlightDirect.root_dir = default_root
 
 # Converts the environment backup string to a hash
-FlightDirect.env_backup = ENV['FLIGHT_DIRECT_ENV_BACKUP']
+FlightDirect.env_backup = ENV['FL_ENV_BACKUP']
   .split(':FD_DELIM:')
   .map { |e| e.split('=', 2) }
   .to_h

@@ -1,7 +1,7 @@
 # FlightDirect
 ## Environment Information
 
-By sourcing `profile.sh` the `FLIGHT_DIRECT_ROOT` and `flight` function are
+By sourcing `profile.sh` the `FL_ROOT` and `flight` function are
 set in your environment. This tells `flight` where to look for its source
 code. The moosebird banner and `MOT` are also triggered on the login shell.
 NOTE: `forge` packages may make additional changes to the environment, 
@@ -9,14 +9,14 @@ please see the packages documentation for details.
 
 `flight direct` currently wraps a slimmed down version of the `clusterware`
 utility which runs the legacy code. Clusterware is always installed to
-`$FLIGHT_DIRECT_ROOT/opt/clusterware`. This directory is set as the
+`$FL_ROOT/opt/clusterware`. This directory is set as the
 `cw_ROOT` which tells clusterware kernel where to look for its functions.
 
 The `flight direct` core utility (inc clusterware) has been designed to be
 self contained. There are no runtime dependencies required (beyond a blank
 Centos7 image). When the `flight` bash function is invoked, the
 `etc/runtime.sh` file is sourced. This sets up the `PATH`, `LD_LIBRARY_PATH`,
-etc to point to the `FLIGHT_DIRECT_ROOT` directory. Refer to `runtime.sh` 
+etc to point to the `FL_ROOT` directory. Refer to `runtime.sh` 
 for a full list of changes.
 
 The runtime environment is sourced with a sub-shell and thus any changes
@@ -37,7 +37,7 @@ the development gems are installed.
 
 The default install location is into `/opt/flight-direct`. If you do not
 have write permission to opt, the install directory can be changed by 
-setting `FLIGHT_DIRECT_ROOT` environment variable.
+setting `FL_ROOT` environment variable.
 
 ```shell
 $ cd <source-code-location>
@@ -61,7 +61,7 @@ $ omnibus build flight-direct-dev
 
 By default, `flight-direct` is built into `/opt/flight-direct`. If you do
 not have write permissions within `/opt`, you will need to change the
-`FLIGHT_DIRECT_ROOT` environment variable to be within your `$HOME`
+`FL_ROOT` environment variable to be within your `$HOME`
 directory.
 
 #### NOTE: RPM Build Error

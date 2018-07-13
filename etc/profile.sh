@@ -1,15 +1,15 @@
 # Do not source any files if already sourced
-if [[ -z "${FLIGHT_DIRECT_SOURCED}" ]]; then
-  export FLIGHT_DIRECT_SOURCED=true
+if [[ -z "${FL_SOURCED}" ]]; then
+  export FL_SOURCED=true
 
   # Sets up the `FlightDirect` environment
-  export FLIGHT_DIRECT_ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
-  export cw_ROOT=$FLIGHT_DIRECT_ROOT/opt/clusterware
+  export FL_ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
+  export cw_ROOT=$FL_ROOT/opt/clusterware
   _cw_root() { echo "$cw_ROOT"; }
   export -f _cw_root
 
   # source the distribution specific runtime environment
-  source $FLIGHT_DIRECT_ROOT/etc/dist-runtime.sh
+  source $FL_ROOT/etc/dist-runtime.sh
 
   # Helper function for sourcing `profile.d` scripts
   _fd_source_profile_d() {
@@ -29,7 +29,7 @@ if [[ -z "${FLIGHT_DIRECT_SOURCED}" ]]; then
   }
 
   # Runs the other files in profile.d
-  _fd_source_profile_d $FLIGHT_DIRECT_ROOT
+  _fd_source_profile_d $FL_ROOT
   _fd_source_profile_d $cw_ROOT
 
   # Unsets the helper function

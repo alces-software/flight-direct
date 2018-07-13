@@ -23,7 +23,7 @@
 # https://github.com/alces-software/cloudware
 #==============================================================================
 
-require_relative File.join("#{ENV["FLIGHT_DIRECT_ROOT"]}/lib/flight_direct.rb")
+require_relative File.join("#{ENV["FL_ROOT"]}/lib/flight_direct.rb")
 
 # Runs the CLI
 require 'cli'

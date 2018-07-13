@@ -41,8 +41,8 @@ $script = <<-SCRIPT
   . ~/.bashrc
 
   # Builds the project
-  export FLIGHT_DIRECT_ROOT=#{$build_root}
-  export LD_LIBRARY_PATH=$FLIGHT_DIRECT_ROOT/embedded/lib:$LD_LIBRARY_PATH
+  export FL_ROOT=#{$build_root}
+  export LD_LIBRARY_PATH=$FL_ROOT/embedded/lib:$LD_LIBRARY_PATH
   omnibus build flight-direct
 
   # Creates the tarball
