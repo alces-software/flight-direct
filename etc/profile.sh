@@ -12,7 +12,7 @@ if [[ -z "${FL_SOURCED}" ]]; then
   source $FL_ROOT/etc/dist-runtime.sh
 
   # Helper function for sourcing `profile.d` scripts
-  _fd_source_profile_d() {
+  _fl_source_profile_d() {
     local path="$1"
     if [ -d $path/etc/profile.d ]; then
       for i in $path/etc/profile.d/*.sh ; do
@@ -29,11 +29,11 @@ if [[ -z "${FL_SOURCED}" ]]; then
   }
 
   # Runs the other files in profile.d
-  _fd_source_profile_d $FL_ROOT
-  _fd_source_profile_d $cw_ROOT
+  _fl_source_profile_d $FL_ROOT
+  _fl_source_profile_d $cw_ROOT
 
   # Unsets the helper function
-  unset -f _fd_source_profile_d
+  unset -f _fl_source_profile_d
 
   # Ensure that errors don't crash the shell
   set +e
