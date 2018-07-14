@@ -7,11 +7,9 @@ _flight_complete() {
 
   if [[ $COMP_CWORD == 1 ]]; then
     COMPREPLY=($(compgen -W '<%= commands.keys.join(' ') %>' -- "$cur"))
-  <% ['FL_ROOT', 'cw_ROOT'].map { |root| ENV[root] }
-                           .map { |path| Dir.glob("#{path}/libexec/*") }
-                           .flatten
-                           .reject { |a| File.basename(a) == 'actions' }
-                           .each do |cmd_dir|
+  <% Dir.glob("#{ENV['FL_ROOT']}/libexec/*")
+        .reject { |a| File.basename(a) == 'actions' }
+        .each do |cmd_dir|
   %>
   elif [[ '<%= File.basename(cmd_dir) %>' == "${COMP_WORDS[1]}" ]]; then
     <% init_subcmds = Dir.glob("#{cmd_dir}/actions/*").map do |cmd_path|

@@ -4,7 +4,7 @@ if [[ -z "${FL_SOURCED}" ]]; then
 
   # Sets up the `FlightDirect` environment
   export FL_ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
-  export cw_ROOT=$FL_ROOT/opt/clusterware
+  export cw_ROOT=$FL_ROOT
   _cw_root() { echo "$cw_ROOT"; }
   export -f _cw_root
 
@@ -30,7 +30,6 @@ if [[ -z "${FL_SOURCED}" ]]; then
 
   # Runs the other files in profile.d
   _fl_source_profile_d $FL_ROOT
-  _fl_source_profile_d $cw_ROOT
 
   # Unsets the helper function
   unset -f _fl_source_profile_d
