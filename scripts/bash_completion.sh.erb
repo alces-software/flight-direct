@@ -14,11 +14,16 @@ _flight_complete() {
                            .each do |cmd_dir|
   %>
   elif [[ '<%= File.basename(cmd_dir) %>' == "${COMP_WORDS[1]}" ]]; then
-    <% subcmds = Dir.glob("#{cmd_dir}/actions/*").map do |cmd_path|
+    <% init_subcmds = Dir.glob("#{cmd_dir}/actions/*").map do |cmd_path|
          File.basename(cmd_path)
-       end
+       end.sort
     %>
-    COMPREPLY=($(compgen -W '<%= subcmds.join(' ') %>' -- "$cur"))
+    if [[ $COMP_CWORD == 2 ]]; then
+      <% cmds = init_subcmds.reject { |c| c.include?('_') }
+         init_subcmds.delete_if { |c| cmds.include?(c) }
+      %>
+      COMPREPLY=($(compgen -W '<%= cmds.join(' ') %>' -- "$cur"))
+    fi
   <% end %>
   fi
 }
