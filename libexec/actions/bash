@@ -31,5 +31,5 @@
 
 # Still source the base bash functions. This means that shell can call
 # `flight` again
-bash --noprofile --norc
+bash --noprofile --norc $@
 
