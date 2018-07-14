@@ -31,6 +31,11 @@ _flight_complete() {
     fi
   <% end %>
   fi
+
+  # Fall back if empty
+  if [[ "${#COMPREPLY[@]}" == '0' ]]; then
+    COMPREPLY=($(compgen -d -- $cur))
+  fi
 }
 
 complete -F _flight_complete flight fl
