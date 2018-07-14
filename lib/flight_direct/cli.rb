@@ -81,13 +81,3 @@ module FlightDirect
   end
 end
 
-return unless Process.euid == 0
-
-template = File.read(
-  File.join(FlightDirect.root_dir, 'scripts/bash_completion.sh.erb')
-)
-context = FlightDirect::CLI.instance_eval { binding }
-completion = ERB.new(template).result(context)
-file = File.join(FlightDirect.root_dir, 'etc/profile.d/completion.sh')
-File.write(file, completion)
-
