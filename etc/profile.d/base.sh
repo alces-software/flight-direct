@@ -58,7 +58,7 @@ flight() {
 export -f flight
 
 # Exports the aliases so they are available in subshells
-declare -a aliases=('flight-direct' 'fl' 'alces' 'al')
+declare -a aliases=('fl' 'alces' 'al')
 for a in "${aliases[@]}"; do
   eval "$a() { flight \"\$@\"; }"
   export -f "$a"
