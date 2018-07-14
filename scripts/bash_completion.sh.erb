@@ -1,17 +1,31 @@
 _flight_complete() {
-  local cur prev cmds
-
-  cur=${COMP_WORDS[COMP_CWORD]}
-  prev=${COMP_WORDS[COMP_CWORD-1]}
+  local cmds cur
 
   COMPREPLY=()
   cmds="ls $cw_ROOT/libexec/actions"
+  cur=${COMP_WORDS[COMP_CWORD]}
 
-  case ${COMP_CWORD} in
-    1)
-      COMPREPLY=($(compgen -W '<%= commands.keys.join(' ') %>' -- "$cur"))
-      ;;
-  esac
+  if [[ $COMP_CWORD == 1 ]]; then
+    COMPREPLY=($(compgen -W '<%= commands.keys.join(' ') %>' -- "$cur"))
+  elif [[ $COMP_CWORD == 2 ]]; then
+    if [[ 'placeholder to' == 'make erb easier' ]]; then
+      # Can not be reached
+      exit 1
+    <% ['FL_ROOT', 'cw_ROOT'].map { |root| ENV[root] }
+                             .map { |path| Dir.glob("#{path}/libexec/*") }
+                             .flatten
+                             .reject { |a| File.basename(a) == 'actions' }
+                             .each do |cmd_dir|
+    %>
+    elif [[ '<%= File.basename(cmd_dir) %>' == "${COMP_WORDS[1]}" ]]; then
+      <% subcmds = Dir.glob("#{cmd_dir}/actions/*").map do |cmd_path|
+           File.basename(cmd_path)
+         end
+      %>
+      COMPREPLY=($(compgen -W '<%= subcmds.join(' ') %>' -- "$cur"))
+    <% end %>
+    fi
+  fi
 }
 
 complete -F _flight_complete flight fl
