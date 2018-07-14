@@ -81,6 +81,8 @@ module FlightDirect
   end
 end
 
+return unless Process.euid == 0
+
 template = File.read(
   File.join(FlightDirect.root_dir, 'scripts/bash_completion.sh.erb')
 )
