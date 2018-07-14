@@ -5,6 +5,7 @@ dev_root = ENV["FL_RUBY_LOAD_ROOT"]
 load_root = (dev_mode && dev_root) ? dev_root : default_root
 
 # Sets up the load paths
+$LOAD_PATH << File.join(load_root, 'lib')
 $LOAD_PATH << File.join(load_root, 'lib', 'flight_direct')
 
 # Sets up Bundler
