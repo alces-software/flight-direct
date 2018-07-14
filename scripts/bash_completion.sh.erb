@@ -23,6 +23,13 @@ _flight_complete() {
          init_subcmds.delete_if { |c| cmds.include?(c) }
       %>
       COMPREPLY=($(compgen -W '<%= cmds.join(' ') %>' -- "$cur"))
+      <% groups = init_subcmds.each_with_object({}) do |cmd, memo|
+        prefix = /\A[^_]*_/.match(cmd).to_s
+        (memo[prefix.chomp('_')] ||= []).push(cmd.sub(prefix, ''))
+      end.each do |group, subsubcmds| %>
+    elif [[ '<%= group %>' == "${COMP_WORDS[2]}" ]]; then
+      COMPREPLY=($(compgen -W '<%= subsubcmds.join(' ') %>' -- "$cur"))
+      <% end %>
     fi
   <% end %>
   fi
