@@ -47,8 +47,7 @@ build do
 
   # Moves the project into place
   [
-    'Gemfile', 'Gemfile.lock', 'bin', 'etc', 'lib', 'libexec', 'opt',
-    'scripts'
+    'Gemfile', 'Gemfile.lock', 'bin', 'etc', 'lib', 'libexec', 'scripts'
   ].each do |file|
     copy file, File.expand_path("#{install_dir}/#{file}/../")
   end
@@ -73,10 +72,6 @@ build do
   if overrides[:development]
     copy "#{project_dir}/development-mode.sh", "#{install_dir}/etc/profile.d"
   end
-
-  # Installs clusterware's gems
-  cw_root = "#{install_dir}/opt/clusterware"
-  command "cd #{cw_root} && #{embedded_bin('bundle')} install", env: env
 
   # The compiled version of ruby hard-codes the path to itself in:
   # embedded/bin/{gem, irb, ....}. This ensures those files always run with the version of

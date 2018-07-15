@@ -1,0 +1,4 @@
+
+bundle_install_rvm
+source ~/.bash_profile
+build_dev

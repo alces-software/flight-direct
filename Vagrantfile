@@ -31,6 +31,7 @@ Vagrant.configure(2) do |config|
     master.vm.hostname = 'master'
     master.vm.synced_folder '.', $dev_path
     master.vm.synced_folder '../forge-cli', '/tmp/forge'
+    master.vm.synced_folder '../forge-packages', '/tmp/forge-packages'
     master.vm.synced_folder '../anvil', '/tmp/anvil'
     master.vm.synced_folder '../gridware', '/tmp/gridware'
     master.vm.provision 'shell', inline: $master_script

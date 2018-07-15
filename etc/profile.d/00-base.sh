@@ -10,11 +10,8 @@
 
 _flight() {
   ( set -e
-    unset FLIGHT_DIRECT_ENV_BACKUP
-    delim=":$(echo 'FD_DELIM'):"
-    export FLIGHT_DIRECT_ENV_BACKUP="$(env -0 | sed "s/\x0/$delim/g")"
-    source "$FLIGHT_DIRECT_ROOT"/etc/runtime.sh
-    cd "$FLIGHT_DIRECT_ROOT"
+    source "$FL_ROOT"/etc/runtime.sh
+    cd "$FL_ROOT"
     bin/flight "$@"
   )
 }
@@ -61,7 +58,7 @@ flight() {
 export -f flight
 
 # Exports the aliases so they are available in subshells
-declare -a aliases=('flight-direct' 'fl' 'alces' 'al')
+declare -a aliases=('fl' 'alces' 'al')
 for a in "${aliases[@]}"; do
   eval "$a() { flight \"\$@\"; }"
   export -f "$a"

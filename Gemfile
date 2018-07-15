@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 gem 'activesupport'
 gem 'thor'
 gem 'require_all'
+gem 'ronn'
 
 group :development do
   gem 'byebug'

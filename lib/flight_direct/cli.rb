@@ -1,6 +1,7 @@
 
 require 'thor'
 require 'ostruct'
+require 'erb'
 
 module FlightDirect
   class CLI < Thor
@@ -79,3 +80,4 @@ module FlightDirect
     end
   end
 end
+
