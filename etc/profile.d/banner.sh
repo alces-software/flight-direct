@@ -3,4 +3,4 @@
 # current shell. Instead it is ran in a sub-shell which prevents its failure from affecting
 # the rest of the setup
 
-(. "$FL_ROOT"/scripts/moosebird.sh)
+(. "$FL_ROOT"/scripts/moosebird.sh 'TODO_CLUSTERNAME', 'TODO_VERSION', 'TODO_DISTRO')
