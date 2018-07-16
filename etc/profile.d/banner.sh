@@ -5,7 +5,9 @@
 
 _run_flight_banner() {
   local version="FlightDirect $(flight version)"
-  (. "$FL_ROOT"/scripts/moosebird.sh 'TODO_CLUSTERNAME' "$version" "$cw_DIST")
+  local key='PRETTY_NAME='
+  local dist=$(cat /etc/os-release | grep $key | tr -d $key | tr -d '"')
+  (. "$FL_ROOT"/scripts/moosebird.sh 'TODO_CLUSTERNAME' "$version" "$dist")
 }
 _run_flight_banner
 unset _run_flight_banner
