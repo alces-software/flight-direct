@@ -53,6 +53,11 @@ module FlightDirect
       command ? invoke(command, [], help: true) : super
     end
 
+    desc :version, 'Gives the FlightDirect version'
+    def version
+      puts FlightDirect::VERSION
+    end
+
     private
 
     # Typically the thor `options` are empty for the action commands.
