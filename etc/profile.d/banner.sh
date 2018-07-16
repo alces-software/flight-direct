@@ -4,8 +4,7 @@
 # the rest of the setup
 _run_moosebird() {
   local version="Flight Direct $(flight version)"
-  local key='PRETTY_NAME='
-  local dist=$(cat /etc/os-release | grep $key | tr -d $key | tr -d '"')
+  local dist=$(. /etc/os-release; echo $PRETTY_NAME)
   (. "$FL_ROOT"/scripts/moosebird.sh 'TODO_CLUSTERNAME' "$version" "$dist")
 }
 _print_motd() {
