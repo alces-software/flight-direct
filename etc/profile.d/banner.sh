@@ -4,5 +4,5 @@
 # the rest of the setup
 
 version="FlightDirect $(flight version)"
-(. "$FL_ROOT"/scripts/moosebird.sh 'TODO_CLUSTERNAME' "$version" 'TODO_DISTRO')
+(. "$FL_ROOT"/scripts/moosebird.sh 'TODO_CLUSTERNAME' "$version" "$cw_DIST")
 unset version
