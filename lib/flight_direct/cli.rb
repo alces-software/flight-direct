@@ -53,7 +53,7 @@ module FlightDirect
       command ? invoke(command, [], help: true) : super
     end
 
-    desc :version, 'Gives the FlightDirect version'
+    desc :version, 'Gives the Flight Direct version'
     def version
       puts FlightDirect::VERSION
     end

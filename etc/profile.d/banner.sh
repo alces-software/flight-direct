@@ -3,7 +3,7 @@
 # current shell. Instead it is ran in a sub-shell which prevents its failure from affecting
 # the rest of the setup
 _run_moosebird() {
-  local version="FlightDirect $(flight version)"
+  local version="Flight Direct $(flight version)"
   local key='PRETTY_NAME='
   local dist=$(cat /etc/os-release | grep $key | tr -d $key | tr -d '"')
   (. "$FL_ROOT"/scripts/moosebird.sh 'TODO_CLUSTERNAME' "$version" "$dist")
