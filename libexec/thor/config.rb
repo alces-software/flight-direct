@@ -34,18 +34,21 @@
 require 'json'
 require 'erb'
 PREFIX = 'FL_CONFIG_'.freeze
+CONFIG_PATH = File.join(FlightDirect.root_dir, 'var/flight.conf')
 
 desc 'set key1=value1 k2=v2 ...', 'Set Flight Direct config values'
 def set(*jo_inputs)
   cli_hash = parse_jo_input(*jo_inputs)
   new_configs = hash_to_config_envs(cli_hash)
-  export_configs(new_configs)
+  export_configs(existing_configs.merge(new_configs))
 end
 
 private
 
 def parse_jo_input(*input)
-  JSON.parse(`jo #{input.join(' ')}`)
+  str = input.flatten.join(' ')
+  return {} if str.empty?
+  JSON.parse(`jo #{input.join(' ')}`) || {}
 end
 
 def hash_to_config_envs(params)
@@ -53,6 +56,18 @@ def hash_to_config_envs(params)
     config_key = PREFIX.dup + key.gsub('-', '_').upcase
     [config_key, (value.nil? ? '' : value)]
   end.to_h
+end
+
+def existing_configs
+  jo_str = read_config.each_line
+                      .reject { |line| line[0] == '#' }
+                      .map(&:chomp)
+  parse_jo_input(jo_str)
+end
+
+def read_config
+  return '' unless File.exist?(CONFIG_PATH)
+  File.read(CONFIG_PATH)
 end
 
 CONFIG_TEMPLATE = <<CONF
@@ -79,7 +94,6 @@ def export_configs(new_configs = {})
   # fl_configs is used to render the template
   fl_configs = ENV.select { |k, _v| /\A#{PREFIX}/.match?(k) }
   config_content = ERB.new(CONFIG_TEMPLATE, nil, '-').result(binding)
-  config_path = File.join(FlightDirect.root_dir, 'var/flight.conf')
-  File.write(config_path, config_content)
+  File.write(CONFIG_PATH, config_content)
 end
 
