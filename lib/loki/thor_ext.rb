@@ -25,7 +25,7 @@ module Loki
         cmd = OpenStruct.new
         File.read(path).each_line.map(&:chomp).each do |line|
           # The file stops being parsed on the first line without a '#:'
-          break unless /\A[#:]/.match?(line)
+          break unless /\A[#:<]/.match?(line)
           # Filter out junk lines from the command declaration
           next unless /\A#?:\s(?!').*:\s.*/.match?(line)
           delim = (line[0] == '#' ? '#:' : ':')
