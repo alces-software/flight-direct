@@ -3,6 +3,8 @@ require 'thor'
 require 'ostruct'
 require 'erb'
 
+require 'loki'
+
 module FlightDirect
   class CLI < Thor
     class << self
