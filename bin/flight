@@ -26,6 +26,6 @@
 require_relative File.join("#{ENV["FL_ROOT"]}/lib/flight_direct.rb")
 
 # Runs the CLI
-require 'cli'
+require 'flight_direct/cli'
 FlightDirect::CLI.run! if $PROGRAM_NAME == __FILE__
 
