@@ -1,6 +1,4 @@
-#: '
 #: SYNOPSIS: Manage the Flight Direct config
-#: '
 
 # SYNOPSIS DECLARATION:
 # The above SYNOPSIS declaration is a flag to FlightDirect core CLI. It
