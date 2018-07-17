@@ -87,12 +87,8 @@ CONFIG_TEMPLATE = <<CONF
 <% end -%>
 CONF
 
-def export_configs(new_configs = {})
-  new_configs.map do |env_key, value|
-    ENV[env_key] = value.to_s
-  end
-  # fl_configs is used to render the template
-  fl_configs = ENV.select { |k, _v| /\A#{PREFIX}/.match?(k) }
+# fl_configs is used to render the template
+def export_configs(fl_configs)
   config_content = ERB.new(CONFIG_TEMPLATE, nil, '-').result(binding)
   File.write(CONFIG_PATH, config_content)
 end
