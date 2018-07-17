@@ -11,19 +11,11 @@ module FlightDirect
       alias_method :run!, :start
 
       def actions_info
-        action_paths.map { |path| extract_info(path) }
-      end
-
-      private
-
-      def action_paths
-        [FlightDirect.root_dir, ENV['cw_ROOT']].map do |root|
-          Dir.glob(File.join(root, 'libexec/actions/**/*'))
-        end.flatten
+        action_paths.map { |path| extract_cmd_info(path) }
       end
 
       # Extracts the info block contained at the top of the action files
-      def extract_info(path)
+      def extract_cmd_info(path)
         cmd = OpenStruct.new
         File.read(path).each_line.map(&:chomp).each do |line|
           # Only match lines that start with `: `
@@ -40,6 +32,14 @@ module FlightDirect
           x[:path] = path
           x[:name] = File.basename(path, '.*')
         end
+      end
+
+      private
+
+      def action_paths
+        [FlightDirect.root_dir, ENV['cw_ROOT']].map do |root|
+          Dir.glob(File.join(root, 'libexec/actions/**/*'))
+        end.flatten
       end
     end
 
