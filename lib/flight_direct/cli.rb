@@ -14,6 +14,11 @@ module FlightDirect
         File.join(FlightDirect.root_dir, 'libexec', relative_path)
       end
 
+      def define_command(cmd, &block)
+        desc cmd.name, cmd.synopsis
+        define_method(cmd.name, &block)
+      end
+
       # Extracts the info block contained at the top of the action files
       def extract_cmd_info(path)
         cmd = OpenStruct.new
@@ -40,8 +45,7 @@ module FlightDirect
     # It also means the inbuilt `options` hash is empty
     Dir.glob(libexec_path('actions/**/*')).each do |path|
       cmd = extract_cmd_info(path)
-      desc cmd.name, cmd.synopsis
-      define_method(cmd.name) { |*args| exec_action(cmd.path, *args) }
+      define_command(cmd) { |*args| exec_action(cmd.path, *args) }
     end
 
     # Overrides the help command. Only display the help for the root,
