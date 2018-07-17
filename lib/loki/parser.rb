@@ -3,8 +3,8 @@ module Loki
   module Parser
     def self.file(path)
       Class.new(Thor) do
-        extend Loki::ThorExt
-        class_eval(File.read(path))
+        extend ThorExt
+        class_eval(File.read(path), path)
       end
     end
   end
