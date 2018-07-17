@@ -90,7 +90,7 @@ module FlightDirect
     def run_thor_plugin(cmd, *args)
       Bundler.with_clean_env do
         thor = Loki::Parser.file(cmd.path)
-        self.class.subcommand cmd.name, thor
+        self.class.subcommand(cmd.name, thor)
         thor.start(args)
       end
     end

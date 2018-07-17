@@ -30,8 +30,6 @@ require 'json'
 require 'erb'
 PREFIX = 'FL_CONFIG_'.freeze
 
-with_standard_help
-
 desc 'set key1=value1 k2=v2 ...', 'Set Flight Direct config values'
 def set(*jo_inputs)
   cli_hash = parse_jo_input(*jo_inputs)
