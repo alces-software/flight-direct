@@ -30,9 +30,10 @@ module FlightDirect
           # However skip any lines that start with `: '`
           # The loop is stopped once the name and synopsis have been set
           break if cmd.name && cmd.synopsis
-          next unless /\A:\s(?!').*:\s.*/.match?(line)
-          label = /(?<=\A:\s).*(?=:)/.match(line)[0]
-          data = /(?<=:\s#{label}:\s).*/.match(line)[0]
+          next unless /\A#?:\s(?!').*:\s.*/.match?(line)
+          delim = (line[0] == '#' ? '#:' : ':')
+          label = /(?<=\A#{delim}\s).*(?=:)/.match(line)[0]
+          data = /(?<=\A#{delim}\s#{label}:\s).*/.match(line)[0]
           cmd[label.downcase.to_sym] = data
         end
         cmd
