@@ -1,14 +1,15 @@
 
 module Loki
   module ThorExt
-    # Extracts the info block contained at the top of the action files
+    # Extracts the info in the block of code starting with '#: '
+    # The '#' is optional
     def extract_cmd_info(path)
       cmd = OpenStruct.new
       File.read(path).each_line.map(&:chomp).each do |line|
-        # Only match lines that start with `: `
-        # However skip any lines that start with `: '`
-        # The loop is stopped once the name and synopsis have been set
-        break if cmd.synopsis
+        # The file stops being parsed on the first line without a '#:'
+        break unless /\A#?[:!]/.match?(line)
+        # Filter out junk lines (see legacy code)
+        # Shebangs are allowed pass the break but are filtered out here
         next unless /\A#?:\s(?!').*:\s.*/.match?(line)
         delim = (line[0] == '#' ? '#:' : ':')
         label = /(?<=\A#{delim}\s).*(?=:)/.match(line)[0]
