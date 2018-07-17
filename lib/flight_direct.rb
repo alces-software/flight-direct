@@ -34,7 +34,3 @@ module FlightDirect
 end
 FlightDirect.root_dir = default_root
 
-# Requires the common gems used throughout the project
-require 'active_support/core_ext/string'
-require 'require_all'
-
