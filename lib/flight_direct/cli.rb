@@ -10,8 +10,10 @@ module FlightDirect
     class << self
       alias_method :run!, :start
 
-      def libexec_path(relative_path)
-        File.join(FlightDirect.root_dir, 'libexec', relative_path)
+      def glob_libexec(relative_path)
+        Dir.glob(
+          File.join(FlightDirect.root_dir, 'libexec', relative_path)
+        )
       end
 
       def define_command(cmd, &block)
@@ -43,7 +45,7 @@ module FlightDirect
     # Defines the contents of `libexec/actions` as commands
     # `*args` is used as it contains all arguments including flags
     # It also means the inbuilt `options` hash is empty
-    Dir.glob(libexec_path('actions/**/*')).each do |path|
+    glob_libexec('actions/**/*').each do |path|
       cmd = extract_cmd_info(path)
       define_command(cmd) { |*args| exec_action(cmd.path, *args) }
     end
