@@ -1,12 +1,19 @@
 #: SYNOPSIS: Manage the Flight Direct config
 
+# IMPORTANT NOTE:
+# The blank line above me denotes the end of the command declaration
+# Because of the various other magic comments, the declaration is not
+# guaranteed to be at the top.
+#
+# Instead the *BLANK LINE* is tells FlightDirect that this is the end of
+# the declaration
+#
 # SYNOPSIS DECLARATION:
 # The above SYNOPSIS declaration is a flag to FlightDirect core CLI. It
 # allows for details of the package to be parsed without having to require
 # the ruby code. This will make the CLI faster as it only requires the code
 # if it is going to run it. It is unrelated to the thor-loki stuff below.
-# STYLE: Please leave a empty line after the declaration
-#
+
 # THOR-LOKI:
 # This file uses the new Loki module to generate a Thor file. Loki will
 # create an anonymous Thor class and then evaluates the following code.
