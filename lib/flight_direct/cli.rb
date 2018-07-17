@@ -7,7 +7,7 @@ require 'loki'
 
 module FlightDirect
   class CLI < Thor
-    extend Loki::ThorExt
+    include Loki::ThorExt
 
     class << self
       alias_method :run!, :start
@@ -17,11 +17,6 @@ module FlightDirect
           File.join(FlightDirect.root_dir, 'libexec', relative_path)
         )
       end
-
-      def define_command(cmd, &block)
-        desc cmd.name, cmd.synopsis
-        define_method(cmd.name, &block)
-      end
     end
 
     # Defines the contents of `libexec/actions` as commands
@@ -29,13 +24,12 @@ module FlightDirect
     # It also means the inbuilt `options` hash is empty
     glob_libexec('actions/**/*').each do |path|
       cmd = extract_cmd_info(path)
-      define_command(cmd) { |*args| exec_action(cmd.path, *args) }
+      desc_method(cmd) { |*args| exec_action(cmd.path, *args) }
     end
 
     # Defines the Thor plugin commands using Loki
     glob_libexec('thor/*').each do |path|
-      cmd = extract_cmd_info(path)
-      define_command(cmd) { |*args| run_thor_plugin(cmd, *args) }
+      jit_parse_subcommand(path, clean_bundle: true)
     end
 
     # Overrides the help command. Only display the help for the root,
@@ -67,14 +61,6 @@ module FlightDirect
         'bash', flags, path, stringify_args(args), append_help
       ].join(' ')
       Bundler.with_clean_env { exec(cmd) }
-    end
-
-    def run_thor_plugin(cmd, *args)
-      Bundler.with_clean_env do
-        thor = Loki::Parser.file(cmd.path)
-        self.class.subcommand(cmd.name, thor)
-        thor.start(args)
-      end
     end
 
     # The argument array needs to be converted back to a space separated
