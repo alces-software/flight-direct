@@ -43,6 +43,14 @@ def set(*jo_inputs)
   export_configs(existing_configs.merge(new_configs))
 end
 
+# Configs should always be retrieved from the environment. This makes
+# them more flexible should things change in the future. The 'get'
+# command is only a user friendly wrapper
+desc 'get key', 'Retrieve a Flight Direct config value'
+def get(key)
+  puts ENV[convert_key_to_env(key)]
+end
+
 private
 
 def parse_jo_input(*input)
@@ -53,9 +61,12 @@ end
 
 def hash_to_config_envs(params)
   params.map do |key, value|
-    config_key = PREFIX.dup + key.gsub('-', '_').upcase
-    [config_key, (value.nil? ? '' : value)]
+    [convert_key_to_env(key), (value.nil? ? '' : value)]
   end.to_h
+end
+
+def convert_key_to_env(key)
+  PREFIX.dup + key.gsub('-', '_').upcase
 end
 
 def existing_configs
@@ -78,7 +89,7 @@ CONFIG_TEMPLATE = <<CONF
 # `flight config set` or manually
 #
 # NOTE: Editting Manually
-# All variabels must be prefixed with `FL_CONFIG_`. Failure to do so will
+# All variables must be prefixed with `FL_CONFIG_`. Failure to do so will
 # cause the config to be lost the next time the file is editted through
 # `flight config`
 #
