@@ -50,6 +50,12 @@ module FlightDirect
       define_command(cmd) { |*args| exec_action(cmd.path, *args) }
     end
 
+    # Defines the Thor plugin commands using Loki
+    glob_libexec('thor/*').each do |path|
+      cmd = extract_cmd_info(path)
+      define_command(cmd) { |*args| run_thor_plugin(path, *args) }
+    end
+
     # Overrides the help command. Only display the help for the root,
     # `flight`, command. Otherwise re-execute with a --help flag
     def help(*all_args)
@@ -79,6 +85,12 @@ module FlightDirect
         'bash', flags, path, stringify_args(args), append_help
       ].join(' ')
       Bundler.with_clean_env { exec(cmd) }
+    end
+
+    def run_thor_plugin(path, *args)
+      Bundler.with_clean_env do
+        Loki::Parser.file(path).start(args)
+      end
     end
 
     # The argument array needs to be converted back to a space separated
