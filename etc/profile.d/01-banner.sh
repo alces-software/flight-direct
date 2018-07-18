@@ -18,7 +18,7 @@ _fl_print_motd() {
   if [ -d "$FL_ROOT"/etc/motd.d ]; then
     # Text and scripts are globed together to ensure they are run in
     # the correct order
-    for i in $(ls "$FL_ROOT"/etc/motd.d/*.{sh,txt}) ; do
+    for i in $(ls "$FL_ROOT"/etc/motd.d/*.{sh,txt} 2>/dev/null) ; do
       if [ -r "$i" ]; then
         # Cat text files
         if [ "${i: -4}" == '.txt' ]; then
