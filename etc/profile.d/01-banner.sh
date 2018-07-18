@@ -38,7 +38,9 @@ _fl_role=${_fl_role:-login}
 if [[ "$_fl_role" == login ]]; then
   _fl_long_banner
 else
-  echo 'DO SOMETHING'
+  cat <<'EOF'
+[38;5;68m             [40m -[ [1;38;5;249malces [1;38;5;15mflight[38;5;68m ]- [0m                  
+EOF
 fi
 
 unset _fl_role
