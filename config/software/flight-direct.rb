@@ -47,7 +47,8 @@ build do
 
   # Moves the project into place
   [
-    'Gemfile', 'Gemfile.lock', 'bin', 'etc', 'lib', 'libexec', 'scripts'
+    'Gemfile', 'Gemfile.lock', 'bin', 'etc', 'lib', 'libexec', 'scripts',
+    'templates'
   ].each do |file|
     copy file, File.expand_path("#{install_dir}/#{file}/../")
   end
