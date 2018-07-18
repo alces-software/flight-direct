@@ -75,7 +75,8 @@ build do
 
   # Set the development environment variable
   if overrides[:development]
-    copy "#{project_dir}/development-mode.sh", "#{install_dir}/etc/profile.d"
+    copy "#{project_dir}/ZZ-development-mode.sh",
+         "#{install_dir}/etc/profile.d"
   end
 
   # The compiled version of ruby hard-codes the path to itself in:
