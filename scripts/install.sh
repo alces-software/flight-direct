@@ -6,30 +6,36 @@ set -e
 
 FL_ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." >/dev/null && pwd )"
 
-# Sets up the profile
-echo "source $FL_ROOT/etc/profile.sh" > /etc/profile.d/flight-direct.sh
-source '/etc/profile.d/flight-direct.sh' >/dev/null
+# Source flight so it can use ERB
+source $FL_ROOT/etc/profile.sh >/dev/null
 
 # Renders install time scripts
 cat <<RENDER_SCRIPTS | flight ruby
 require 'erb'
 require 'fileutils'
 
-template_dir = File.join(ENV['FL_ROOT'], 'templates/fl-root')
-Dir.glob("#{template_dir}/**/*.erb")
-   .each do |source|
-     template = File.read(source)
-     content = ERB.new(template, nil, '-').result(binding)
-     destination = source.sub(template_dir, ENV['FL_ROOT']).chomp('.erb')
-     FileUtils.mkdir_p File.dirname(destination)
-     File.write(destination, content)
-   end
-RENDER_SCRIPTS
+render = Class.new do
+  def self.directory(source, destination)
+    Dir.glob(File.join(source, '**/*.erb'))
+       .map { |path| path.sub(source, '') }
+       .each { |path| file(source, destination, path) }
+  end
 
-# Sets up logrotate
-cat <<SYS_LOGROTATE > /etc/logrotate.d/flight-direct
-include $FL_ROOT/etc/logrotate.d
-SYS_LOGROTATE
+  private
+
+  def self.file(src_dir, dest_dir, rel_path)
+    template = File.read(File.join(src_dir, rel_path))
+    content = ERB.new(template, nil, '-').result(binding)
+    FileUtils.mkdir_p dest_dir
+    File.write(File.join(dest_dir, rel_path).chomp('.erb'), content)
+  end
+end
+
+fl_root_templates = File.join(ENV['FL_ROOT'], 'templates/fl-root')
+render.directory(fl_root_templates, ENV['FL_ROOT'])
+dist_templates = File.join(ENV['FL_ROOT'], 'templates/dist')
+render.directory(dist_templates, '/')
+RENDER_SCRIPTS
 
 # Install Complete
 cat <<EOF
