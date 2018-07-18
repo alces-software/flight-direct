@@ -4,6 +4,6 @@ msg='Can not determine the flight direct install location'
 : ${FL_ROOT?$msg}
 
 pushd $fd_dev_root >/dev/null
-rsync --update --no-perms --no-owner --no-group -rv \
+rsync --no-perms --no-owner --no-group -rltvD \
       bin etc lib libexec scripts Gemfile* $FL_ROOT/
 popd >/dev/null
