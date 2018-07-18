@@ -52,6 +52,11 @@ build do
     copy file, File.expand_path("#{install_dir}/#{file}/../")
   end
 
+  # Makes required install directories
+  ['var/lib', 'var/log', 'opt'].each do |rel_path|
+    mkdir File.join(install_dir, rel_path)
+  end
+
   # Renders the distribution specific runtime environment
   cw_DIST = centos? ? 'el7' : (raise <<~EOF.squish
       FlightDirect can currently only be built for el7

@@ -2,12 +2,15 @@
 # Runs the moose-bird in a sub-shell. The animation can exit early which crashes the
 # current shell. Instead it is ran in a sub-shell which prevents its failure from affecting
 # the rest of the setup
+_clustername() {
+  local config=$(source "$FL_ROOT"/var/flight.conf 2>/dev/null
+                 echo $FL_CONFIG_CLUSTERNAME )
+  echo ${config:-'Unconfigured'}
+}
 _run_moosebird() {
   local version="Flight Direct $(flight version)"
   local dist=$(. /etc/os-release; echo $PRETTY_NAME)
-  local name=$(. "$FL_ROOT"/etc/flight-direct.rc 2>/dev/null;
-               echo $FL_CLUSTERNAME)
-  name=${name:-'Unconfigured'}
+  local name=$(_clustername)
   (. "$FL_ROOT"/scripts/moosebird.sh "$name" "$version" "$dist")
 }
 _print_motd() {
@@ -33,3 +36,4 @@ _run_moosebird
 _print_motd
 unset _run_moosebird
 unset _print_motd
+unset _clustername
