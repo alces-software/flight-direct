@@ -26,6 +26,11 @@ Dir.glob("#{template_dir}/**/*.erb")
    end
 RENDER_SCRIPTS
 
+# Sets up logrotate
+cat <<SYS_LOGROTATE > /etc/logrotate.d/flight-direct
+include $FL_ROOT/etc/logrotate.d
+SYS_LOGROTATE
+
 # Install Complete
 cat <<EOF
 
