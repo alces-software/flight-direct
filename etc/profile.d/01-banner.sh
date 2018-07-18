@@ -29,8 +29,19 @@ _fl_print_motd() {
   fi
 }
 
-_fl_run_moosebird
-_fl_print_motd
+_fl_long_banner() {
+  _fl_run_moosebird
+  _fl_print_motd
+}
+_fl_role=$(_fl_helper_config_get ROLE)
+_fl_role=${_fl_role:-login}
+if [[ "$_fl_role" == login ]]; then
+  _fl_long_banner
+else
+  echo 'DO SOMETHING'
+fi
 
+unset _fl_role
+unset _fl_long_banner
 unset _fl_run_moosebird
 unset _fl_print_motd
