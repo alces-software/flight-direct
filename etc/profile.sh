@@ -37,10 +37,17 @@ if [[ -z "${FL_SOURCED}" ]]; then
   # NOTE: THIS IS A DUMB TOOL! The input must be in capitals
   _fl_helper_config_get() {
     echo $(
-      var="FL_CONFIG_$1"
+      key="FL_CONFIG_$1"
       set -a +e
       source "$FL_ROOT"/var/flight.conf 2>/dev/null
-      echo ${!var}
+      value=${!key}
+      if [[ -z "$value" ]]; then
+        cat <<WARN >&2
+WARNING: '$key' has not been set
+See "flight config set" for further details
+WARN
+      fi
+      echo "$value"
     )
   }
 

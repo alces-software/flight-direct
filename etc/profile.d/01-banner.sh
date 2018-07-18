@@ -6,6 +6,7 @@ _fl_run_moosebird() {
   local version="Flight Direct $(flight version)"
   local dist=$(. /etc/os-release; echo $PRETTY_NAME)
   local name=$(_fl_helper_config_get CLUSTERNAME)
+  name=${name:-Unconfigured}
   (. "$FL_ROOT"/scripts/moosebird.sh "$name" "$version" "$dist")
 }
 _fl_print_motd() {
@@ -27,7 +28,9 @@ _fl_print_motd() {
     done
   fi
 }
+
 _fl_run_moosebird
 _fl_print_motd
+
 unset _fl_run_moosebird
 unset _fl_print_motd
