@@ -51,6 +51,12 @@ def get(key)
   puts ENV[convert_key_to_env(key)]
 end
 
+desc 'list', 'Lists all the configs loaded into the environment'
+def list
+  ENV.select { |k, _v| /\A#{PREFIX}/.match?(k) }
+     .each { |k, v| puts "#{k}=#{v}" }
+end
+
 private
 
 def parse_jo_input(*input)
