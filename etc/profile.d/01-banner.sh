@@ -38,8 +38,8 @@ _fl_role=${_fl_role:-login}
 if [[ "$_fl_role" == login ]]; then
   _fl_long_banner
 else
-  cat <<'EOF'
-[38;5;68m             [40m -[ [1;38;5;249malces [1;38;5;15mflight[38;5;68m ]- [0m                  
+  cat <<EOF
+[38;5;68m[40m -[ [1;38;5;249malces [1;38;5;15mflight $(flight version)[38;5;68m ]- [0m
 EOF
 fi
 
