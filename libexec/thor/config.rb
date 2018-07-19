@@ -96,7 +96,7 @@ CONFIG_TEMPLATE = <<CONF
 # environment configs ('FL_CONFIG'). This file may be editted with
 # `flight config set` or manually
 #
-# NOTE: Editting Manually
+# NOTE: Editing Manually
 # All variables must be prefixed with `FL_CONFIG_`. Failure to do so will
 # cause the config to be lost the next time the file is editted through
 # `flight config`
