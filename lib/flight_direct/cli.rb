@@ -3,46 +3,33 @@ require 'thor'
 require 'ostruct'
 require 'erb'
 
+require 'loki'
+
 module FlightDirect
   class CLI < Thor
+    include Loki::ThorExt
+
     class << self
       alias_method :run!, :start
 
-      def actions_info
-        action_paths.map { |path| extract_info(path) }
-      end
-
-      private
-
-      def action_paths
-        [FlightDirect.root_dir, ENV['cw_ROOT']].map do |root|
-          Dir.glob(File.join(root, 'libexec/actions/**/*'))
-        end.flatten
-      end
-
-      # Extracts the info block contained at the top of the action files
-      def extract_info(path)
-        cmd = OpenStruct.new(path: path)
-        File.read(path).each_line.map(&:chomp).each do |line|
-          # Only match lines that start with `: `
-          # However skip any lines that start with `: '`
-          # The loop is stopped once the name and synopsis have been set
-          break if cmd.name && cmd.synopsis
-          next unless /\A:\s(?!').*:\s.*/.match?(line)
-          label = /(?<=\A:\s).*(?=:)/.match(line)[0]
-          data = /(?<=:\s#{label}:\s).*/.match(line)[0]
-          cmd[label.downcase.to_sym] = data
-        end
-        cmd
+      def glob_libexec(relative_path)
+        Dir.glob(
+          File.join(FlightDirect.root_dir, 'libexec', relative_path)
+        )
       end
     end
 
     # Defines the contents of `libexec/actions` as commands
     # `*args` is used as it contains all arguments including flags
     # It also means the inbuilt `options` hash is empty
-    actions_info.each do |cmd|
-      desc cmd.name, cmd.synopsis
-      define_method(cmd.name) { |*args| exec_action(cmd.path, *args) }
+    glob_libexec('actions/**/*').each do |path|
+      cmd = extract_cmd_info(path)
+      desc_method(cmd) { |*args| exec_action(cmd.path, *args) }
+    end
+
+    # Defines the Thor plugin commands using Loki
+    glob_libexec('thor/*').each do |path|
+      jit_parse_subcommand(path, clean_bundle: true)
     end
 
     # Overrides the help command. Only display the help for the root,
@@ -51,6 +38,11 @@ module FlightDirect
       command = all_args.reject { |a| /\A-/.match?(a) }
                         .first
       command ? invoke(command, [], help: true) : super
+    end
+
+    desc :version, 'Gives the Flight Direct version'
+    def version
+      puts FlightDirect::VERSION
     end
 
     private

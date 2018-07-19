@@ -13,6 +13,15 @@ export SSL_CERT_FILE=$root/embedded/ssl/certs/cacert.pem
 # Source the distribution specific runtime environment
 source $root/etc/dist-runtime.sh
 
+# Exports the flight direct user config
+flight_conf="$FL_ROOT"/var/flight.conf
+if [ -f "$flight_conf" ]; then
+  set -a
+  source "$flight_conf"
+  set +a
+fi
+unset flight_conf
+
 # Sets up clusterware
 export cw_BINNAME="alces"
 export cw_CMDDIR="$cw_ROOT/libexec/actions"

@@ -47,9 +47,15 @@ build do
 
   # Moves the project into place
   [
-    'Gemfile', 'Gemfile.lock', 'bin', 'etc', 'lib', 'libexec', 'scripts'
+    'Gemfile', 'Gemfile.lock', 'bin', 'etc', 'lib', 'libexec', 'scripts',
+    'templates'
   ].each do |file|
     copy file, File.expand_path("#{install_dir}/#{file}/../")
+  end
+
+  # Makes required install directories
+  ['var/lib', 'var/log', 'opt'].each do |rel_path|
+    mkdir File.join(install_dir, rel_path)
   end
 
   # Renders the distribution specific runtime environment
@@ -70,7 +76,8 @@ build do
 
   # Set the development environment variable
   if overrides[:development]
-    copy "#{project_dir}/development-mode.sh", "#{install_dir}/etc/profile.d"
+    copy "#{project_dir}/ZZ-development-mode.sh",
+         "#{install_dir}/etc/profile.d"
   end
 
   # The compiled version of ruby hard-codes the path to itself in:

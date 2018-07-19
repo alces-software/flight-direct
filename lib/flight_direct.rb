@@ -6,14 +6,13 @@ load_root = (dev_mode && dev_root) ? dev_root : default_root
 
 # Sets up the load paths
 $LOAD_PATH << File.join(load_root, 'lib')
-$LOAD_PATH << File.join(load_root, 'lib', 'flight_direct')
 
 # Sets up Bundler
 ENV['BUNDLE_GEMFILE'] ||= "#{load_root}/Gemfile"
 require 'bundler/setup'
 
 # Requires the versioning info
-require 'version'
+require 'flight_direct/version'
 
 # Adds additional debugging tools
 if dev_mode
@@ -34,8 +33,4 @@ module FlightDirect
   end
 end
 FlightDirect.root_dir = default_root
-
-# Requires the common gems used throughout the project
-require 'active_support/core_ext/string'
-require 'require_all'
 

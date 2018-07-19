@@ -16,18 +16,8 @@ curl -f $url > $tarball
 # Extracts the tarball
 tar -zxf $tarball
 
-# Sets up the profile
-sys_profile='/etc/profile.d/flight-direct.sh'
-fd_profile="$FL_INSTALL_DIR/flight-direct/etc/profile.sh"
-echo "source $fd_profile" > $sys_profile
-
-# Install Complete
-cat <<EOF
-
-FlightDirect has been successfully installed
-Restart your current shell before continuing
-
-EOF
+# Runs the installer
+$("$FL_INSTALL_DIR"/flight-direct/scripts/install.sh)
 
 # Moves back to the original dir
 popd >/dev/null
