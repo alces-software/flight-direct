@@ -40,7 +40,9 @@ desc 'set key1=value1 k2=v2 ...', 'Set Flight Direct config values'
 def set(*jo_inputs)
   cli_hash = parse_jo_input(*jo_inputs)
   new_configs = hash_to_config_envs(cli_hash)
-  export_configs(existing_configs.merge(new_configs))
+  merged_configs = existing_configs.merge(new_configs)
+                                   .reject { |_k, v| v.empty? }
+  export_configs(merged_configs)
 end
 
 # Configs should always be retrieved from the environment. This makes
