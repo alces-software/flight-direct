@@ -26,8 +26,9 @@ render = Class.new do
   def self.file(src_dir, dest_dir, rel_path)
     template = File.read(File.join(src_dir, rel_path))
     content = ERB.new(template, nil, '-').result(binding)
-    FileUtils.mkdir_p dest_dir
-    File.write(File.join(dest_dir, rel_path).chomp('.erb'), content)
+    dest_path = File.join(dest_dir, rel_path).chomp('.erb')
+    FileUtils.mkdir_p File.dirname(dest_path)
+    File.write(dest_path, content)
   end
 end
 
