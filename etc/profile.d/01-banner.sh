@@ -35,12 +35,16 @@ _fl_long_banner() {
 }
 _fl_role=$(_fl_helper_config_get ROLE)
 _fl_role=${_fl_role:-login}
-if [[ "$_fl_role" == login ]]; then
-  _fl_long_banner
-else
-  cat <<EOF
+
+# Do not print the banner for non-interactive shells
+if [[ -t 0 ]]; then
+  if [[ "$_fl_role" == login ]]; then
+    _fl_long_banner
+  else
+    cat <<EOF
 [38;5;68m[40m -[ [1;38;5;249malces [1;38;5;15mflight $(flight version)[38;5;68m ]- [0m
 EOF
+  fi
 fi
 
 unset _fl_role
