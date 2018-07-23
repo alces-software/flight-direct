@@ -9,8 +9,7 @@ FL_ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." >/dev/null && pwd )"
 # Source flight so it can use ERB
 source $FL_ROOT/etc/profile.sh >/dev/null
 
-# Renders install time scripts
-cat <<RENDER_SCRIPTS | flight ruby
+cat <<RUBY_SCRIPT | flight ruby
 require 'erb'
 require 'fileutils'
 
@@ -47,7 +46,7 @@ template = File.read(template_file)
   File.write("#{cron_path}/flight-direct", rendered)
   FileUtils.mkdir_p File.join(ENV['FL_ROOT'], cron_path)
 end
-RENDER_SCRIPTS
+RUBY_SCRIPT
 
 # Install Complete
 cat <<EOF
