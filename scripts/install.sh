@@ -36,6 +36,15 @@ fl_root_templates = File.join(ENV['FL_ROOT'], 'templates/fl-root')
 render.directory(fl_root_templates, ENV['FL_ROOT'])
 dist_templates = File.join(ENV['FL_ROOT'], 'templates/dist')
 render.directory(dist_templates, '/')
+
+# Renders the cron files from the shared directory. We need a better way
+# do this. Maybe the file syncer once I write it ??
+template_file = File.join(ENV['FL_ROOT'], 'templates/share/cron.time.erb')
+template = File.read(template_file)
+['hourly', 'daily', 'weekly', 'monthly'].each do |cron_time|
+  rendered = ERB.new(template, nil, '-').result(binding)
+  File.write("/etc/cron.#{cron_time}/flight-direct", rendered)
+end
 RENDER_SCRIPTS
 
 # Install Complete

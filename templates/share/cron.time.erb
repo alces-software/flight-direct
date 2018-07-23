@@ -1,0 +1,3 @@
+#!/bin/bash
+# Run Flight Direct <%= cron_time %> jobs
+run-parts <%= ENV['FL_ROOT'] %>/etc/cron.<%= cron_time %>

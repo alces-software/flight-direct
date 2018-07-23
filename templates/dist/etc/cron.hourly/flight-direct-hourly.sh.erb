@@ -1,5 +1,0 @@
-#!/bin/bash
-# Run Flight Direct hourly jobs
-# The other times are run from /etc/cron.daily
-# This means they will run with anacron (if the system supports it)
-run-parts <%= ENV['FL_ROOT'] %>/etc/cron.hourly
