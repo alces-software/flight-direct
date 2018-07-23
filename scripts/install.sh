@@ -43,7 +43,9 @@ template_file = File.join(ENV['FL_ROOT'], 'templates/share/cron.time.erb')
 template = File.read(template_file)
 ['hourly', 'daily', 'weekly', 'monthly'].each do |cron_time|
   rendered = ERB.new(template, nil, '-').result(binding)
-  File.write("/etc/cron.#{cron_time}/flight-direct", rendered)
+  cron_path = "/etc/cron.#{cron_time}"
+  File.write("#{cron_path}/flight-direct", rendered)
+  FileUtils.mkdir_p File.join(ENV['FL_ROOT'], cron_path)
 end
 RENDER_SCRIPTS
 
