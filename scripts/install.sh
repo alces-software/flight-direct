@@ -31,8 +31,11 @@ render = Class.new do
   end
 end
 
+# Renders the templates that are stored within the flight root
 fl_root_templates = File.join(ENV['FL_ROOT'], 'templates/fl-root')
 render.directory(fl_root_templates, ENV['FL_ROOT'])
+
+# Renders the distibutes (aka root) templates
 dist_templates = File.join(ENV['FL_ROOT'], 'templates/dist')
 render.directory(dist_templates, '/')
 
