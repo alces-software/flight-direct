@@ -15,5 +15,7 @@ args = raw_args.drop(1)
 lib_dir = file.sub(/libexec\/thor\/.*\Z/, '/lib')
 $LOAD_PATH.unshift(lib_dir) if File.directory?(lib_dir)
 
-Loki::Parser.file(file).start(args)
+Bundler.with_clean_env do
+  Loki::Parser.file(file).start(args)
+end
 
