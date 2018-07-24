@@ -41,7 +41,7 @@ def set(*jo_inputs)
   cli_hash = parse_jo_input(*jo_inputs)
   new_configs = hash_to_config_envs(cli_hash)
   merged_configs = existing_configs.merge(new_configs)
-                                   .reject { |_k, v| v.empty? }
+                                   .reject { |_k, v| v.to_s.empty? }
   export_configs(merged_configs)
 end
 
