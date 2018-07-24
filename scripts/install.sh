@@ -39,6 +39,10 @@ render.directory(fl_root_templates, ENV['FL_ROOT'])
 dist_templates = File.join(ENV['FL_ROOT'], 'templates/dist')
 render.directory(dist_templates, '/')
 
+# Creates the reboot crontab directory. The system entry is created in the
+# distibution file rendering
+FileUtils.mkdir_p File.join(ENV['FL_ROOT'], 'etc/cron.reboot')
+
 # Renders the cron files from the shared directory. We need a better way
 # do this. Maybe the file syncer once I write it ??
 template_file = File.join(ENV['FL_ROOT'], 'templates/share/cron.time.erb')
