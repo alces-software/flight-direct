@@ -3,12 +3,17 @@
 # development to run forge packages that haven't been installed
 
 $LOAD_PATH << File.join(ENV['FL_ROOT'], 'lib')
+
 require 'flight_direct'
 require 'flight_direct/cli'
 
 raw_args = ARGV.dup
-file = raw_args.first
+file = File.expand_path(raw_args.first)
 args = raw_args.drop(1)
+
+# Infers the packages `lib` directory and adds it to the load path
+lib_dir = file.sub(/libexec\/thor\/.*\Z/, '/lib')
+$LOAD_PATH.unshift(lib_dir) if File.directory?(lib_dir)
 
 Loki::Parser.file(file).start(args)
 
