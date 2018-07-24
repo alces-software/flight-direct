@@ -24,10 +24,6 @@
 # - https://github.com/erikhuda/thor/wiki/Getting-Started
 # - https://www.rubydoc.info/github/wycats/thor/Thor
 #
-# Loki will also add a few helper methods, the first when being
-# `with_standard_help`. The help functionality will need to be expand at
-# some point, so having the command will be useful. Loki is currently a WIP
-#
 # * Thor and Loki are implicitly available, however other packages will
 #   still need to be required
 
