@@ -1,0 +1,5 @@
+# Flight Direct cron tab file for setting up reboot scripts
+SHELL=/bin/bash
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+MAILTO=<%= ENV['USER'] %>
+@reboot <%= ENV['USER'] %> run-parts <%= ENV['FL_ROOT'] %>/etc/cron.reboot

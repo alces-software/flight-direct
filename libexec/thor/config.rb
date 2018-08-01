@@ -24,16 +24,12 @@
 # - https://github.com/erikhuda/thor/wiki/Getting-Started
 # - https://www.rubydoc.info/github/wycats/thor/Thor
 #
-# Loki will also add a few helper methods, the first when being
-# `with_standard_help`. The help functionality will need to be expand at
-# some point, so having the command will be useful. Loki is currently a WIP
-#
 # * Thor and Loki are implicitly available, however other packages will
 #   still need to be required
 
+require 'flight_config'
 require 'json'
 require 'erb'
-PREFIX = 'FL_CONFIG_'.freeze
 CONFIG_PATH = File.join(FlightDirect.root_dir, 'var/flight.conf')
 
 desc 'set key1=value1 k2=v2 ...', 'Set Flight Direct config values'
@@ -41,7 +37,7 @@ def set(*jo_inputs)
   cli_hash = parse_jo_input(*jo_inputs)
   new_configs = hash_to_config_envs(cli_hash)
   merged_configs = existing_configs.merge(new_configs)
-                                   .reject { |_k, v| v.empty? }
+                                   .reject { |_k, v| v.to_s.empty? }
   export_configs(merged_configs)
 end
 
@@ -50,12 +46,12 @@ end
 # command is only a user friendly wrapper
 desc 'get key', 'Retrieve a Flight Direct config value'
 def get(key)
-  puts ENV[convert_key_to_env(key)]
+  puts FlightConfig.get(key)
 end
 
 desc 'list', 'Lists all the configs loaded into the environment'
 def list
-  ENV.select { |k, _v| /\A#{PREFIX}/.match?(k) }
+  ENV.select { |k, _v| /\A#{FlightConfig::PREFIX}/.match?(k) }
      .each { |k, v| puts "#{k}=#{v}" }
 end
 
@@ -69,12 +65,8 @@ end
 
 def hash_to_config_envs(params)
   params.map do |key, value|
-    [convert_key_to_env(key), (value.nil? ? '' : value)]
+    [FlightConfig.key_to_env(key), (value.nil? ? '' : value)]
   end.to_h
-end
-
-def convert_key_to_env(key)
-  PREFIX.dup + key.gsub('-', '_').upcase
 end
 
 def existing_configs

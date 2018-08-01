@@ -9,8 +9,7 @@ FL_ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." >/dev/null && pwd )"
 # Source flight so it can use ERB
 source $FL_ROOT/etc/profile.sh >/dev/null
 
-# Renders install time scripts
-cat <<RENDER_SCRIPTS | flight ruby
+cat <<RUBY_SCRIPT | flight ruby
 require 'erb'
 require 'fileutils'
 
@@ -26,16 +25,35 @@ render = Class.new do
   def self.file(src_dir, dest_dir, rel_path)
     template = File.read(File.join(src_dir, rel_path))
     content = ERB.new(template, nil, '-').result(binding)
-    FileUtils.mkdir_p dest_dir
-    File.write(File.join(dest_dir, rel_path).chomp('.erb'), content)
+    dest_path = File.join(dest_dir, rel_path).chomp('.erb')
+    FileUtils.mkdir_p File.dirname(dest_path)
+    File.write(dest_path, content)
   end
 end
 
+# Renders the templates that are stored within the flight root
 fl_root_templates = File.join(ENV['FL_ROOT'], 'templates/fl-root')
 render.directory(fl_root_templates, ENV['FL_ROOT'])
+
+# Renders the distibutes (aka root) templates
 dist_templates = File.join(ENV['FL_ROOT'], 'templates/dist')
 render.directory(dist_templates, '/')
-RENDER_SCRIPTS
+
+# Creates the reboot crontab directory. The system entry is created in the
+# distibution file rendering
+FileUtils.mkdir_p File.join(ENV['FL_ROOT'], 'etc/cron.reboot')
+
+# Renders the cron files from the shared directory. We need a better way
+# do this. Maybe the file syncer once I write it ??
+template_file = File.join(ENV['FL_ROOT'], 'templates/share/cron.time.erb')
+template = File.read(template_file)
+['hourly', 'daily', 'weekly', 'monthly'].each do |cron_time|
+  rendered = ERB.new(template, nil, '-').result(binding)
+  cron_path = "/etc/cron.#{cron_time}"
+  File.write("#{cron_path}/flight-direct", rendered)
+  FileUtils.mkdir_p File.join(ENV['FL_ROOT'], cron_path)
+end
+RUBY_SCRIPT
 
 # Install Complete
 cat <<EOF
