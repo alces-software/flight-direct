@@ -2,6 +2,7 @@
 # This script parses loki `Thor` files and then runs them. It is used in
 # development to run forge packages that haven't been installed
 
+require 'pry'
 $LOAD_PATH << File.join(ENV['FL_ROOT'], 'lib')
 
 require 'flight_direct'
