@@ -70,7 +70,11 @@ module Loki
 
       # Loki commands allow for additional error handling then vanilla Thor
       def define_loki_command(method)
-        define_method(method) { |*args| run_loki_command(method, *args) }
+        method_option :trace, type: :boolean,
+                      desc: 'Display the backtrace if there is an error'
+        define_method(method) do |*args|
+          run_loki_command(method, *args)
+        end
       end
     end
 
@@ -90,6 +94,9 @@ module Loki
       # TODO: Make the safer and probably test it
       e.backtrace.shift
       raise e
+    rescue => e
+      # Reraise the error if the backtrace is on
+      raise e if options.trace
     end
   end
 end
