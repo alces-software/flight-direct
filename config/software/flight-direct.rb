@@ -54,7 +54,7 @@ build do
   end
 
   # Makes required install directories
-  ['var/lib', 'var/log', 'opt'].each do |rel_path|
+  ['etc/motd.d', 'var/lib', 'var/log', 'opt'].each do |rel_path|
     mkdir File.join(install_dir, rel_path)
   end
 
