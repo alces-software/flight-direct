@@ -70,18 +70,7 @@ module Loki
 
       # Loki commands allow for additional error handling then vanilla Thor
       def define_loki_command(method)
-        define_method(method) do |*args|
-          begin
-            send(self.class.run_loki_method(method), *args)
-
-          # Hide the `_run_loki` method from the inbuilt Thor error handlers
-          # Thor checks the backtrace to see where the error occurs
-          # TODO: Make the safer and probably test it
-          rescue NoMethodError, ArgumentError => e
-            e.backtrace.shift
-            raise e
-          end
-        end
+        define_method(method) { |*args| run_loki_command(method, *args) }
       end
     end
 
@@ -89,6 +78,18 @@ module Loki
       thor = Loki::Parser.file(cmd.path)
       self.class.subcommand(cmd.name, thor)
       thor.start(args)
+    end
+
+    private
+
+    def run_loki_command(method, *args)
+        send(self.class.run_loki_method(method), *args)
+    rescue NoMethodError, ArgumentError => e
+      # Hide the `_run_loki` method from the inbuilt Thor error handlers
+      # Thor checks the backtrace to see where the error occurs
+      # TODO: Make the safer and probably test it
+      e.backtrace.shift
+      raise e
     end
   end
 end
