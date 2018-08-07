@@ -72,9 +72,7 @@ module Loki
       def define_loki_command(method)
         method_option :trace, type: :boolean,
                       desc: 'Display the backtrace if there is an error'
-        define_method(method) do |*args|
-          run_loki_command(method, *args)
-        end
+        define_method(method) { |*args| run_loki_command(method, *args) }
       end
     end
 
