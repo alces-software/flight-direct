@@ -32,8 +32,8 @@ require 'json'
 require 'erb'
 CONFIG_PATH = File.join(FlightDirect.root_dir, 'var/flight.conf')
 
-desc 'set key1=value1 k2=v2 ...', 'Set Flight Direct config values'
-def set(*jo_inputs)
+desc 'set KEY1=VALUE1 K2=V2 ...', 'Set Flight Direct config values'
+loki_command(:set) do |*jo_inputs|
   cli_hash = parse_jo_input(*jo_inputs)
   new_configs = hash_to_config_envs(cli_hash)
   merged_configs = existing_configs.merge(new_configs)
@@ -44,13 +44,13 @@ end
 # Configs should always be retrieved from the environment. This makes
 # them more flexible should things change in the future. The 'get'
 # command is only a user friendly wrapper
-desc 'get key', 'Retrieve a Flight Direct config value'
-def get(key)
+desc 'get KEY', 'Retrieve a Flight Direct config value'
+loki_command(:get) do |key|
   puts FlightConfig.get(key)
 end
 
 desc 'list', 'Lists all the configs loaded into the environment'
-def list
+loki_command(:list) do
   ENV.select { |k, _v| /\A#{FlightConfig::PREFIX}/.match?(k) }
      .each { |k, v| puts "#{k}=#{v}" }
 end
