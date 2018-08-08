@@ -24,6 +24,7 @@ module FlightDirect
     # It also means the inbuilt `options` hash is empty
     glob_libexec('actions/**/*').each do |path|
       cmd = extract_cmd_info(path)
+      next if cmd.root == 'true' && Process.euid != 0
       desc_method(cmd) { |*args| exec_action(cmd.path, *args) }
     end
 

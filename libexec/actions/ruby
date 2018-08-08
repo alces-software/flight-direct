@@ -2,6 +2,7 @@
 : NAME: ruby
 : SYNOPSIS: Runs the ruby command in the flight environment
 : VERSION: 0.0.0
+: ROOT: true
 : '
 #==============================================================================
 # Copyright (C) 2018 Stephen F. Norledge and Alces Software Ltd.

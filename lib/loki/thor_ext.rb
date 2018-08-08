@@ -10,6 +10,7 @@ module Loki
       # loaded and added to Class after the CLI has selected it to run
       def jit_parse_subcommand(path, clean_bundle: false)
         cmd = extract_cmd_info(path)
+        return if (cmd.root == 'true' && Process.euid != 0)
         desc_method(cmd) do |*args|
           if clean_bundle
             Bundler.with_clean_env { parse_subcommand(cmd) }
