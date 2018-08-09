@@ -26,10 +26,13 @@ unset flight_conf
 export cw_BINNAME="alces"
 export cw_CMDDIR="$cw_ROOT/libexec/actions"
 source $cw_ROOT/lib/clusterware.kernel.sh
-if [[ -t 1 && "$TERM" != linux ]]; then
-    export cw_COLOUR=1
+if [ -t 2 ]; then
+  export cw_COLOUR=${cw_COLOUR:-1}
 else
-    export cw_COLOUR=0
+  export cw_COLOUR=${cw_COLOUR:-0}
+fi
+if [[ ":$cw_FLAGS:" =~ :nocolour: || "$TERM" == "linux" ]]; then
+  export cw_COLOUR=0
 fi
 export cw_SHELL=bash
 
