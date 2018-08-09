@@ -31,30 +31,9 @@ if [[ -z "${FL_SOURCED}" ]]; then
     fi
   }
 
-  # This allows profile scripts to poll for config values
-  # without booting up ruby. This about 50x faster than running
-  # `flight config get`
-  # NOTE: THIS IS A DUMB TOOL! The input must be in capitals
-  _fl_helper_config_get() {
-    echo $(
-      key="FL_CONFIG_$1"
-      set -a +e
-      source "$FL_ROOT"/var/flight.conf 2>/dev/null
-      value=${!key}
-      if [[ -z "$value" ]]; then
-        cat <<WARN >&2
-WARNING: '$key' has not been set
-See "flight config set" for further details
-WARN
-      fi
-      echo "$value"
-    )
-  }
-
   # Runs the other files in profile.d
   _fl_source_profile_d $FL_ROOT
 
   # Unsets the helper function
   unset -f _fl_source_profile_d
-  unset -f _fl_helper_config_get
 fi
