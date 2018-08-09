@@ -58,7 +58,7 @@ RUBY_SCRIPT
 # Install Complete
 cat <<EOF
 
-FlightDirect has been successfully installed
+Flight Direct has been successfully installed
 Restart your current shell before continuing
 
 EOF

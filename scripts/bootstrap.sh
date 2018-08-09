@@ -17,7 +17,7 @@ curl -f $url > $tarball
 tar -zxf $tarball
 
 # Runs the installer
-$("$FL_INSTALL_DIR"/flight-direct/scripts/install.sh)
+bash "$FL_INSTALL_DIR"/flight-direct/scripts/install.sh
 
 # Moves back to the original dir
 popd >/dev/null

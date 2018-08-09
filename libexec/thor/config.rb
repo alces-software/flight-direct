@@ -1,4 +1,5 @@
 #: SYNOPSIS: Manage the Flight Direct config
+#: ROOT: true
 
 # IMPORTANT NOTE:
 # The blank line above me denotes the end of the command declaration

@@ -2,6 +2,33 @@
 # Runs the moose-bird in a sub-shell. The animation can exit early which crashes the
 # current shell. Instead it is ran in a sub-shell which prevents its failure from affecting
 # the rest of the setup
+
+# This script is ran by the `csh` banner script. Thus the base profile script
+# might need to be sourced
+if [ -z "$BASH_FUNC_flight" ]; then
+  source $FL_ROOT/etc/profile.d/00-base.sh
+fi
+
+# This allows profile scripts to poll for config values
+# without booting up ruby. This about 50x faster than running
+# `flight config get`
+# NOTE: THIS IS A DUMB TOOL! The input must be in capitals
+_fl_helper_config_get() {
+  echo $(
+    key="FL_CONFIG_$1"
+    set -a +e
+    source "$FL_ROOT"/var/flight.conf 2>/dev/null
+    value=${!key}
+    if [[ -z "$value" ]]; then
+      cat <<WARN >&2
+WARNING: '$key' has not been set
+See "flight config set" for further details
+WARN
+    fi
+    echo "$value"
+  )
+}
+
 _fl_run_moosebird() {
   local version="Flight Direct $(flight version)"
   local dist=$(. /etc/os-release; echo $PRETTY_NAME)
@@ -51,3 +78,4 @@ unset _fl_role
 unset _fl_long_banner
 unset _fl_run_moosebird
 unset _fl_print_motd
+unset -f _fl_helper_config_get

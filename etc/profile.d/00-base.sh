@@ -5,6 +5,9 @@
 ##
 ################################################################################
 
+# Sets the shell type to be bash
+export cw_SHELL=bash
+
 # The delimiter is defined with interpolation so it does not get subbed
 # when the env is being parsed
 
@@ -42,12 +45,10 @@ flight() {
           eval $(_flight 'module' "$@") 2>&1
         elif [ -n "$POSIXLY_CORRECT" ]; then
           eval $(_flight 'module' "$@") 2>&1
-        elif [ "$2" == "load" -o "$2" == "add" ]; then
+        elif [ "$1" == "load" -o "$1" == "add" ]; then
           eval $(_flight 'module' "$@") 2>&1
         else
-          local p
-          p="${_cw_ROOT}"
-          eval $(_flight 'module' "$@" 2> >(less -FRX >&2)) 2>&1
+          eval $(source $FL_ROOT/etc/runtime.sh && $FL_ROOT/bin/flight 'module' "$@" 2> >(less -FRX >&2)) 2>&1
         fi
         ;;
     esac
