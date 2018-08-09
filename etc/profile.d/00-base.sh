@@ -5,6 +5,9 @@
 ##
 ################################################################################
 
+# Sets the shell type to be bash
+export cw_SHELL=bash
+
 # The delimiter is defined with interpolation so it does not get subbed
 # when the env is being parsed
 

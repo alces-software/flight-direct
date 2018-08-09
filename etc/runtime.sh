@@ -34,7 +34,6 @@ fi
 if [[ ":$cw_FLAGS:" =~ :nocolour: || "$TERM" == "linux" ]]; then
   export cw_COLOUR=0
 fi
-export cw_SHELL=bash
 
 extract_info() {
     info=$(awk -f <(cat <<\EOF
