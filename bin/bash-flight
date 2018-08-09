@@ -1,0 +1,5 @@
+#!/bin/bash
+set -e
+cd "$FL_ROOT"
+source etc/runtime.sh
+bin/flight "$@"
