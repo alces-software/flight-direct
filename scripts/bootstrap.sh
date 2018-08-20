@@ -26,9 +26,15 @@ curl -f $url > $tarball
 
 # Extracts the tarball
 tar -zxf $tarball
+rm $tarball
 
 # Runs the installer
 bash "$FL_INSTALL_DIR"/flight-direct/scripts/install.sh
+
+# Sets the cache-url if installed from the anvil server
+if [ "$anvil_url" ]; then
+  echo "FL_CONFIG_CACHE_URL=$anvil_url" >> flight-direct/var/flight.conf
+fi
 
 # Moves back to the original dir
 popd >/dev/null
