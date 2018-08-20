@@ -26,7 +26,7 @@ curl -f $url > $tarball
 
 # Extracts the tarball
 tar -zxf $tarball
-rm $tarball
+rm -f $tarball
 
 # Runs the installer
 bash "$FL_INSTALL_DIR"/flight-direct/scripts/install.sh
