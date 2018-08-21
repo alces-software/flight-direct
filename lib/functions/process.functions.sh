@@ -69,7 +69,7 @@ process_reexec_with_sudo() {
         cmd_args=("$0" "$@")
     else
         flight_setup="source $FL_ROOT/etc/profile.d/00-base.sh; source $FL_ROOT/etc/runtime.sh"
-        cmd_args=(-E /bin/bash -c "$flight_setup; $(declare -f require); export -f require; exec /bin/bash \"\$0\" \"\$@\"" "$0" "$@")
+        cmd_args=(-E /bin/bash -c "$flight_setup; exec /bin/bash \"\$0\" \"\$@\"" "$0" "$@")
     fi
     cw_BINNAME="${cw_BINNAME% *}"
     exec sudo "${sudo_args[@]}" "${cmd_args[@]}"
