@@ -63,12 +63,13 @@ process_reexec_sg() {
 }
 
 process_reexec_with_sudo() {
-    local cmd
+    local cmd flight_setup
     if [ "$1" == "--plain" ]; then
         shift
         cmd_args=("$0" "$@")
     else
-        cmd_args=(-E /bin/bash -c "$(declare -f require); export -f require; exec /bin/bash \"\$0\" \"\$@\"" "$0" "$@")
+        flight_setup="source $FL_ROOT/etc/profile.d/00-base.sh; source $FL_ROOT/etc/runtime.sh"
+        cmd_args=(-E /bin/bash -c "$flight_setup; exec /bin/bash \"\$0\" \"\$@\"" "$0" "$@")
     fi
     cw_BINNAME="${cw_BINNAME% *}"
     exec sudo "${sudo_args[@]}" "${cmd_args[@]}"
