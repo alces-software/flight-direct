@@ -36,7 +36,7 @@ git fetch
 git checkout $version
 
 # Installs rvm, bundler, and development gems
-. vagrant_bin/dev_bin_setup
+. dev_bin/dev_bin_setup
 bundle_install_rvm
 . ~/.bashrc
 

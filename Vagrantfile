@@ -12,7 +12,7 @@ $credentials="#{ENV['HOME']}/.credentials.sh"
 
 $master_script = <<-MASTER_SCRIPT
 # Put the development tools on the path
-echo 'source #{$dev_path}/vagrant_bin/dev_bin_setup' > #{$profile}
+echo 'source #{$dev_path}/dev_bin/dev_bin_setup' > #{$profile}
 
 # Load the aws credentials into the vm environment. Vagrant can not
 # provision files directly into a root diretory BUT this script is
