@@ -3,6 +3,8 @@
 # current shell. Instead it is ran in a sub-shell which prevents its failure from affecting
 # the rest of the setup
 
+# TODO: The code below is duplicated in 02-prompt.sh. Consider refactor
+
 # This script is ran by the `csh` banner script. Thus the base profile script
 # might need to be sourced
 if [ -z "$BASH_FUNC_flight" ]; then
