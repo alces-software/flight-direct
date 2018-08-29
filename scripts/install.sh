@@ -50,7 +50,9 @@ template = File.read(template_file)
 ['hourly', 'daily', 'weekly', 'monthly'].each do |cron_time|
   rendered = ERB.new(template, nil, '-').result(binding)
   cron_path = "/etc/cron.#{cron_time}"
-  File.write("#{cron_path}/flight-direct", rendered)
+  cron_file = File.join(cron_path, 'flight-direct')
+  File.write(cron_file, rendered)
+  FileUtils.chmod 0755, cron_file
   FileUtils.mkdir_p File.join(ENV['FL_ROOT'], cron_path)
 end
 RUBY_SCRIPT
