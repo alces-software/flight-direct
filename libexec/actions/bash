@@ -2,7 +2,7 @@
 : NAME: bash
 : SYNOPSIS: Open a bash shell within the flight direct environment
 : VERSION: 1.0.0
-: ROOT: true
+: HIDE: user
 : '
 #==============================================================================
 # Copyright (C) 2018 Stephen F. Norledge and Alces Software Ltd.
