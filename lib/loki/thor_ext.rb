@@ -101,6 +101,7 @@ module Loki
       # Reraise the error if the backtrace is on
       raise e if options.trace
       $stderr.puts "ERROR: #{e.message}\nUse --trace to show the backtrace"
+      exit 1
     end
   end
 end
