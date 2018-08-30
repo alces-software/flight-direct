@@ -59,7 +59,11 @@ module Loki
       # However it also describes the method first for Thor
       #
       def desc_method(cmd, &block)
-        desc cmd.name, cmd.synopsis
+        # This logic hides commands from the user, but still allows them
+        # to be ran. This is particularly useful for `bash` and `ruby`
+        # methods which are used by some scripts
+        hidden = (Process.euid != 0 && cmd.hide == 'user')
+        desc cmd.name, cmd.synopsis, hide: hidden
         define_method(cmd.name, &block)
       end
 
@@ -97,6 +101,7 @@ module Loki
       # Reraise the error if the backtrace is on
       raise e if options.trace
       $stderr.puts "ERROR: #{e.message}\nUse --trace to show the backtrace"
+      exit 1
     end
   end
 end

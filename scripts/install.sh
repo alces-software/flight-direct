@@ -52,7 +52,7 @@ template = File.read(template_file)
   cron_path = "/etc/cron.#{cron_time}"
   cron_file = File.join(cron_path, 'flight-direct')
   File.write(cron_file, rendered)
-  FileUtils.chmod 0644, cron_file
+  FileUtils.chmod 0755, cron_file
   FileUtils.mkdir_p File.join(ENV['FL_ROOT'], cron_path)
 end
 RUBY_SCRIPT
