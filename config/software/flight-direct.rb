@@ -60,11 +60,15 @@ build do
     mkdir File.join(install_dir, rel_path)
   end
 
-  # Renders the distribution specific runtime environment
+  # Moves the distribution specific files into place
   cw_DIST = centos? ? 'el7' : (raise <<~EOF.squish
       FlightDirect can currently only be built for el7
     EOF
   )
+  copy File.join('dist', cw_DIST), install_dir
+
+  # Renders the 'distro.rc' file
+  # TODO: Rename to be 'distro.rc'
   erb source: 'dist-runtime.sh.erb',
       dest: "#{install_dir}/etc/dist-runtime.sh",
       mode: 0664,
