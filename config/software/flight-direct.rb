@@ -50,7 +50,7 @@ build do
     'Gemfile', 'Gemfile.lock', 'bin', 'etc', 'lib', 'libexec', 'scripts',
     'templates'
   ].each do |file|
-    copy file, File.expand_path("#{install_dir}/#{file}/../")
+    copy file, File.expand_path("#{install_dir}/#{file}/..")
   end
 
   # Makes required install directories
@@ -65,10 +65,14 @@ build do
       FlightDirect can currently only be built for el7
     EOF
   )
-  copy File.join('dist', cw_DIST), install_dir
+  # The entire 'el7' directory is being moved however only it's content
+  # should end up within `flight-direct`. Instead it's moved up one
+  # directory.
+  copy File.join('dist', cw_DIST),
+       File.expand_path(File.join(install_dir, '..'))
 
-  # Renders the 'distro.rc' file
-  # TODO: Rename to be 'distro.rc'
+
+  # Replace ME!!!
   erb source: 'dist-runtime.sh.erb',
       dest: "#{install_dir}/etc/dist-runtime.sh",
       mode: 0664,
