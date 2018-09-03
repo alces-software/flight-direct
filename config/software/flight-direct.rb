@@ -60,7 +60,7 @@ build do
     mkdir File.join(install_dir, rel_path)
   end
 
-  # Moves the distribution specific files into place
+  # Sets the distribution that is currently being built for
   cw_DIST = centos? ? 'el7' : (raise <<~EOF.squish
       FlightDirect can currently only be built for el7
     EOF
