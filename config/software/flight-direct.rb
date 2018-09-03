@@ -65,12 +65,15 @@ build do
       FlightDirect can currently only be built for el7
     EOF
   )
-  # The entire 'el7' directory is being moved however only it's content
-  # should end up within `flight-direct`. Instead it's moved up one
-  # directory.
-  copy File.join('dist', cw_DIST),
-       File.expand_path(File.join(install_dir, '..'))
 
+  # Only the files within the `dist/$cw_DIST` directory should be
+  # sycned. Thus the directory needs to be globbed for it's contents
+  # at build time
+  block do
+    Dir.glob(
+      File.join(project_dir, 'dist', cw_DIST, '*')
+    ).each { |path| copy path, install_dir }
+  end
 
   # Replace ME!!!
   erb source: 'dist-runtime.sh.erb',
