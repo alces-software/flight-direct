@@ -12,8 +12,6 @@ if [[ -z "${FL_SOURCED}" ]]; then
   # Sets the distribution this version of FlightDirect was built for
   export cw_DIST=<%= cw_DIST %>
 
-  source $FL_ROOT/etc/dist-runtime.sh
-
   # Helper function for sourcing `profile.d` scripts
   _fl_source_profile_d() {
     local path="$1"

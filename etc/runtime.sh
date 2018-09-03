@@ -10,9 +10,6 @@ export GEM_HOME=$root/vendor/share
 export GEM_PATH=$GEM_HOME
 export SSL_CERT_FILE=$root/embedded/ssl/certs/cacert.pem
 
-# Source the distribution specific runtime environment
-source $root/etc/dist-runtime.sh
-
 # Exports the flight direct user config
 flight_conf="$FL_ROOT"/var/flight.conf
 if [ -f "$flight_conf" ]; then
