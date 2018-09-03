@@ -68,6 +68,15 @@ loki_command(:get) do |key|
 end
 
 desc 'list', 'Lists all the configs loaded into the environment'
+long_desc <<-LONGDESC
+The `config list` command displays the current `FL_CONFIG_` environment
+variables. The `flight.conf` file is loaded into the environment at
+runtime.
+
+This allows for configs to be set either by the config file or the
+parrent shell. It is not adivsed to use both methods to set the same
+key, however the config file will always take priority.
+LONGDESC
 loki_command(:list) do
   ENV.select { |k, _v| /\A#{FlightConfig::PREFIX}/.match?(k) }
      .each { |k, v| puts "#{k}=#{v}" }
