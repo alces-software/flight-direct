@@ -19,9 +19,9 @@
 # For more information on the Alces Clusterware, please visit:
 # https://github.com/alces-software/clusterware
 #==============================================================================
-if [ -z "${cw_DIST}" ]; then
-    source "${cw_ROOT}/etc/distro.rc"
-fi
+# Always source distro.rc, this file uses clusterware require, so the rc file
+# should only be sourced once
+source "${cw_ROOT}/etc/distro.rc"
 
 distro_enable_service() {
     local service

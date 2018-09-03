@@ -34,6 +34,16 @@ require 'erb'
 CONFIG_PATH = File.join(FlightDirect.root_dir, 'var/flight.conf')
 
 desc 'set KEY1=VALUE1 K2=V2 ...', 'Set Flight Direct config values'
+long_desc <<-LONGDESC
+The `config set` command manages the config environment variables that are
+loaded at runtime. The keys will be converted to UPPER_SNAKE_CASE and
+prefixed with `FL_CONFIG_`, making them case insensitive. The value is
+stored in its raw format and needs to be bash friendly.
+
+The empty string input (`key= ...`) will unset the key value. This
+action will completely remove the key from the config file. However
+the environment variable may still be set by the parant shell.
+LONGDESC
 loki_command(:set) do |*jo_inputs|
   cli_hash = parse_jo_input(*jo_inputs)
   new_configs = hash_to_config_envs(cli_hash)
@@ -46,11 +56,27 @@ end
 # them more flexible should things change in the future. The 'get'
 # command is only a user friendly wrapper
 desc 'get KEY', 'Retrieve a Flight Direct config value'
+long_desc <<-LONGDESC
+The `config get` returns a single config value for a give key. It will
+preform the same string processesing on the key as `config set`.
+
+Please note that the all config are read from the environment. See the
+`config help list` command for more details.
+LONGDESC
 loki_command(:get) do |key|
   puts FlightConfig.get(key)
 end
 
 desc 'list', 'Lists all the configs loaded into the environment'
+long_desc <<-LONGDESC
+The `config list` command displays the current `FL_CONFIG_` environment
+variables. The `flight.conf` file is loaded into the environment at
+runtime.
+
+This allows for configs to be set either by the config file or the
+parrent shell. It is not adivsed to use both methods to set the same
+key, however the config file will always take priority.
+LONGDESC
 loki_command(:list) do
   ENV.select { |k, _v| /\A#{FlightConfig::PREFIX}/.match?(k) }
      .each { |k, v| puts "#{k}=#{v}" }

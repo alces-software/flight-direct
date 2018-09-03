@@ -1,0 +1,33 @@
+set +e
+# Do not source any files if already sourced
+if [[ -z "${FL_SOURCED}" ]]; then
+  export FL_SOURCED=true
+
+  # Sets up the `FlightDirect` environment
+  export FL_ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
+  export cw_ROOT=$FL_ROOT
+  _cw_root() { echo "$cw_ROOT"; }
+  export -f _cw_root
+
+  # Sets the distribution this version of FlightDirect was built for
+  export cw_DIST=<%= cw_DIST %>
+
+  # Sources the other files in `profile.d`
+  if [ -d $FL_ROOT/etc/profile.d ]; then
+    for i in $FL_ROOT/etc/profile.d/*.sh ; do
+      if [ -r "$i" ]; then
+        if [ "${-#*i}" != "\$-" ]; then
+          . "$i"
+        else
+          . "$i" >/dev/null 2>&1
+        fi
+        # Ensure no flight profile leave errors on
+        set +e
+      fi
+    done
+    unset i
+  fi
+
+  # Unsets the helper function
+  unset -f _fl_source_profile_d
+fi

@@ -50,7 +50,7 @@ build do
     'Gemfile', 'Gemfile.lock', 'bin', 'etc', 'lib', 'libexec', 'scripts',
     'templates'
   ].each do |file|
-    copy file, File.expand_path("#{install_dir}/#{file}/../")
+    copy file, File.expand_path("#{install_dir}/#{file}/..")
   end
 
   # Makes required install directories
@@ -60,14 +60,26 @@ build do
     mkdir File.join(install_dir, rel_path)
   end
 
-  # Renders the distribution specific runtime environment
+  # Sets the distribution that is currently being built for
   cw_DIST = centos? ? 'el7' : (raise <<~EOF.squish
       FlightDirect can currently only be built for el7
     EOF
   )
-  erb source: 'dist-runtime.sh.erb',
-      dest: "#{install_dir}/etc/dist-runtime.sh",
-      mode: 0664,
+
+  # Only the files within the `dist/$cw_DIST` directory should be
+  # sycned. Thus the directory needs to be globbed for it's contents
+  # at build time
+  block do
+    Dir.glob(
+      File.join(project_dir, 'dist', cw_DIST, '*')
+    ).each { |path| copy path, install_dir }
+  end
+
+  # Render the profile script into place during the build
+  # This is used to set the cw_DIST for the application
+  erb source: 'profile.sh.erb',
+      dest: "#{install_dir}/etc/profile.sh",
+      mode: 0444,
       vars: { cw_DIST: cw_DIST }
 
   # Installs the gems to the shared `vendor/gems/--some-where-?--`
