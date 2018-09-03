@@ -75,10 +75,11 @@ build do
     ).each { |path| copy path, install_dir }
   end
 
-  # Replace ME!!!
-  erb source: 'dist-runtime.sh.erb',
-      dest: "#{install_dir}/etc/dist-runtime.sh",
-      mode: 0664,
+  # Render the profile script into place during the build
+  # This is used to set the cw_DIST for the application
+  erb source: 'profile.sh.erb',
+      dest: "#{install_dir}/etc/profile.sh",
+      mode: 0444,
       vars: { cw_DIST: cw_DIST }
 
   # Installs the gems to the shared `vendor/gems/--some-where-?--`
