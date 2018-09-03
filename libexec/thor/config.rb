@@ -56,6 +56,13 @@ end
 # them more flexible should things change in the future. The 'get'
 # command is only a user friendly wrapper
 desc 'get KEY', 'Retrieve a Flight Direct config value'
+long_desc <<-LONGDESC
+The `config get` returns a single config value for a give key. It will
+preform the same string processesing on the key as `config set`.
+
+Please note that the all config are read from the environment. See the
+`config help list` command for more details.
+LONGDESC
 loki_command(:get) do |key|
   puts FlightConfig.get(key)
 end
