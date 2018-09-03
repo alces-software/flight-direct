@@ -34,6 +34,16 @@ require 'erb'
 CONFIG_PATH = File.join(FlightDirect.root_dir, 'var/flight.conf')
 
 desc 'set KEY1=VALUE1 K2=V2 ...', 'Set Flight Direct config values'
+long_desc <<-LONGDESC
+The `config set` command manages the config environment variables that are
+loaded at runtime. The keys will be converted to UPPER_SNAKE_CASE and
+prefixed with `FL_CONFIG_`, making them case insensitive. The value is
+stored in its raw format and needs to be bash friendly.
+
+The empty string input (`key= ...`) will unset the key value. This
+action will completely remove the key from the config file. However
+the environment variable may still be set by the parant shell.
+LONGDESC
 loki_command(:set) do |*jo_inputs|
   cli_hash = parse_jo_input(*jo_inputs)
   new_configs = hash_to_config_envs(cli_hash)
