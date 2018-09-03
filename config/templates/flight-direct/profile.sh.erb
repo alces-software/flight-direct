@@ -12,27 +12,21 @@ if [[ -z "${FL_SOURCED}" ]]; then
   # Sets the distribution this version of FlightDirect was built for
   export cw_DIST=<%= cw_DIST %>
 
-  # Helper function for sourcing `profile.d` scripts
-  _fl_source_profile_d() {
-    local path="$1"
-    if [ -d $path/etc/profile.d ]; then
-      for i in $path/etc/profile.d/*.sh ; do
-        if [ -r "$i" ]; then
-          if [ "${-#*i}" != "\$-" ]; then
-            . "$i"
-          else
-            . "$i" >/dev/null 2>&1
-          fi
-          # Ensure no flight profile leave errors on
-          set +e
+  # Sources the other files in `profile.d`
+  if [ -d $FL_ROOT/etc/profile.d ]; then
+    for i in $FL_ROOT/etc/profile.d/*.sh ; do
+      if [ -r "$i" ]; then
+        if [ "${-#*i}" != "\$-" ]; then
+          . "$i"
+        else
+          . "$i" >/dev/null 2>&1
         fi
-      done
-      unset i
-    fi
-  }
-
-  # Runs the other files in profile.d
-  _fl_source_profile_d $FL_ROOT
+        # Ensure no flight profile leave errors on
+        set +e
+      fi
+    done
+    unset i
+  fi
 
   # Unsets the helper function
   unset -f _fl_source_profile_d
