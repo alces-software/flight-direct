@@ -9,7 +9,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Removed
 - The version number has been removed from the short banner displayed on
-  compute nodes 
+  compute nodes
 
 ## [2.0.1] - 2018-10-01
 ### Fixed
