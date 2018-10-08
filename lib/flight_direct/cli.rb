@@ -43,7 +43,7 @@ module FlightDirect
 
     desc :version, 'Gives the Flight Direct version'
     def version
-      puts FlightDirect::VERSION
+      puts "#{FlightDirect::USER_VERSION} (#{FlightDirect::VERSION})"
     end
 
     private
