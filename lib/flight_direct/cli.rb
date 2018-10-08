@@ -42,8 +42,10 @@ module FlightDirect
     end
 
     desc :version, 'Gives the Flight Direct version'
+    option :user, desc: 'Return the user version only'
     def version
-      puts FlightDirect::VERSION
+      flag = options[:user] ? '' : " (#{FlightDirect::VERSION})"
+      puts "#{FlightDirect::USER_VERSION}#{flag}"
     end
 
     private
