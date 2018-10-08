@@ -71,7 +71,7 @@ if [[ -t 0 ]]; then
     _fl_long_banner
   else
     cat <<EOF
-[38;5;68m[40m -[ [1;38;5;249malces [1;38;5;15mflight [38;5;68m ]- [0m
+[38;5;68m[40m -[ [1;38;5;249malces [1;38;5;15mflight [38;5;68m]- [0m
 EOF
   fi
 fi
