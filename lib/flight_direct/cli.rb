@@ -30,7 +30,7 @@ module FlightDirect
 
     # Defines the Thor plugin commands using Loki
     glob_libexec('thor/*').each do |path|
-      jit_parse_subcommand(path, clean_bundle: true)
+      jit_parse_subcommand(path)
     end
 
     # Overrides the help command. Only display the help for the root,
@@ -63,7 +63,7 @@ module FlightDirect
       cmd =[
         'bash', flags, path, stringify_args(args), append_help
       ].join(' ')
-      Bundler.with_clean_env { exec(cmd) }
+      exec(cmd)
     end
 
     # The argument array needs to be converted back to a space separated
