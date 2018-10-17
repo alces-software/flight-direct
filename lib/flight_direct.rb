@@ -7,9 +7,12 @@ load_root = (dev_mode && dev_root) ? dev_root : default_root
 # Sets up the load paths
 $LOAD_PATH << File.join(load_root, 'lib')
 
-# Sets up Bundler
-ENV['BUNDLE_GEMFILE'] ||= "#{load_root}/Gemfile"
-require 'bundler/setup'
+# Bundler is explicitly NOT used to at runtime. Instead a --standalone
+# setup file is generated at build time. This allows Bundler to be used
+# by a forge-package within the same ruby process
+setup_path = File.join(ENV['FL_ROOT'],
+                       'vendor/share/bundler/flight-direct-setup.rb')
+require_relative setup_path
 
 # Requires the versioning info
 require 'flight_direct/version'
