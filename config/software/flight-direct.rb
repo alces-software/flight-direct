@@ -82,11 +82,18 @@ build do
       mode: 0444,
       vars: { cw_DIST: cw_DIST }
 
-  # Installs the gems to the shared `vendor/gems/--some-where-?--`
+  # Installs the gems to the shared `vendor/share`
   flags = [
-    "--with#{overrides[:development] ? '' : 'out'} development"
+    "--with#{overrides[:development] ? '' : 'out'} development",
+    '--standalone',
+    '--path vendor/share'
   ].join(' ')
   command "cd #{install_dir} && embedded/bin/bundle install #{flags}", env: env
+
+  # Renames the bundler setup file
+  prefix = File.join(install_dir, 'vendor/share/bundler')
+  move File.expand_path('setup.rb', prefix),
+       File.expand_path('flight-direct-setup.rb', prefix)
 
   # Set the development environment variable
   if overrides[:development]
