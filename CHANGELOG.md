@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2018.4.pre (2.1.1)] - 2018-10-17
+### Fixed
+- Remove the runtime dependency on Bundler. This allows loki forge-packages
+  to use a separate Gemfile
+
 ## [2018.3 (2.1.0)] - 2018-10-08
 ### Added
 - Allow for optional configuration script before installing forge packages.
