@@ -1,5 +1,5 @@
 
 module FlightDirect
-  VERSION = '2.1.1'.freeze
-  USER_VERSION = '2018.4.pre'.freeze
+  VERSION = '2.1.2'.freeze
+  USER_VERSION = '2018.3'.freeze
 end
