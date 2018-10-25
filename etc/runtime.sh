@@ -20,7 +20,7 @@ fi
 unset flight_conf
 
 # Sets up clusterware
-export cw_BINNAME="alces"
+export cw_BINNAME="flight"
 export cw_CMDDIR="$cw_ROOT/libexec/actions"
 source $cw_ROOT/lib/clusterware.kernel.sh
 if [ -t 2 ]; then
