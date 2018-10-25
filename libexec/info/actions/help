@@ -50,7 +50,7 @@ help_for_action() {
     cat <<EOF
   SYNOPSIS:
 
-    alces about ${action}
+    $cw_BINNAME about ${action}
 
   DESCRIPTION:
 
@@ -63,7 +63,7 @@ help_for_help() {
     cat <<EOF
   SYNOPSIS:
 
-    alces about help [<command>]
+    $cw_BINNAME about help [<command>]
 
   DESCRIPTION:
 
