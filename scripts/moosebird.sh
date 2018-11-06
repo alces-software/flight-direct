@@ -13,20 +13,19 @@ frame() {
   else
     esc="1;38;5;$col"
   fi
-  welcome="$(printf %$((43+${#esc}))s "Welcome to [${esc}m${cluster}")"
+  if [ "${cluster}" == "Unconfigured" ]; then
+    welcome="$(printf %$((43+${#esc}))s "Welcome to [${esc}mAlces Flight")"
+  else
+    welcome="$(printf %$((43+${#esc}))s "Welcome to [${esc}m${cluster}")"
+  fi
   cat | sed -e "s#%WELCOME%#$welcome#g" \
             -e "s#%VERSION%#$version#g" \
             -e "s#%DISTRO%#$distro#g"
 }
 
-delay() {
-  if read -t$1 -n1 -s; then
-    if [ "$2" ]; then
-cat <<'EOF'
-[38;5;68m          `v [40m -[ [1;38;5;249malces [1;38;5;15mflight[38;5;68m ]- [0m                  
-EOF
-    else
-frame 6 <<'EOF'
+final_frame() {
+  echo '[20A'
+  frame 6 <<'EOF'
 [38;5;68m  'o`               
  'ooo`[1;37;40m               %WELCOME%[38;5;68;49m
  `oooo`             
@@ -47,12 +46,37 @@ frame 6 <<'EOF'
                                                        
                                                        
 EOF
-echo "[13A"
+  echo "[13A"
+}
+
+delay() {
+  if read -t0 -N0 -s; then
+    if [ "$2" ]; then
+cat <<'EOF'
+[38;5;68m          `v [40m -[ [1;38;5;249malces [1;38;5;15mflight[38;5;68m ]- [0m                  
+EOF
+    else
+      final_frame
     fi
     exit 0
+  else
+    sleep $1
   fi
 }
-  
+
+cleanup() {
+  stty "$oldstty"
+  if [ "$1" == "force" ]; then
+    final_frame
+    exit
+  fi
+}
+
+oldstty="$(stty -g)"
+trap cleanup EXIT
+trap "cleanup force" INT TERM
+stty -icanon -echo min 1 time 0
+
 frame 0 <<'EOF'
 [38;5;68m        `.:/+/
     ./oooo+`[1;37;40m         %WELCOME%[38;5;68;49m
@@ -74,8 +98,8 @@ frame 0 <<'EOF'
                              `-:/oo+
                                 `-.
 EOF
-echo "[20A"
 delay 0.1
+echo "[20A"
 frame 0 <<'EOF'
 [38;5;68m      `-:/+/                                           
     ./oooo+`[1;37;40m         %WELCOME%[38;5;68;49m
@@ -97,8 +121,8 @@ frame 0 <<'EOF'
                                ``                         
 [0m                                                       
 EOF
-echo '[20A'
 delay 0.1
+echo '[20A'
 frame 0 <<'EOF'
 [38;5;68m     `-/+o:                                       
    `/oooo/[1;37;40m           %WELCOME%[38;5;68;49m
@@ -120,8 +144,8 @@ frame 0 <<'EOF'
                                                        
                                                        
 EOF
-echo '[20A'
 delay 0.1
+echo '[20A'
 frame 1 <<'EOF'
 [38;5;68m        ``                                   
     `:/oo-[1;37;40m           %WELCOME%[38;5;68;49m
@@ -143,8 +167,8 @@ frame 1 <<'EOF'
                                                        
                                                        
 EOF
-echo '[20A'
 delay 0.05
+echo '[20A'
 frame 2 <<'EOF'
 [38;5;68m       ``                               
    `:+o+.[1;37;40m            %WELCOME%[38;5;68;49m
@@ -166,8 +190,8 @@ frame 2 <<'EOF'
                                                        
                                                        
 EOF
-echo '[20A'
 delay 0.025
+echo '[20A'
 frame 3 <<'EOF'
 [38;5;68m     `.`                           
   `:+o+`[1;37;40m             %WELCOME%[38;5;68;49m
@@ -189,8 +213,8 @@ frame 3 <<'EOF'
                                                        
                                                        
 EOF
-echo '[20A'
 delay 0.0125
+echo '[20A'
 frame 4 <<'EOF'
 [38;5;68m    .-`                       
   :+o/[1;37;40m               %WELCOME%[38;5;68;49m
@@ -212,8 +236,8 @@ frame 4 <<'EOF'
                                                        
                                                        
 EOF
-echo '[20A'
 delay 0.00625
+echo '[20A'
 frame 5 <<'EOF'
 [38;5;68m   .-`                   
  .+o:[1;37;40m                %WELCOME%[38;5;68;49m
@@ -235,8 +259,8 @@ frame 5 <<'EOF'
                                                        
                                                        
 EOF
-echo '[20A'
 delay 0.00625
+echo '[20A'
 frame 6 <<'EOF'
 [38;5;68m  'o`               
  'ooo`[1;37;40m               %WELCOME%[38;5;68;49m
@@ -258,8 +282,8 @@ frame 6 <<'EOF'
                                                        
                                                        
 EOF
-echo '[14A'
 delay 0.05 2
+echo '[14A'
 cat <<'EOF'
 [38;5;68m          `v [40m -[ [1;38;5;237malces [1;38;5;232mflight[38;5;68m ]- [0m                                
 EOF
@@ -308,28 +332,3 @@ delay 0.05 2
 cat <<'EOF'
 [38;5;68m          `v [40m -[ [1;38;5;249malces [1;38;5;15mflight[38;5;68m ]- [0m                  
 EOF
-
-
-
-
-# cat <<'EOF'
-# [38;5;68m  .:`               
-#  +o:``[1;37;40m               %WELCOME%[38;5;68;49m
-#  /o+o-`             
-#   :+o+o`         ``[1;37;40m  %VERSION%[38;5;68;49m
-#     -/++-```.:-/-/+[1;37;40m  %DISTRO%[38;5;68;49m
-#        -+oo+//++/:.                                
-#           `- [40m -                                
-# [0m                                                       
-                                                       
-                                                       
-                                                       
-                                                       
-                                                       
-                                                       
-                                                       
-                                                       
-                                                       
-                                                       
-                                                       
-# EOF
