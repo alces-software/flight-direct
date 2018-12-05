@@ -70,7 +70,7 @@ module FlightDirect
     # list. However any strings containing a \n, need to be encapsulated
     # in quotes. This should hopefully keep them together
     def stringify_args(args)
-      args.map { |s| s.include?("\s") ? "'#{s}'" : s }
+      args.map { |s| s.empty? || s.include?("\s") ? "'#{s}'" : s }
           .join(" ")
     end
   end
