@@ -36,7 +36,7 @@ _fl_run_moosebird() {
   local dist=$(. /etc/os-release; echo $PRETTY_NAME)
   local name=$(_fl_helper_config_get CLUSTERNAME)
   name=${name:-Unconfigured}
-  (. "$FL_ROOT"/scripts/moosebird.sh "$name" "$version" "$dist")
+  "$FL_ROOT"/scripts/moosebird.sh "$name" "$version" "$dist"
 }
 _fl_print_motd() {
   local i
