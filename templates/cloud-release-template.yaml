@@ -3,7 +3,7 @@ Description: 'Release Flight Direct'
 Parameters:
   Version:
     Type: String
-    Default: 2.1.4
+    Default: %Version%
 Mappings:
   RegionMap:
     eu-west-1:

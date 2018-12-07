@@ -86,6 +86,9 @@ S3 automatically.
 `templates/cloud-release-template.yaml`
 
 NOTE: The release `Version` needs to be given as a parameter to the template.
+The template has been design to work with `cloudware` and use the replace
+syntax (`%Version%`). This allows the template to be used through both
+platforms.
 
 ### Clean
 
