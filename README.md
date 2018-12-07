@@ -77,6 +77,16 @@ build was successful and can be safely ignored.
 Alternatively installing `rpm-build` will suppress the error, however the
 `rpm` will be built.
 
+### Releasing a new version
+
+New version of `flight-direct` can be released on AWS using the staff
+credentials. All that is required is firing up the release template (below)
+on cloud formation. This will start a build machine and saves the tarball in
+S3 automatically.
+`templates/cloud-release-template.yaml`
+
+NOTE: The release `Version` needs to be given as a parameter to the template.
+
 ### Clean
 
 You can clean up all temporary files generated during the build process with
