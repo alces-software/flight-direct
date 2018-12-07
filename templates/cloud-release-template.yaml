@@ -26,7 +26,9 @@ Resources:
             - ''
             - - "#cloud-config\n"
               - "runcmd:\n"
-              - "  - curl https://raw.githubusercontent.com/alces-software/flight-direct/master/scripts/release.sh | sudo bash -s "
+              - "  - curl https://raw.githubusercontent.com/alces-software/flight-direct/"
+              - !Ref Version
+              - "/scripts/release.sh | sudo bash -s "
               - !Ref Version
               - "\n"
               - "  - shutdown now"
