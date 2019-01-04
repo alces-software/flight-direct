@@ -1,0 +1,34 @@
+---
+Description: 'Release Flight Direct'
+Parameters:
+  Version:
+    Type: String
+    Default: %Version%
+Mappings:
+  RegionMap:
+    eu-west-1:
+      "AMI": "ami-02c26e7b"
+Resources:
+  Machine:
+    Type: AWS::EC2::Instance
+    Properties:
+      AvailabilityZone: !Select
+        - 0
+        - Fn::GetAZs: !Ref 'AWS::Region'
+      ImageId: !FindInMap ["RegionMap", !Ref "AWS::Region", "AMI"]
+      InstanceType: m5d.large
+      IamInstanceProfile: flight-direct-s3
+      Monitoring: true
+      KeyName: aws_ireland
+      UserData:
+        Fn::Base64:
+          Fn::Join:
+            - ''
+            - - "#cloud-config\n"
+              - "runcmd:\n"
+              - "  - curl https://raw.githubusercontent.com/alces-software/flight-direct/"
+              - !Ref Version
+              - "/scripts/release.sh | sudo bash -s "
+              - !Ref Version
+              - "\n"
+              - "  - shutdown now"
